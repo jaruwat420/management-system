@@ -1,0 +1,24 @@
+.table_post  {
+    width: 700px;
+}
+
+.genric-btn.selected {
+    background-color: #ffba00;
+    color: white;
+}
+/* .list {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+}
+
+.list li {
+    list-style: none;
+    text-align: center;
+}
+
+.list li img {
+    width: 125px; 
+    height: auto; 
+} */
+
