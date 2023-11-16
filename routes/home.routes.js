@@ -4,6 +4,8 @@ import {
 } from "../controllers/homeController.js";
 const router = Router();
 
-router.get("/", renderHome);
+router.get("/", renderHome)
+
+
 
 export default router;

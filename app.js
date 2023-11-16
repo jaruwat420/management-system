@@ -4,6 +4,9 @@ import { engine } from "express-handlebars"
 import path from "path";
 import { fileURLToPath } from 'url';
 import hbs from "hbs";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import session from "express-session";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -23,10 +26,29 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static("public"));
 
+//---------------------Session-------------------------//
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.json());
+app.use(cookieParser())
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {maxAge: 180 * 60 * 1000 }
+}))
 
+//---------------------bodyParser-------------------------//
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+//-------------------------Route-------------------------//
 import homeRouter from "./routes/home.routes.js";
+import authRouter from "./routes/auth.routes.js";
+import dashboardRouter from "./routes/dashboard.routes.js";
 //-------------------------Route-------------------------//
 app.use("/", homeRouter);
-
+app.use("/auth", authRouter);
+app.use("/dashboard", dashboardRouter);
 
 export default app;

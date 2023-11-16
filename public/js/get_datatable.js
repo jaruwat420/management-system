@@ -1,36 +1,48 @@
 
-// Reload DataTable 
-get_dataTable();
+$(document).ready(function () {
+    // DataTable
+    $("#myTable").DataTable();
 
-function get_dataTable() {
-    fetch('/user/dataTable')
-        .then(res => res.json())
-        .then(data => {
-                dataTable = $('#dataTable').DataTable({
-                serverSide: false,
-                data: data,
-                searching: true,
-                destroy: true,
-                "ordering": false,
-                columns: [
-                {data: null, render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }},
-                {data: 'user_firstname'},
-                {data: 'user_lastname'},
-                {data: 'user_email'},
-                {data: 'user_password'},
-                    {data: null,render: function (data, type, row) {
-                        return `<button class="btn btn-warning btn-edit" id = "btn-edit" data-id="${data.car_id}">Edit</button>`;
-                    }
-                    },
-                    {data: null,render: function (data, type, row) {
-                        return `<button class="btn btn-danger btn-delete" id = "btn-delete" data-id="${data.car_id}">Delete</button>`;
-                    }
-                    }
-                ],
-            });
-        })
-    .catch(error => console.error('Error:', error));
-}
+    
+    //Modals
+    $('#addBtn').click(function (e) { 
+        $('#addFileModal').modal('show');
+        
+    });
 
+    // close Modal
+    $('#close_modal').click(function (e) { 
+        $('#addFileModal').modal('hide');
+        
+    });
+
+    $('.choose_file_excel').click(function(){
+        $('#fileExcel').trigger('click');
+    });
+
+    $('#fileExcel').change(function(){
+        let file_name = $('#fileExcel').val();
+        f_customer_data_general_preview();
+    })
+
+    function f_customer_data_general_preview (){
+        let formElem = document.getElementById('form_import_data_excel');
+        let formData = new FormData(formElem[0]);
+        console.log(formData);
+        return;
+        $.ajax({
+            url: "/dashboard/data_preview",
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function (res) {
+                
+            }
+        });
+
+    }
+
+
+
+});
