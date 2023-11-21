@@ -22,3 +22,26 @@
     height: auto; 
 } */
 
+#myTable {
+    width: 20%; /* Set the width of the table to 100% */
+}
+
+#myTable th, #myTable td {
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Set specific column widths */
+#myTable th:nth-child(1),
+#myTable td:nth-child(1) {
+    width: 50px; /* Adjust the width of the first column */
+}
+
+#myTable th:nth-child(2),
+#myTable td:nth-child(2) {
+    width: 100px; /* Adjust the width of the second column */
+}
+
+    /* Add more rules for other columns as needed */
+
+
+

@@ -77,7 +77,7 @@ export const getLogin = async (req, res) => {
                 username
             },
             process.env.TOKEN_KEY, {
-                expiresIn: '5h'
+                expiresIn: '10h'
             });
             res.cookie('token', token, {
                 maxAge: 3600000,
@@ -86,6 +86,11 @@ export const getLogin = async (req, res) => {
 
             // Create session Users
             req.session.userId = user.user_id;
+            req.session.user = {
+                id: user.user_id,
+                firstname: user.user_firstname
+                
+            }
 
             res.status(201).send({message: 'เข้าสู่ระบบสำเร็จ',status: 201 });
         } else {
@@ -93,6 +98,5 @@ export const getLogin = async (req, res) => {
         }
     } catch (error) {
         res.status(400).json(`เกิดข้อผิดพลาด : ${error}`);
-    }
-    
+    }    
 }

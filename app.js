@@ -27,7 +27,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static("public"));
 
 //---------------------Session-------------------------//
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser())
@@ -37,6 +37,12 @@ app.use(session({
     saveUninitialized: false,
     cookie: {maxAge: 180 * 60 * 1000 }
 }))
+
+app.use(function (req, res, next) {
+    res.locals.sessionLogin =  req.session.userId;
+    res.locals.sessionUser =  req.session.user;
+    next();
+});
 
 //---------------------bodyParser-------------------------//
 app.use(bodyParser.urlencoded({ extended: true }));
