@@ -1,0 +1,252 @@
+<h5>ฝาก-โอน</h5>
+<div class="card">
+    <div class="card-header">
+        <button class="btn btn-success" id="addBtn">เพิ่มข้อมูล</button>
+    </div>
+    <div class="card-body">
+        <table id="depositTable" class="table table-striped display">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ประเภท</th>
+                    <th>วันที่</th>
+                    <th>ชื่อ</th>
+                    <th>โอนคัดเล่ม/เป็นชื่อ</th>
+                    <th>เลขเครื่อง</th>
+                    <th>สี</th>
+                    <th>ทะเบียน</th>
+                    <th>จังหวัด</th>
+                    <th>โอนเข้า</th>
+                    <th>ค่าโอน</th>
+                    <th>รับเล่ม sik</th>
+                    <th>ส่งตัวแทน</th>
+                    <th>ตัวแทนส่งคืน</th>
+                    <th>CU รับเล่ม</th>
+                    <th>วันที่ลูกค้ารับเล่ม</th>                    
+                    <th>แก้ไข</th>
+                    <th>ดู</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{!-- modal add --}}
+<div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">เพิ่มข้อมูล</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="type_name" class="col-form-label">ประเภท</label>
+                            <select class="form-control" id="type-method">
+                                <option selected>เลือก</option>
+                                <option value="รถยนต์">รถยนต์</option>
+                                <option value="รถจักรยานยนต์">รถจักรยานยนต์</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="date_mont_year" class="col-form-label">วัน/เดือน/ปี</label>
+                            <input type="date" class="form-control" id="date_mont_year" name="date_mont_year">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fullname" class="col-form-label">ชื่อ-นามสกุล</label>
+                            <input type="text" class="form-control" id="fullname" name="fullname">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="deposit_book" class="col-form-label">โอน/คัดเล่มเป็นชื่อ-นามสกุล</label>
+                            <input type="text" class="form-control" id="deposit_book" name="engine_number">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="engine_number" class="col-form-label">เลขเครื่อง</label>
+                            <input type="text" class="form-control" id="engine_number" name="engine_number">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="engine_number" class="col-form-label">สี</label>
+                            <input type="text" class="form-control" id="engine_number" name="engine_number">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="car_license" class="col-form-label">ทะเบียน</label>
+                            <input type="text" class="form-control" id="car_license">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="province" class="col-form-label">จังหวัด</label>
+                            <input type="text" class="form-control" id="province" name="province">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="transfer_in" class="col-form-label">โอนเข้า</label>
+                            <input type="text" class="form-control" id="transfer_in" name="transfer_in">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="transfer_price" class="col-form-label">ราคาค่าโอน</label>
+                            <input type="text" class="form-control" id="transfer_price" name="transfer_price">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="receive_book" class="col-form-label">รับเล่ม SIK</label>
+                            <input type="text" class="form-control" id="receive_book" name="receive_book">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="send_agent" class="col-form-label">ส่งตัวแทน</label>
+                            <input type="date" class="form-control" id="send_agent" name="send_agent">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="return_agent" class="col-form-label">ตัวแทนส่งคืน</label>
+                            <input type="date" class="form-control" id="return_agent" name="return_agent">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="receive_book_cu" class="col-form-label">CU รับเล่ม</label>
+                            <input type="text" class="form-control" id="receive_book_cu" name="receive_book_cu">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="date_customer_receive_book" class="col-form-label">วัน/เดือน/ปี ลูกค้ารับเล่ม</label>
+                            <input type="date" class="form-control" id="date_customer_receive_book" name="date_customer_receive_book">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="address_ems" class="col-form-label">ที่อยู่ EMS</label>
+                            <textarea class="form-control" id="address_ems" name="address_ems" ></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="date_send_ems" class="col-form-label">วันที่ส่ง EMS</label>
+                            <input type="date" class="form-control" id="date_send_ems" name="date_send_ems">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="address" class="col-form-label">ที่อยู่</label>
+                            <textarea class="form-control" id="address" name="address" ></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="re_mark" class="col-form-label">หมายเหตุ</label>
+                            <textarea class="form-control"  name="re_mark"  id="re_mark" ></textarea>
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeModalBtn">ปิด</button>
+                <button type="button" class="btn btn-primary" id="saveModalBtn">บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- modal edit --}}
+<div class="modal fade" id="depositEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูล</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="type_name" class="col-form-label">ประเภท</label>
+                            <select class="form-control" id="type-method">
+                                <option selected>เลือก</option>
+                                <option value="รถยนต์">รถยนต์</option>
+                                <option value="รถจักรยานยนต์">รถจักรยานยนต์</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_date_mont_year" class="col-form-label">วัน/เดือน/ปี</label>
+                            <input type="date" class="form-control" id="e_date_mont_year" name="e_date_mont_year">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_fullname" class="col-form-label">ชื่อ-นามสกุล</label>
+                            <input type="text" class="form-control" id="e_fullname" name="e_fullname">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_deposit_book" class="col-form-label">โอน/คัดเล่มเป็นชื่อ-นามสกุล</label>
+                            <input type="text" class="form-control" id="e_deposit_book" name="e_deposit_book">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_engine_number" class="col-form-label">เลขเครื่อง</label>
+                            <input type="text" class="form-control" id="e_engine_number" name="e_engine_number">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_color" class="col-form-label">สี</label>
+                            <input type="text" class="form-control" id="e_color" name="e_color">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_car_license" class="col-form-label">ทะเบียน</label>
+                            <input type="text" class="form-control" id="e_car_license">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_province" class="col-form-label">จังหวัด</label>
+                            <input type="text" class="form-control" id="e_province" name="e_province">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_transfer_in" class="col-form-label">โอนเข้า</label>
+                            <input type="text" class="form-control" id="e_transfer_in" name="e_transfer_in">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_transfer_price" class="col-form-label">ราคาค่าโอน</label>
+                            <input type="text" class="form-control" id="e_transfer_price" name="e_transfer_price">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_receive_book" class="col-form-label">รับเล่ม SIK</label>
+                            <input type="text" class="form-control" id="e_receive_book" name="e_receive_book">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_send_agent" class="col-form-label">ส่งตัวแทน</label>
+                            <input type="date" class="form-control" id="e_send_agent" name="e_send_agent">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_return_agent" class="col-form-label">ตัวแทนส่งคืน</label>
+                            <input type="date" class="form-control" id="e_return_agent" name="e_return_agent">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_receive_book_cu" class="col-form-label">CU รับเล่ม</label>
+                            <input type="text" class="form-control" id="e_receive_book_cu" name="e_receive_book_cu">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_date_customer_receive_book" class="col-form-label">วัน/เดือน/ปี ลูกค้ารับเล่ม</label>
+                            <input type="date" class="form-control" id="e_date_customer_receive_book" name="e_date_customer_receive_book">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_address_ems" class="col-form-label">ที่อยู่ EMS</label>
+                            <textarea class="form-control" id="e_address_ems" name="e_address_ems" ></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_date_send_ems" class="col-form-label">วันที่ส่ง EMS</label>
+                            <input type="date" class="form-control" id="e_date_send_ems" name="e_date_send_ems">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="e_address" class="col-form-label">ที่อยู่</label>
+                            <textarea class="form-control" id="e_address" name="e_address" ></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="e_re_mark" class="col-form-label">หมายเหตุ</label>
+                            <textarea class="form-control"  name="e_re_mark"  id="e_re_mark" ></textarea>
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeEditModalBtn">ปิด</button>
+                <button type="button" class="btn btn-primary" id="saveEditModalBtn">บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/jquery/jquery.min.js"></script>
+<script src="/js/deposit.js"></script>

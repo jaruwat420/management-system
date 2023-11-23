@@ -11,7 +11,12 @@ import {
     renderHome,
     renderManagement,
     getManagement,
-    editManagement
+    editManagement,
+    renderDeposit,
+    getCreate,
+    getDataTable,
+    updateDeposit
+
 } from "../controllers/dashboardController.js";
 
 import auth from "../middleware/auth.js"
@@ -138,7 +143,7 @@ const uploadXLSX = async (req, res, next) => {
                 }
             }
         }
-        return res.status(201).json({ success: true, message: "Data processed successfully", });
+        return res.status(201).json({ success: true, message: "นำเข้าข้อมูลสำเร็จ",status: 201 });
     } catch (err) {
         return res.status(500).json({ success: false, message: err.message });
     }
@@ -163,11 +168,15 @@ const upload = multer({ storage: storage });
 
 
 router.get("/", auth, renderHome);
-router.get("/management", auth, renderManagement)
-router.get("/get_management", auth, getManagement)
+router.get("/management", auth, renderManagement);
+router.get("/get_management", auth, getManagement);
 router.post("/api-file-upload/", upload.single("fileExcel"), uploadXLSX, (req, res) => {
     console.log(req.file);
 })
-router.put("/edit", auth, editManagement)
+router.put("/edit", auth, editManagement);
+router.get("/deposit_transfer", auth, renderDeposit);
+router.put("/create_deposit", auth, getCreate);
+router.get("/get_datatable", auth, getDataTable);
+router.put("/update_deposit", auth, updateDeposit);
 
 export default router;

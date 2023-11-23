@@ -15,13 +15,15 @@
                     <th>ยี่ห้อ</th>
                     <th>ชื่อผู้ประมูล</th>
                     <th>สถานะ</th>
-                    <th>แก้ไขโดย</th>
+                    <th>ช่องทางรับเล่ม</th>
+                    <th>แก้ไขล่าสุด</th>
                     <th>แก้ไข</th>
                     <th>ดู</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -69,6 +71,7 @@
     </div>
 </div>
 
+
 <!-- Modal edit-->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog ">
@@ -102,6 +105,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="date-receive" class="col-form-label">วันที่รับเล่ม</label>
+                        <div id="display" style="color: white">Selected date:</div>
                         <input type="date" class="form-control" id="date-receive" name="date-receive">
                     </div>
                     <div class="mb-3">
@@ -115,9 +119,32 @@
                             name="date-receive-transport">
                     </div>
                     <div class="mb-3">
-                        <label for="date-receive-transport" class="col-form-label">วันที่ลูกค้ามารับเล่ม</label>
-                        <input type="date" class="form-control" id="date-receive-transport"
-                            name="date-receive-transport">
+                        <label for="date-customer" class="col-form-label">วันที่ลูกค้ามารับเล่ม</label>
+                        <input type="date" class="form-control" id="date-customer-receive" name="date-customer-receive">
+                    </div>                    
+                    <div class="mb-3">
+                        <label for="date-customer-receive" class="col-form-label">วิธีจัดส่งเล่มทะเบียน</label>
+                        <select class="form-control" id="delivery-method" aria-label="Default select example" onchange="toggleFields()">
+                            <option selected>เลือก</option>
+                            <option value="รับเอง">รับเอง</option>
+                            <option value="ไปรษณีย์">ไปรษณีย์</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 hidden" id="document_number">
+                        <label for="document_number" class="col-form-label">เลขที่เอกสาร</label>
+                        <input type="text" class="form-control" id="documentNumber" name="documentNumber">
+                    </div>
+                    <div class="mb-3 hidden" id="date-post-section">
+                        <label for="date-post-section" class="col-form-label">วันที่มารับเล่ม</label>
+                        <input type="date" class="form-control" id="date-post" name="date-post">
+                    </div>
+                    <div class="mb-3 hidden" id="postal-code-section">
+                        <label for="postal-code-section" class="col-form-label">เลขพัสดุ</label>
+                        <input type="text" class="form-control" id="postal-code" name="postal-code">
+                    </div>
+                    <div class="mb-3 hidden" id="date-of-receiving">
+                        <label for="date-of-receiving" class="col-form-label">วันที่</label>
+                        <input type="date" class="form-control" id="date-receiving" name="date-receiving">
                     </div>
                 </form>
             </div>
@@ -138,33 +165,184 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="address-sending" class="col-form-label">Tax-Invoice:</label>
-                            <input type="date" class="form-control" id="date-sending-transport"
-                                name="date-sending-transport">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="finance_name" class="col-form-label">ไฟแนนซ์:</label>
+                            <input type="text" class="form-control" id="finance_name" name="finance_name" disabled>
                         </div>
-                        <div class="col-md-6">
-                            <label for="address-sending" class="col-form-label">ที่อยู่:</label>
-                            <input type="date" class="form-control" id="date-sending-transport"
-                                name="date-sending-transport">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="address-sending" class="col-form-label">หมายเหตุ:</label>
-                            <input type="date" class="form-control" id="date-sending-transport"
-                                name="date-sending-transport">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="address-sending" class="col-form-label">ที่อยู่ใหม่:</label>
-                            <input type="date" class="form-control" id="date-sending-transport"
-                                name="date-sending-transport">
-                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="tax_invoice" class="col-form-label">Tax-Invoice:</label>
+                            <input type="text" class="form-control" id="tax_invoice" name="tax_invoice" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_code" class="col-form-label">Code:</label>
+                            <input type="text" class="form-control" id="car_code" name="car_code" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="contact_number" class="col-form-label">Contact number:</label>
+                            <input type="text" class="form-control" id="contact_number" name="contact_number" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_brand" class="col-form-label">ยี่ห้อ:</label>
+                            <input type="text" class="form-control" id="car_brand" name="car_brand" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_model" class="col-form-label">รุ่น:</label>
+                            <input type="text" class="form-control" id="car_model" name="car_model" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_tank_number" class="col-form-label">เลขตัวถัง:</label>
+                            <input type="text" class="form-control" id="car_tank_number" name="car_tank_number" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_engine_number" class="col-form-label">เลขตัวเครื่อง: </label>
+                            <input type="text" class="form-control" id="car_engine_number" name="car_engine_number" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_color" class="col-form-label">สี:</label>
+                            <input type="text" class="form-control" id="car_color" name="car_color" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_year" class="col-form-label">ปี:</label>
+                            <input type="text" class="form-control" id="car_year" name="car_year" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_mile" class="col-form-label">ไมล์:</label>
+                            <input type="text" class="form-control" id="car_mile" name="car_mile" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_license" class="col-form-label">ทะเบียน:</label>
+                            <input type="text" class="form-control" id="car_license" name="car_license" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_province" class="col-form-label">จังหวัด:</label>
+                            <input type="text" class="form-control" id="car_province" name="car_province" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_grade" class="col-form-label">เกรด:</label>
+                            <input type="text" class="form-control" id="car_grade" name="car_grade" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_gear" class="col-form-label">เกียร์:</label>
+                            <input type="text" class="form-control" id="car_gear" name="car_gear" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_auction_sign" class="col-form-label">ป้ายประมูล</label>
+                            <input type="text" class="form-control" id="car_auction_sign" name="car_auction_sign" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_engine_good" class="col-form-label">เครื่องดี:</label>
+                            <input type="text" class="form-control" id="car_engine_good" name="car_engine_good" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_date" class="col-form-label">วันที่:</label>
+                            <input type="text" class="form-control" id="car_date" name="car_date" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_estimate" class="col-form-label">ประมาณ</label>
+                            <input type="text" class="form-control" id="car_estimate" name="car_estimate" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="approved_price" class="col-form-label">ราคาอนุมัติ:</label>
+                            <input type="text" class="form-control" id="approved_price" name="approved_price" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="price_end" class="col-form-label">ราคาจบ:</label>
+                            <input type="text" class="form-control" id="price_end" name="price_end" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="price_run" class="col-form-label">ราคาวิ่ง:</label>
+                            <input type="text" class="form-control" id="price_run" name="price_run" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="price_finish" class="col-form-label">ราคาสิ้นสุด:</label>
+                            <input type="text" class="form-control" id="price_finish" name="price_finish" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="price_diff" class="col-form-label">ส่วนต่าง (diff):</label>
+                            <input type="text" class="form-control" id="price_diff" name="price_diff" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="tax_number" class="col-form-label">เลขผู้เสียภาษี:</label>
+                            <input type="text" class="form-control" id="tax_number" name="tax_number" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="auction_names" class="col-form-label">ชื่อผู้ประมูล:</label>
+                            <input type="text" class="form-control" id="auction_names" name="auction_names" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="address" class="col-form-label">ที่อยู่:</label>
+                            <textarea name="" class="form-control" id="address" name="address" disabled></textarea>                      
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="member_ship_type" class="col-form-label">ประเภทสมาชิก:</label>
+                            <input type="text" class="form-control" id="member_ship_type" name="member_ship_type" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="entry_times" class="col-form-label">ครั้งที่เข้าประมูล:</label>
+                            <input type="text" class="form-control" id="entry_times" name="entry_times" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_place" class="col-form-label">สถานที่จอด:</label>
+                            <input type="text" class="form-control" id="car_place" name="car_place" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="re_mark" class="col-form-label">หมายเหตุ:</label>
+                            <textarea name="re_mark" id="re_mark" class="form-control" disabled></textarea>                            
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="tax_player_number" class="col-form-label">หมายเลขประจำตัวผู้เสียภาษี: <span style="color:red"> * </span></label>
+                            <input type="text" class="form-control" id="tax_player_number" name="tax_player_number" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="car_transfer" class="col-form-label">โอนย้าย:</label>
+                            <input type="text" class="form-control" id="car_transfer" name="car_transfer" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="description" class="col-form-label">รายละเอียด:</label>
+                            <input type="text" class="form-control" id="description" name="description" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="date_receive" class="col-form-label">วันที่รับเล่ม: <span style="color:red"> * </span></label>
+                            <input type="text" class="form-control" id="date_receive" name="date_receive" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="date_sending" class="col-form-label">วันที่ส่ง: <span style="color:red"> * </span></label>
+                            <input type="text" class="form-control" id="date_sending" name="date_sending" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="date_receive_trans" class="col-form-label">วันที่รับเล่มจากขนส่ง: <span style="color:red"> * </span></label>
+                            <input type="text" class="form-control" id="date_receive_trans" name="date_receive_trans" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="delivery_type" class="col-form-label">ประเภทการส่งเล่ม: <span style="color:red"> * </span></label>
+                            <input type="text" class="form-control" id="delivery_type" name="delivery_type" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="document_numbers" class="col-form-label">หมายเลขเอกสาร: <span style="color:red"> * </span></label>
+                            <input type="text" class="form-control" id="document_numbers" name="document_numbers" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="date" class="col-form-label">วันที่: <span style="color:red"> * </span></label>
+                            <input type="text" class="form-control" id="date" name="date" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="ems_code" class="col-form-label">หมายเลขพัสดุ (EMS): <span style="color:red"> * </span></label>
+                            <input type="text" class="form-control" id="ems_code" name="ems_code" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="date_sending_book" class="col-form-label">วันที่ส่งเล่ม: <span style="color:red"> * </span></label>
+                            <input type="text" class="form-control" id="date_sending_book" name="date_sending_book" disabled>
+                        </div>                        
+                        <div class="col-md-3 form-group">
+                            <label for="address_sending_book" class="col-form-label">ที่อยู่ในการส่งเล่ม (ใหม่): <span style="color:red"> * </span></label>
+                            <textarea name="" class="form-control" id="address_sending_book" name="address_sending_book"disabled ></textarea>
+                        </div>                        
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary modal-close">ปิด</button>
-                <button type="button" class="btn btn-primary btn-save">บันทึกข้อมูล</button>
+                <button type="button" class="btn btn-secondary" id="closeBtn">ปิด</button>
             </div>
         </div>
     </div>
@@ -172,3 +350,30 @@
 
 <script src="/assets/jquery/jquery.min.js"></script>
 <script src="/js/get_datatable.js"></script>
+<script>
+    function toggleFields() {
+        var deliveryMethod = document.getElementById("delivery-method");
+        var postalCodeSection = document.getElementById("postal-code-section");
+        var datePostSection = document.getElementById("date-post-section");
+
+        var documentNumber = document.getElementById("document_number");
+        var dateOfReceiving = document.getElementById("date-of-receiving");
+
+        if (deliveryMethod.value == "รับเอง") {
+            documentNumber.style.display = "block";
+            datePostSection.style.display = "block";
+            postalCodeSection.style.display = "none";
+            dateOfReceiving.style.display = "none";
+        } else if(deliveryMethod.value == "ไปรษณีย์"){
+            postalCodeSection.style.display = "block";
+            dateOfReceiving.style.display = "block";
+            documentNumber.style.display = "none";
+            datePostSection.style.display = "none";
+        }else {
+            documentNumber.style.display = "none";
+            datePostSection.style.display = "none";
+            postalCodeSection.style.display = "none";
+            dateOfReceiving.style.display = "none";
+        }
+    }
+</script>

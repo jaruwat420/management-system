@@ -302,6 +302,12 @@ const MasterData = sequelize.define('masterdata', {
         field: 'flag',
         defaultValue: '',
         allowNull: true,
+    },
+    delivery_type: {
+        type: DataTypes.STRING,
+        field: 'delivery_type',
+        defaultValue: '',
+        allowNull: true,
     }
 }, {
     timestamps: false,

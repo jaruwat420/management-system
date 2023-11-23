@@ -41,7 +41,63 @@
     width: 100px; /* Adjust the width of the second column */
 }
 
-    /* Add more rules for other columns as needed */
+.hidden {
+    display: none;
+}
+
+#depositTable {
+    width: 100%; 
+}
+
+#depositTable th, #depositTable td {
+    text-align: center; 
+}
+
+#depositTable thead th {
+    background-color: #e0e0e0;
+}
+
+#depositTable tbody tr:hover {
+    background-color: #e0e0e0; 
+}
+
+#depositTable tbody td {
+    padding: 8px; 
+}
+
+#myTable {
+    width: 100%; 
+}
+
+#myTable th, #myTable td {
+    text-align: center; 
+}
+
+#myTable thead th {
+    background-color: #f8f9fa;
+}
+
+#myTable tbody tr:hover {
+    background-color: #e0e0e0; 
+}
+
+#myTable tbody td {
+    padding: 8px; 
+}
+
+#myTable_paginate {
+    font-size: 14px; /* ปรับขนาดตัวอักษรของ pagination */
+}
+
+.blink {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
 
 
 
