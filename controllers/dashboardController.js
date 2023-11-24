@@ -1,13 +1,9 @@
-import {
-    response
-} from "express";
+import {response} from "express";
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
 import Users from "../models/user.model.js"
-import {
-    pool
-} from "../db.js";
+import {pool} from "../db.js";
 import xlsx from "xlsx";
 import multer from 'multer';
 import MasterData from "../models/masterdata.model.js";
@@ -37,72 +33,22 @@ export const renderManagement = async (req, res) => {
 //----------------------------------render Management------------------------------------//
 export const getManagement = async (req, res) => {
     try {
-        const data = await MasterData.findAll({
-            attributes: [
-                'id',
-                'finance',
-                'tax_invoice',
-                'code',
-                'contact_number',
-                'license',
-                'province',
-                'tank_code',
-                'engine_code',
-                'color',
-                'year',
-                'mile',
-                'brand',
-                'model',
-                'grade',
-                'no_auc',
-                'no_cut',
-                'good_machine',
-                'date',
-                'estimate',
-                'approved_price',
-                'price_end',
-                'price_run',
-                'price_finish',
-                'diff_price_finish',
-                'tax_number',
-                'auction_name',
-                'address',
-                'status',
-                'entry_times',
-                'place',
-                're_mark',
-                'taxpayer_number',
-                'transfer',
-                'description',
-                'new_address',
-                'date_of_receiving',
-                'date_of_sending',
-                'date_receiving_trans',
-                'flag',
-                'history',
-                'date_customer_receives',
-                'delivery_type',
-                'receipt_number',
-                'ems_code',
-                'date_sending_ems',
-            ]
-        });
-
+        const data = await MasterData.findAll({});
         const processedData = data.map(item => {
             const flag = item.flag;
             //console.log(flag);
 
             let html = '';
             if (flag === 'R') {
-                html += '<span class="btn-sm blink" style="color: green;">พร้อมส่งเล่มทะเบียน</span>';
+                html += '<span class="btn-sm blink" style="color: #FF6C22 ;">พร้อมส่งเล่มทะเบียน</span>';
             } else if (flag === 'S') {
-                html += '<span class="btn-sm blink" style="color: red;">รอโอนเล่มจากขนส่ง</span>';
+                html += '<span class="btn-sm" style="color: red;">รอโอนเล่มจากขนส่ง</span>';
             } else if (flag === 'T') {
-                html += '<span class="btn-sm blink" style="color: green;">พร้อมส่งเล่มทะเบียน</span>';
+                html += '<span class="btn-sm blink" style="color: blue;">พร้อมส่งเล่มทะเบียน</span>';
             } else if (flag === 'C') {
-                html += '<span class="btn-sm blink" style="color: green;">พร้อมส่งเล่มทะเบียน</span>';
+                html += '<span class="btn-sm " style="color: green;">ส่งเล่มทะเบียนเรียบร้อยแล้ว</span>';
             } else {
-                html += '<span class="btn-sm blink" style="color: blue;">รอรับเล่มทะเบียน</span>';
+                html += '<span class="btn-sm" style="color:  #FF6C22;">รอรับเล่มทะเบียน</span>';
             }
 
             return {
@@ -167,11 +113,10 @@ export const getManagement = async (req, res) => {
     }
 };
 
-// Update
+// Update Management
 export const editManagement = async (req, res) => {
     // Session Login
     const userFirstName = req.session.user.firstname;
-    //console.log(req.body);
     const {
         carId,
         name,
@@ -181,7 +126,6 @@ export const editManagement = async (req, res) => {
         dateReceive,
         dateSending,
         dateReceiveTrans,
-        dateCustomerReceive,
         flag,
         documentNumber,
         datePost,
@@ -195,7 +139,6 @@ export const editManagement = async (req, res) => {
             date_of_receiving: dateReceive,
             date_of_sending: dateSending,
             date_receiving_trans: dateReceiveTrans,
-            date_customer_receives: dateCustomerReceive,
             new_address: newAddress,
             history: userFirstName,
             flag: flag,
@@ -215,7 +158,7 @@ export const editManagement = async (req, res) => {
     }
 
 }
-
+// Render Deposit
 export const renderDeposit = async (req, res) => {
     res.render('deposit', {
         layout: "admin",
@@ -233,6 +176,7 @@ export const getDataTable = async (req, res) => {
 
 //Create
 export const getCreate = async (req, res) => {
+    const userFirstName = req.session.user.firstname;
     const {
         selectedType,
         fullDate,
@@ -276,6 +220,7 @@ export const getCreate = async (req, res) => {
             date_send_ems: date_send_ems,
             address: address,
             re_mark: re_mark,
+            edit_by: userFirstName,
         })
         res.status(201).send({message: "เพิ่มข้อมูลสำเร็จ", status: 201});
     } catch (error) {
@@ -306,7 +251,6 @@ export const updateDeposit = async (req, res) => {
         address,
         re_mark
     } = req.body;
-    //console.log(req.body);
     try {
         const updateData = await Deposit.update({
             type: type,

@@ -2,6 +2,32 @@
 $(document).ready(function () {
     get_dataTable();
 
+    function toggleFields() {
+        var deliveryMethod = document.getElementById("delivery-method");
+        var postalCodeSection = document.getElementById("postal-code-section");
+        var datePostSection = document.getElementById("date-post-section");
+
+        var documentNumber = document.getElementById("document_number");
+        var dateOfReceiving = document.getElementById("date-of-receiving");
+
+        if (deliveryMethod.value == "รับเอง") {
+            documentNumber.style.display = "block";
+            datePostSection.style.display = "block";
+            postalCodeSection.style.display = "none";
+            dateOfReceiving.style.display = "none";
+        } else if(deliveryMethod.value == "ไปรษณีย์"){
+            postalCodeSection.style.display = "block";
+            dateOfReceiving.style.display = "block";
+            documentNumber.style.display = "none";
+            datePostSection.style.display = "none";
+        }else {
+            documentNumber.style.display = "none";
+            datePostSection.style.display = "none";
+            postalCodeSection.style.display = "none";
+            dateOfReceiving.style.display = "none";
+        }
+    }
+
     //Modals
     $('#addBtn').click(function (e) {
         $('#addFileModal').modal('show');
@@ -58,12 +84,37 @@ $(document).ready(function () {
 
     // Get_DataTable
     function get_dataTable() {
-        DataTable = $('#myTable').DataTable({
+            DataTable = $('#myTable').DataTable({
             serverSide: false,
             dom: 'Bfrtip',
             buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+                'csv', {
+                    extend: 'excel',
+                    text: 'Export to Excel',
+                    title: 'Your Excel Export File Name',
+                    filename: 'exported_data',
+                    sheetName: 'Sheet 1'
+                }, {
+                    extend: 'pdf',
+                    text: 'Export to PDF',
+                    title: 'Your PDF Export File Name',
+                    filename: 'exported_data',
+                    customize: function (doc) {
+                        // กำหนดฟอนต์ที่รองรับภาษาไทย
+                        doc.defaultStyle.font = 'THSarabun, Arial, sans-serif';
+                        
+                        // กำหนดรูปแบบข้อความ (ตัวอักษร)
+                        doc.styles.tableBodyEven.font = 'THSarabun';
+                        doc.styles.tableBodyOdd.font = 'THSarabun';
+                        
+                        // กำหนดรูปแบบข้อความ (หัวเรื่อง)
+                        doc.styles.tableHeader.font = 'THSarabun';
+                    }
+                }, 'print'
             ],
+            "order": [[ 0, "desc" ]],
+            "ordering": true,
+            "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
             ajax: {
                 url: '/dashboard/get_management',
                 dataSrc: 'data'
@@ -78,10 +129,10 @@ $(document).ready(function () {
                     }
                 },
                 { data: 'license' },
-                { data: 'province' },
                 { data: 'tank_code' },
                 { data: 'brand' },
                 { data: 'model' },
+                { data: 'province' },
                 { data: 'auction_name' },
                 { data: 'html' },
                 { data: 'delivery_type' },
@@ -106,8 +157,8 @@ $(document).ready(function () {
     });
 
     // close Modal
-    $('.modal-close').click(function (e) {
-        $('#editModal').modal('hide')
+    $('#BtnCloseModal').click(function (e) {
+        $('#editModalNew').modal('hide')
 
     });
     let rowData;
@@ -120,9 +171,8 @@ $(document).ready(function () {
 
     // edit
     $('#myTable').on('click', '.btn-edit', function () {
-        $('#editModal').modal('show');
+        $('#editModalNew').modal('show');
         carId = $(this).data('id');
-
         $('#auction_name').val(rowData.auction_name);
         $('#address-sending').val(rowData.address);
         $('#address-new-text').val(rowData.new_address);
@@ -130,67 +180,72 @@ $(document).ready(function () {
         $('#date-receive').val(rowData.date_of_receiving);
         $('#date-receive-transport').val(rowData.date_receiving_trans);
         $('#date-sending-transport').val(rowData.date_of_sending);
-        $('#date-customer-receive').val(rowData.date_customer_receives);
+        // $('#date-customer-receive').val(rowData.date_customer_receives);
         $('#documentNumber').val(rowData.receipt_number);
-        $('#date-post').val(rowData.date_customer_receives);        
-        $('#delivery-method').val(rowData.delivery_type);
+        $('#date-post').val(rowData.date_customer_receives);   
+        
+        if (rowData.delivery_type == "") {
+            const defaultDeliveryType = "เลือก";
+            $('#delivery-method').val(defaultDeliveryType);
+        }else{
+            $('#delivery-method').val(rowData.delivery_type);
+        }   
+        // Reload Select Option function
+        toggleFields();
         $('#delivery-method option[value="' + rowData.delivery_type + '"]').prop('selected', true);    
         $('#postal-code').val(rowData.ems_code);
         $('#date-receiving').val(rowData.date_sending_ems);
 
     });
 
-    // view
+    // Button View
     $('#myTable').on('click', '.btn-view', function () {
         $('#viewModal').modal('show');
         carId = $(this).data('id');
 
-        $('#finance_name').val(rowData.finance);
-        $('#tax_invoice').val(rowData.tax_invoice);
-        $('#car_code').val(rowData.code);
-        $('#contact_number').val(rowData.contact_number);
-        $('#car_brand').val(rowData.brand);
-        $('#car_model').val(rowData.model);
-        $('#car_tank_number').val(rowData.tank_code);
-        $('#car_engine_number').val(rowData.engine_code);
-        $('#car_color').val(rowData.color);
-        $('#car_year').val(rowData.year);
-        $('#car_mile').val(rowData.mile);
-        $('#car_license').val(rowData.license);
-        $('#car_province').val(rowData.province);
-        $('#car_grade').val(rowData.grade);
-        $('#car_gear').val(rowData.no_auc);
-        $('#car_auction_sign').val(rowData.no_cut);
-        $('#car_engine_good').val(rowData.good_machine);
-        $('#car_date').val(rowData.date);
-        $('#car_estimate').val(rowData.estimate);
-        $('#approved_price').val(rowData.approved_price);
-        $('#price_end').val(rowData.price_end);
-        $('#price_run').val(rowData.price_run);
-        $('#price_finish').val(rowData.price_finish);
-        $('#price_diff').val(rowData.diff_price_finish);
-        $('#tax_number').val(rowData.tax_number);
-        $('#auction_names').val(rowData.auction_name);
-        $('#address').val(rowData.address);
-        $('#member_ship_type').val(rowData.status);
-        $('#entry_times').val(rowData.entry_times);
-        $('#car_place').val(rowData.place);
-        $('#re_mark').val(rowData.re_mark);
-        $('#tax_player_number').val(rowData.taxpayer_number);
-        $('#car_transfer').val(rowData.transfer);
-        $('#description').val(rowData.description);
-        $('#date_receive').val(rowData.date_of_receiving);
-        $('#date_sending').val(rowData.date_of_sending);
-        $('#date_receive_trans').val(rowData.date_receiving_trans);
-        $('#delivery_type').val(rowData.delivery_type);
-        $('#document_numbers').val(rowData.receipt_number);
-        $('#date').val(rowData.date_customer_receives);
-        $('#ems_code').val(rowData.ems_code);
-        $('#date_sending_book').val(rowData.date_sending_ems);
-        $('#address_sending_book').val(rowData.new_address);
-
-
-
+        $('#ViewCustomer_Finance_Name').text(rowData.finance);
+        $('#ViewCustomer_Tax_Invoice').text(rowData.tax_invoice);
+        $('#ViewCustomer_Car_Code').text(rowData.code);
+        $('#ViewCustomer_Contact_Number').text(rowData.contact_number);
+        $('#ViewCustomer_Car_Brand').text(rowData.brand);
+        $('#ViewCustomer_Car_Model').text(rowData.model);
+        $('#ViewCustomer_Car_Tank_Number').text(rowData.tank_code);
+        $('#ViewCustomer_Car_Engine_Number').text(rowData.engine_code);
+        $('#ViewCustomer_Car_Color').text(rowData.color);
+        $('#ViewCustomer_Car_Year').text(rowData.year);
+        $('#ViewCustomer_Car_Mile').text(rowData.mile);
+        $('#ViewCustomer_Car_License').text(rowData.license);
+        $('#ViewCustomer_Car_Province').text(rowData.province);
+        $('#ViewCustomer_Car_Grade').text(rowData.grade);
+        $('#ViewCustomer_Car_Gear').text(rowData.no_auc);
+        $('#ViewCustomer_Car_Auction_Sign').text(rowData.no_cut);
+        $('#ViewCustomer_Engine_Good').text(rowData.good_machine);
+        $('#ViewCustomer_Car_Date').text(rowData.date);
+        $('#ViewCustomer_Car_Estimate').text(rowData.estimate);
+        $('#ViewCustomer_Approve_Price').text(rowData.approved_price);
+        $('#ViewCustomer_Price_End').text(rowData.price_end);
+        $('#ViewCustomer_Price_Run').text(rowData.price_run);
+        $('#ViewCustomer_Price_Finish').text(rowData.price_finish);
+        $('#ViewCustomer_Price_Diff').text(rowData.diff_price_finish);
+        $('#ViewCustomer_Tax_Number').text(rowData.tax_number);
+        $('#ViewCustomer_Auction_Name').text(rowData.auction_name);
+        $('#ViewCustomer_Address').text(rowData.address);
+        $('#ViewCustomer_Member_Type').text(rowData.status);
+        $('#ViewCustomer_Entry_Time').text(rowData.entry_times);
+        $('#ViewCustomer_Car_Place').text(rowData.place);
+        $('#ViewCustomer_Remark').text(rowData.re_mark);
+        $('#ViewCustomer_Member_Tax_Player_Number').text(rowData.taxpayer_number);
+        $('#ViewCustomer_Car_Transfer').text(rowData.transfer);
+        $('#ViewCustomer_Description').text(rowData.description);
+        $('#ViewCustomer_Date_Receive').text(rowData.date_of_receiving);
+        $('#ViewCustomer_Date_Sending').text(rowData.date_of_sending);
+        $('#ViewCustomer_Date_Receive_Transfer').text(rowData.date_receiving_trans);
+        $('#ViewCustomer_Delivery_Type').text(rowData.delivery_type);
+        $('#ViewCustomer_Document_Number').text(rowData.receipt_number);
+        $('#ViewCustomer_Date').text(rowData.date_customer_receives);
+        $('#ViewCustomer_Ems_Code').text(rowData.ems_code);
+        $('#ViewCustomer_Date_Sending_Book').text(rowData.date_sending_ems);
+        $('#ViewCustomer_Address_Sending_Book').text(rowData.new_address);
 
     });
     
@@ -205,7 +260,7 @@ $(document).ready(function () {
 
 
     // update
-    $('.btn-save').click(function (e) {
+    $('#BtnSaveModal').click(function (e) {
         const name = $('#auction_name').val();
         const address = $('#address-sending').val();
         const newAddress = $('#address-new-text').val();
@@ -213,7 +268,7 @@ $(document).ready(function () {
         const dateReceive = $('#date-receive').val();
         const dateSending = $('#date-sending-transport').val();
         const dateReceiveTrans = $('#date-receive-transport').val();
-        const dateCustomerReceive = $('#date-customer-receive').val();
+        // const dateCustomerReceive = $('#date-customer-receive').val();
         const documentNumber = $('#documentNumber').val();
         const datePost = $('#date-post').val();
         const postalCode = $('#postal-code').val();
@@ -238,7 +293,7 @@ $(document).ready(function () {
         if (dateReceiveTrans) {
             flag = 'T';
         }
-        if (dateCustomerReceive) {
+        if (datePost) {
             flag = 'C';
         }
 
@@ -251,7 +306,6 @@ $(document).ready(function () {
             dateReceive: dateReceive,
             dateSending: dateSending,
             dateReceiveTrans: dateReceiveTrans,
-            dateCustomerReceive: dateCustomerReceive,
             flag: flag,
             documentNumber: documentNumber,
             datePost: datePost,
@@ -268,13 +322,14 @@ $(document).ready(function () {
                 if (res.status === 201) {
                     Swal.fire('สำเร็จ!', `${res.message}`, 'success');
                 }
-                $('#editModal').modal('hide');
+                $('#editModalNew').modal('hide');
 
                 // Reload dataTable
                 get_dataTable();
             }
         });
     });
+
     //Date
     const dateInput = document.getElementById('date-receive'); 
     dateInput.addEventListener('change', (e)=>{

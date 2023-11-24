@@ -106,6 +106,7 @@ $(document).ready(function () {
                 { data: 'return_agent' },
                 { data: 'receive_book_cu' },
                 { data: 'date_customer_receive' },
+                { data: 'edit_by' },
                 {
                     data: null, render: function (data, type, row) {
                         return `<button class="btn btn-warning btn-edit" data-id="${data.id}"><i class="fas fa-edit"></i></button>`;
@@ -113,7 +114,7 @@ $(document).ready(function () {
                 },
                 {
                     data: null, render: function (data, type, row) {
-                        return `<button class="btn btn-primary btn-view" data-id="${data.id}"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+                        return `<button class="btn btn-primary" id="btn-view" "data-id="${data.id}"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
                     }
                 }
             ]
@@ -200,9 +201,37 @@ $(document).ready(function () {
 
     // close Modal Edit
     $('#closeEditModalBtn').click(function (e) { 
-        $('#depositEditModal').modal('hide');
-        
+        $('#depositEditModal').modal('hide');        
     });
 
+    // View Modal
+    $('#depositTable').on('click', '#btn-view', function(){
+        $('#depositViewModal').modal('show');
+        $('#ViewCustomer_CarType').text(rowData.type);
+        $('#ViewCustomer_Date').text(rowData.date);
+        $('#ViewCustomer_Name').text(rowData.fullname);
+        $('#ViewCustomer_Transfer_Name').text(rowData.transfer_name);
+        $('#ViewCustomer_Engine_Number').text(rowData.engine_number);
+        $('#ViewCustomer_Color').text(rowData.color);
+        $('#ViewCustomer_Car_License').text(rowData.license);
+        $('#ViewCustomer_Car_Province').text(rowData.province);
+        $('#ViewCustomer_Transfer_In').text(rowData.transfer_in);
+        $('#ViewCustomer_Transfer_Price').text(rowData.transfer_price);
+        $('#ViewCustomer_Receive_Book').text(rowData.receive_book_sik);
+        $('#ViewCustomer_Send_Agent').text(rowData.send_agent);
+        $('#ViewCustomer_Return_Agent').text(rowData.return_agent);
+        $('#ViewCustomer_Return_Book_CU').text(rowData.receive_book_cu);
+        $('#ViewCustomer_Date_Receive_Book').text(rowData.date_customer_receive);
+        $('#ViewCustomer_Address_Ems').text(rowData.address_ems);
+        $('#ViewCustomer_Date_Send_Ems').text(rowData.date_send_ems);
+        $('#ViewCustomer_Address').text(rowData.address);
+        $('#ViewCustomer_Remark').text(rowData.re_mark);
+    });
+
+    // Close modal View
+    $('#Btn_Close_view_Modal').click(function (e) { 
+        $('#depositViewModal').modal('hide');      
+        
+    });
 
 });

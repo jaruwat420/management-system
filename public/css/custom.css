@@ -1,3 +1,10 @@
+body {
+    font-family: sans-serif;
+    color: #333;
+    padding: 0;
+    margin: 0;
+}
+
 .table_post  {
     width: 700px;
 }
@@ -5,88 +12,6 @@
 .genric-btn.selected {
     background-color: #ffba00;
     color: white;
-}
-/* .list {
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
-}
-
-.list li {
-    list-style: none;
-    text-align: center;
-}
-
-.list li img {
-    width: 125px; 
-    height: auto; 
-} */
-
-#myTable {
-    width: 20%; /* Set the width of the table to 100% */
-}
-
-#myTable th, #myTable td {
-    white-space: nowrap; /* Prevent text wrapping */
-}
-
-/* Set specific column widths */
-#myTable th:nth-child(1),
-#myTable td:nth-child(1) {
-    width: 50px; /* Adjust the width of the first column */
-}
-
-#myTable th:nth-child(2),
-#myTable td:nth-child(2) {
-    width: 100px; /* Adjust the width of the second column */
-}
-
-.hidden {
-    display: none;
-}
-
-#depositTable {
-    width: 100%; 
-}
-
-#depositTable th, #depositTable td {
-    text-align: center; 
-}
-
-#depositTable thead th {
-    background-color: #e0e0e0;
-}
-
-#depositTable tbody tr:hover {
-    background-color: #e0e0e0; 
-}
-
-#depositTable tbody td {
-    padding: 8px; 
-}
-
-#myTable {
-    width: 100%; 
-}
-
-#myTable th, #myTable td {
-    text-align: center; 
-}
-
-#myTable thead th {
-    background-color: #f8f9fa;
-}
-
-#myTable tbody tr:hover {
-    background-color: #e0e0e0; 
-}
-
-#myTable tbody td {
-    padding: 8px; 
-}
-
-#myTable_paginate {
-    font-size: 14px; /* ปรับขนาดตัวอักษรของ pagination */
 }
 
 .blink {
@@ -99,5 +24,16 @@
     }
 }
 
+.container, .container-fluid{
+    padding: 0rem;
+}
+
+.card-body {
+    padding-left: 0px;
+}
+
+.bold-text {
+    font-weight: bold;
+}
 
 

@@ -63,8 +63,8 @@ const uploadXLSX = async (req, res, next) => {
         for (const sheet of sheetData) {
             // console.log(`Processing Sheet Index: ${sheet.sheetIndex}`);
             // console.log('Header:', sheet.header);
-            // console.log('Body:', sheet.body);
-            // console.log('-----------------------------');
+            //console.log('Body:', sheet.body);
+            //console.log('-----------------------------');
 
 
             const rowData = sheet.body.map((row) =>
@@ -81,12 +81,11 @@ const uploadXLSX = async (req, res, next) => {
 
             for (const data of rowData) {
                 //console.log('Processing data:', data);
-
                 try {
 
                     //format Date
                     const formattedDate = moment(data.DATE).format('YYYY-MM-DD');
-                    console.log(formattedDate);
+                    //console.log(formattedDate);
 
                     let savedData = await MasterData.create({
                         finance: data.FN,

@@ -4,7 +4,8 @@
         <button class="btn btn-success" id="addBtn">เพิ่มข้อมูล</button>
     </div>
     <div class="card-body">
-        <table id="depositTable" class="table table-striped display">
+        <div class="table-responsive main_tbl_chk" style="max-height: 500px;">
+        <table id="depositTable" class="table table-bordered display nowrap">
             <thead>
                 <tr>
                     <th>No</th>
@@ -23,27 +24,16 @@
                     <th>ตัวแทนส่งคืน</th>
                     <th>CU รับเล่ม</th>
                     <th>วันที่ลูกค้ารับเล่ม</th>                    
+                    <th>แก้ไขโดย</th>                    
                     <th>แก้ไข</th>
                     <th>ดู</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+            <tbody>                
             </tbody>
         </table>
     </div>
+</div>
 </div>
 
 {{!-- modal add --}}
@@ -74,7 +64,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="deposit_book" class="col-form-label">โอน/คัดเล่มเป็นชื่อ-นามสกุล</label>
-                            <input type="text" class="form-control" id="deposit_book" name="engine_number">
+                            <input type="text" class="form-control" id="deposit_book" name="deposit_book">
                         </div>
                         <div class="col-md-6">
                             <label for="engine_number" class="col-form-label">เลขเครื่อง</label>
@@ -248,5 +238,100 @@
     </div>
 </div>
 
+{{!-- modal_view --}}
+<div class="modal fade" id="depositViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">รายละเอียด</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label>ประเภท :</label>
+                            <span class="ml-2" id="ViewCustomer_CarType"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>วัน/เดือน/ปี :</label>
+                            <span class="ml-2" id="ViewCustomer_Date"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>ชื่อ-นามสกุล :</label>
+                            <span class="ml-2" id="ViewCustomer_Name"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>โอน/คัดเล่มเป็นชื่อ-นามสกุล :</label>
+                            <span class="ml-2" id="ViewCustomer_Transfer_Name"></span>                            
+                        </div>
+                        <div class="col-lg-6">
+                            <label>เลขเครื่อง :</label>
+                            <span class="ml-2" id="ViewCustomer_Engine_Number"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>สี :</label>
+                            <span class="ml-2" id="ViewCustomer_Color"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>ทะเบียน :</label>
+                            <span class="ml-2" id="ViewCustomer_Car_License"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>จังหวัด :</label>
+                            <span class="ml-2" id="ViewCustomer_Car_Province"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>โอนเข้า :</label>
+                            <span class="ml-2" id="ViewCustomer_Transfer_In"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>ราคาค่าโอน :</label>
+                            <span class="ml-2" id="ViewCustomer_Transfer_Price"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>รับเล่ม SIK :</label>
+                            <span class="ml-2" id="ViewCustomer_Receive_Book"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>ส่งตัวแทน :</label>
+                            <span class="ml-2" id="ViewCustomer_Send_Agent"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>ตัวแทนส่งคืน :</label>
+                            <span class="ml-2" id="ViewCustomer_Return_Agent"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>CU รับเล่ม :</label>
+                            <span class="ml-2" id="ViewCustomer_Return_Book_CU"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>วัน/เดือน/ปี ลูกค้ารับเล่ม :</label>
+                            <span class="ml-2" id="ViewCustomer_Date_Receive_Book"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>ที่อยู่ EMS :</label>
+                            <span class="ml-2" id="ViewCustomer_Address_Ems"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>วันที่ส่ง EMS :</label>
+                            <span class="ml-2" id="ViewCustomer_Date_Send_Ems"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>ที่อยู่ :</label>
+                            <span class="ml-2" id="ViewCustomer_Address"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label>หมายเหตุ :</label>
+                            <span class="ml-2" id="ViewCustomer_Remark"></span>
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="Btn_Close_view_Modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/assets/jquery/jquery.min.js"></script>
 <script src="/js/deposit.js"></script>

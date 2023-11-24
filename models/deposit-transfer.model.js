@@ -135,6 +135,12 @@ const Deposit = sequelize.define('deposit', {
         field: 're_mark',
         defaultValue: '',
         allowNull: true,
+    },   
+    edit_by: {
+        type: DataTypes.STRING,
+        field: 'edit_by',
+        defaultValue: '',
+        allowNull: true,
     }  
 }, {
     timestamps: false,
