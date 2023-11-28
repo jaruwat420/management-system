@@ -125,7 +125,7 @@ const MasterData = sequelize.define('masterdata', {
         allowNull: true,
     },   
     date: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         field: 'date',
         defaultValue: null,
         allowNull: true,
@@ -244,19 +244,19 @@ const MasterData = sequelize.define('masterdata', {
         defaultValue: null,
     },
     date_of_receiving: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         field: 'date_of_receiving',
         allowNull: true,
         defaultValue: null,
     },
     date_of_sending: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         field: 'date_of_sending',
         allowNull: true,
         defaultValue: null,
     },
     date_receiving_trans: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         field: 'date_receiving_trans',
         allowNull: true,
         defaultValue: null,
@@ -268,13 +268,13 @@ const MasterData = sequelize.define('masterdata', {
         defaultValue: null, 
     },
     date_customer_receives:{
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         field: 'date_customer_receives',
         allowNull: true,
         defaultValue: null, 
     },
     date_sending_ems:{
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         field: 'date_sending_ems',
         allowNull: true,
         defaultValue: null, 
