@@ -88,8 +88,7 @@ export const getLogin = async (req, res) => {
             req.session.userId = user.user_id;
             req.session.user = {
                 id: user.user_id,
-                firstname: user.user_firstname
-                
+                firstname: user.user_firstname,                
             }
 
             res.status(201).send({message: 'เข้าสู่ระบบสำเร็จ',status: 201 });

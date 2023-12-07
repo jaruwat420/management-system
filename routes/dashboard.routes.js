@@ -11,22 +11,30 @@ import {
     renderHome,
     renderManagement,
     getManagement,
-    editManagement,
+    UpdateManagement,
     renderDeposit,
     getCreate,
     getDataTable,
-    updateDeposit
+    updateDeposit,
+    dateReceive,
+    Get_History_Log,
+    getLogHistory,
+    ajax_deposit_search,
+    ajax_deposit_history,
+    get_deposit_history,
 
 } from "../controllers/dashboardController.js";
 
 import auth from "../middleware/auth.js"
 import MasterData from "../models/masterdata.model.js";
+import LogHistory from "../models/system_log_history.modal.js";
 const router = Router();
 
 const uploadXLSX = async (req, res, next) => {
     try {
         //session login
         const userFirstName = req.session.user.firstname;
+        const userId = req.session.user.id;
         
         const path = req.file.path;
         const fileName = path;
@@ -124,12 +132,12 @@ const uploadXLSX = async (req, res, next) => {
                         taxpayer_number: data['หมายเลขผู้เสียภาษี'],
                         transfer: data['ผู้รับโอน'],
                         description: '',
-                        date_of_receiving: '',
-                        date_of_sending: '',
-                        date_receiving_trans: '',
+                        date_of_receiving: null,
+                        date_of_sending: null,
+                        date_receiving_trans: null,
                         receipt_number: '',
-                        date_customer_receives: '',
-                        date_sending_ems: '',
+                        date_customer_receives: null,
+                        date_sending_ems: null,
                         ems_code: '',
                         new_address: data['ที่อยู่1'],
                         history: userFirstName,
@@ -148,10 +156,8 @@ const uploadXLSX = async (req, res, next) => {
     }
 };
 
-// เส้นทางที่ต้องการเรียกใช้ไฟล์จาก
 const baseRoute = '/Users/caronit5/SIA/system-app/public';
 
-// สร้างเส้นทางสำหรับเก็บไฟล์อัปโหลด
 const uploadPath = path.join(baseRoute, 'uploads');
 
 var storage = multer.diskStorage({
@@ -172,10 +178,16 @@ router.get("/get_management", auth, getManagement);
 router.post("/api-file-upload/", upload.single("fileExcel"), uploadXLSX, (req, res) => {
     console.log(req.file);
 })
-router.put("/edit", auth, editManagement);
+router.put("/update", auth, UpdateManagement);
 router.get("/deposit_transfer", auth, renderDeposit);
 router.put("/create_deposit", auth, getCreate);
 router.get("/get_datatable", auth, getDataTable);
 router.put("/update_deposit", auth, updateDeposit);
+router.post("/search", auth, dateReceive)
+router.post("/history", auth, Get_History_Log)
+router.post("/get_log_history", auth, getLogHistory)
+router.put("/ajax_deposit_search", auth, ajax_deposit_search)
+router.post("/ajax_deposit_history", auth, ajax_deposit_history)
+router.post("/get_deposit_history", auth, get_deposit_history)
 
 export default router;

@@ -1,6 +1,8 @@
 import { Sequelize,DataTypes } from 'sequelize';
 import dotenv from 'dotenv'; 
+
 dotenv.config({ path: './.env'})
+
 
 // config
 const host = process.env.DATABASE_HOST;
@@ -129,6 +131,12 @@ const Deposit = sequelize.define('deposit', {
         field: 'address',
         defaultValue: '',
         allowNull: true,
+    },
+    flag_status: {
+        type: DataTypes.STRING,
+        field: 'flag_status',
+        defaultValue: '',
+        allowNull: true,
     },   
     re_mark: {
         type: DataTypes.STRING,
@@ -146,5 +154,4 @@ const Deposit = sequelize.define('deposit', {
     timestamps: false,
     tableName: 'deposit',
 });
-
 export default Deposit;

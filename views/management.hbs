@@ -4,27 +4,101 @@
         <button class="btn btn-success" id="addBtn">นำข้อมูลเข้า</button>
     </div>
     <div class="card-body">
-        <div class="table-responsive main_tbl_chk" style="max-height: 500px;">
-        <table id="myTable" class="table table-bordered display nowrap">
-            <thead>
-                <tr>
-                    <th class="nowrap">No</th>
-                    <th class="nowrap">ทะเบียน</th>
-                    <th class="nowrap">เลขตัวถัง</th>
-                    <th class="nowrap">รุ่น</th>
-                    <th class="nowrap">ยี่ห้อ</th>
-                    <th class="nowrap">จังหวัด</th>
-                    <th class="nowrap">ชื่อผู้ประมูล</th>
-                    <th class="nowrap">สถานะ</th>
-                    <th class="nowrap">ช่องทางรับเล่ม</th>
-                    <th class="nowrap">แก้ไขล่าสุด</th>
-                    <th class="nowrap">แก้ไข</th>
-                    <th class="nowrap">ดู</th>
-                </tr>
-            </thead>
-            <tbody>                
-            </tbody>
-        </table>
+        <form id="filter_data">
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn  btn-rounded btn-link px-0 font-weight-bold" type="button" data-toggle="collapse"
+                        data-target="#filter_advanced" aria-expanded="false" aria-controls="filter_advanced">
+                        <i class="fas fa-filter"></i> ค้นหา
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-end">
+                        <div class="custom-control custom-radio mr-4">
+                            <input type="radio" class="custom-control-input" name="check_input_filter"
+                                id="chk_fillter_1" value="0" onchange="filter_mode()" checked>
+                            <label class="custom-control-label" for="chk_fillter_1">แสดงทั้งหมด</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" name="check_input_filter"
+                                id="chk_fillter_2" value="1" onchange="filter_mode()">
+                            <label class="custom-control-label" for="chk_fillter_2">เลือกช่วงวันที่</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="Date_Receive">วันที่รับเล่ม</label>
+                        <input type="text" name="Date_Receive" id="Date_Receive" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="Date_Send_Trans">วันที่ส่งเล่มให้ขนส่ง</label>
+                        <input type="text" name="Date_Send_Trans" id="Date_Send_Trans" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="Date_Receive_Trans_Start">วันที่รับเล่มจากขนส่ง</label>
+                        <input type="text" name="Date_Receive_Trans_Start" id="Date_Receive_Trans_Start"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="Car_License">ทะเบียน</label>
+                        <input type="text" name="Car_License" id="Car_License" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="Auction_Name">ชื่อผู้ประมูล</label>
+                        <input type="text" name="Auction_Name" id="Auction_Name" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="Auction_Round">รอบที่ประมูล</label>
+                        <input type="text" name="Auction_Round" id="Auction_Round" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="Code_Finance">โค้ดไฟแนนซ์</label>
+                        <input type="text" name="Code_Finance" id="Code_Finance" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12 text-right">
+                    <button type="button" class="btn btn-outline-primary" id="btn-search">ค้นหา</button>
+                    <button type="button" class="btn btn-outline-danger" id="btn-clear">เคลียร์</button>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
+            <table id="myTable2" class="table table-bordered display nowrap">
+                <thead>
+                    <tr>
+                        <th class="nowrap">No</th>
+                        <th class="nowrap">ทะเบียน</th>
+                        <th class="nowrap">เลขตัวถัง</th>
+                        <th class="nowrap">รุ่น</th>
+                        <th class="nowrap">ยี่ห้อ</th>
+                        <th class="nowrap">จังหวัด</th>
+                        <th class="nowrap">ชื่อผู้ประมูล</th>
+                        <th class="nowrap">สถานะ</th>
+                        <th class="nowrap">ช่องทางรับเล่ม</th>
+                        <th class="nowrap">แก้ไขล่าสุด</th>
+                        <th class="nowrap">แก้ไข</th>
+                        <th class="nowrap">ดู</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -59,90 +133,6 @@
     </div>
 </div>
 
-<!-- Modal edit-->
-{{!-- <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูล</h5>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="auction_name" class="col-form-label">ชื่อ:</label>
-                        <input type="text" class="form-control" id="auction_name" name="auction_name" disabled>
-                    </div>
-                    <div class="mb-3">
-                        <label for="address-sending" class="col-form-label">ที่อยู่จัดส่งเล่มทะเบียน:</label>
-                        <textarea class="form-control" id="address-sending" name="address-sending" disabled></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">เพิ่มที่อยู่ใหม่</label>
-                        </div>
-                    </div>
-                    <div class="mb-3" id="newAddressSection" style="display:none;">
-                        <label for="address-new-text" class="col-form-label">ที่อยู่จัดส่งเล่มทะเบียน(ใหม่):</label>
-                        <textarea class="form-control" id="address-new-text" name="address-new-text"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">หมายเหตุ:</label>
-                        <textarea class="form-control" id="message-text" name="message-text"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="date-receive" class="col-form-label">วันที่รับเล่ม</label>
-                        <div id="display" style="color: white">Selected date:</div>
-                        <input type="date" class="form-control" id="date-receive" name="date-receive">
-                    </div>
-                    <div class="mb-3">
-                        <label for="date-sending-transport" class="col-form-label">วันที่ส่งเล่มให้ขนส่ง</label>
-                        <input type="date" class="form-control" id="date-sending-transport"
-                            name="date-sending-transport">
-                    </div>
-                    <div class="mb-3">
-                        <label for="date-receive-transport" class="col-form-label">วันที่รับเล่มจากขนส่ง</label>
-                        <input type="date" class="form-control" id="date-receive-transport"
-                            name="date-receive-transport">
-                    </div>
-                    <div class="mb-3">
-                        <label for="date-customer" class="col-form-label">วันที่ลูกค้ามารับเล่ม</label>
-                        <input type="date" class="form-control" id="date-customer-receive" name="date-customer-receive">
-                    </div>                    
-                    <div class="mb-3">
-                        <label for="date-customer-receive" class="col-form-label">วิธีจัดส่งเล่มทะเบียน</label>
-                        <select class="form-control" id="delivery-method" aria-label="Default select example" onchange="toggleFields()">
-                            <option selected>เลือก</option>
-                            <option value="รับเอง">รับเอง</option>
-                            <option value="ไปรษณีย์">ไปรษณีย์</option>
-                        </select>
-                    </div>
-                    <div class="mb-3 hidden" id="document_number">
-                        <label for="document_number" class="col-form-label">เลขที่เอกสาร</label>
-                        <input type="text" class="form-control" id="documentNumber" name="documentNumber">
-                    </div>
-                    <div class="mb-3 hidden" id="date-post-section">
-                        <label for="date-post-section" class="col-form-label">วันที่มารับเล่ม</label>
-                        <input type="date" class="form-control" id="date-post" name="date-post">
-                    </div>
-                    <div class="mb-3 hidden" id="postal-code-section">
-                        <label for="postal-code-section" class="col-form-label">เลขพัสดุ</label>
-                        <input type="text" class="form-control" id="postal-code" name="postal-code">
-                    </div>
-                    <div class="mb-3 hidden" id="date-of-receiving">
-                        <label for="date-of-receiving" class="col-form-label">วันที่</label>
-                        <input type="date" class="form-control" id="date-receiving" name="date-receiving">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary modal-close">ปิด</button>
-                <button type="button" class="btn btn-primary btn-save">บันทึกข้อมูล</button>
-            </div>
-        </div>
-    </div>
-</div> --}}
-
 {{!-- Modal New --}}
 <div class="modal fade" id="editModalNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -151,73 +141,74 @@
                 <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูล</h5>
             </div>
             <div class="modal-body">
-                    <div class="form-group row">
-                        <div class="col-lg-6">
-                            <label for="auction_name" class="col-form-label">ชื่อ</label>
-                            <input type="text" class="form-control" id="auction_name" name="auction_name" disabled>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="date-receive" class="col-form-label">วันที่รับเล่ม</label>                            
-                            <input type="date" class="form-control" id="date-receive" name="date-receive">
-                            <div id="display" style="color: white">Selected date:</div>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="date-sending-transport" class="col-form-label">วันที่ส่งเล่มให้ขนส่ง</label>
-                            <input type="date" class="form-control" id="date-sending-transport"
-                                name="date-sending-transport">
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="date-receive-transport" class="col-form-label">วันที่รับเล่มจากขนส่ง</label>
-                            <input type="date" class="form-control" id="date-receive-transport"
-                                name="date-receive-transport">
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="date-customer" class="col-form-label">วิธีจัดส่งเล่มทะเบียน</label>
-                            <select class="form-control" id="delivery-method" aria-label="Default select example" onchange="toggleFields()">
-                                <option selected>เลือก</option>
-                                <option value="รับเอง">รับเอง</option>
-                                <option value="ไปรษณีย์">ไปรษณีย์</option>
-                            </select>
-                        </div>
-                        {{!-- <div class="col-lg-6">
-                            <label for="date-customer-receive" class="col-form-label">วันที่ลูกค้ามารับเล่ม</label>
-                            <input type="date" class="form-control" id="date-customer-receive" name="date-customer-receive">
-                        </div>  --}}
-                        <div class="col-lg-6 hidden" id="document_number">
-                            <label for="document_number" class="col-form-label">เลขที่เอกสาร</label>
-                            <input type="text" class="form-control" id="documentNumber" name="documentNumber">
-                        </div>
-                        <div class="col-lg-6 hidden" id="date-post-section">
-                            <label for="date-post-section" class="col-form-label">วันที่มารับเล่ม</label>
-                            <input type="date" class="form-control" id="date-post" name="date-post">
-                        </div>
-                        <div class="col-lg-6 hidden" id="postal-code-section">
-                            <label for="postal-code-section" class="col-form-label">เลขพัสดุ</label>
-                            <input type="text" class="form-control" id="postal-code" name="postal-code">
-                        </div>
-                        <div class="col-lg-6 hidden" id="date-of-receiving">
-                            <label for="date-of-receiving" class="col-form-label">วันที่ส่งเล่มทะเบียน</label>
-                            <input type="date" class="form-control" id="date-receiving" name="date-receiving">
-                        </div>
-                        <div class="col-lg-12">
-                            <label for="address-sending" class="col-form-label">ที่อยู่จัดส่งเล่มทะเบียน:</label>
-                            <textarea class="form-control" id="address-sending" name="address-sending" disabled></textarea>
-                        </div>
-                        <div class="col-lg-12 mt-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                <label class="form-check-label" for="defaultCheck1">เพิ่มที่อยู่ใหม่</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-6" id="newAddressSection" style="display:none;">
-                            <label for="address-new-text" class="col-form-label">ที่อยู่จัดส่งเล่มทะเบียน(ใหม่):</label>
-                            <textarea class="form-control" id="address-new-text" name="address-new-text"></textarea>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="message-text" class="col-form-label">หมายเหตุ:</label>
-                            <textarea class="form-control" id="message-text" name="message-text"></textarea>
+                <div class="form-group row">
+                    <div class="col-lg-6">
+                        <label for="auction_name" class="col-form-label">ชื่อ</label>
+                        <input type="text" class="form-control" id="auction_name" name="auction_name" disabled>
+                    </div>
+                    {{!-- <div id="display" style="color: white">Selected date:</div> --}}
+                    <div class="col-lg-6">
+                        <label for="date-receive" class="col-form-label">วันที่รับเล่ม</label>
+                        <input type="date" class="form-control " id="date-receive" name="date-receive">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="date-sending-transport" class="col-form-label">วันที่ส่งเล่มให้ขนส่ง</label>
+                        <input type="date" class="form-control" id="date-sending-transport"
+                            name="date-sending-transport">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="date-receive-transport" class="col-form-label">วันที่รับเล่มจากขนส่ง</label>
+                        <input type="date" class="form-control" id="date-receive-transport"
+                            name="date-receive-transport">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="date-customer" class="col-form-label">วิธีจัดส่งเล่มทะเบียน</label>
+                        <select class="form-control" id="delivery-method" aria-label="Default select example"
+                            onchange="toggleFields()">
+                            <option selected>เลือก</option>
+                            <option value="รับเอง">รับเอง</option>
+                            <option value="ไปรษณีย์">ไปรษณีย์</option>
+                        </select>
+                    </div>
+                    {{!-- <div class="col-lg-6">
+                        <label for="date-customer-receive" class="col-form-label">วันที่ลูกค้ามารับเล่ม</label>
+                        <input type="date" class="form-control" id="date-customer-receive" name="date-customer-receive">
+                    </div> --}}
+                    <div class="col-lg-6 hidden" id="document_number">
+                        <label for="document_number" class="col-form-label">เลขที่เอกสาร</label>
+                        <input type="text" class="form-control" id="documentNumber" name="documentNumber">
+                    </div>
+                    <div class="col-lg-6 hidden" id="date-post-section">
+                        <label for="date-post-section" class="col-form-label">วันที่มารับเล่ม</label>
+                        <input type="date" class="form-control" id="date-post" name="date-post">
+                    </div>
+                    <div class="col-lg-6 hidden" id="postal-code-section">
+                        <label for="postal-code-section" class="col-form-label">เลขพัสดุ</label>
+                        <input type="text" class="form-control" id="postal-code" name="postal-code">
+                    </div>
+                    <div class="col-lg-6 hidden" id="date-of-receiving">
+                        <label for="date-of-receiving" class="col-form-label">วันที่ส่งเล่มทะเบียน</label>
+                        <input type="date" class="form-control" id="date-receiving" name="date-receiving">
+                    </div>
+                    <div class="col-lg-12">
+                        <label for="address-sending" class="col-form-label">ที่อยู่จัดส่งเล่มทะเบียน:</label>
+                        <textarea class="form-control" id="address-sending" name="address-sending" disabled></textarea>
+                    </div>
+                    <div class="col-lg-12 mt-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">เพิ่มที่อยู่ใหม่</label>
                         </div>
                     </div>
+                    <div class="col-lg-6" id="newAddressSection" style="display:none;">
+                        <label for="address-new-text" class="col-form-label">ที่อยู่จัดส่งเล่มทะเบียน(ใหม่):</label>
+                        <textarea class="form-control" id="address-new-text" name="address-new-text"></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="message-text" class="col-form-label">หมายเหตุ:</label>
+                        <textarea class="form-control" id="message-text" name="message-text"></textarea>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="BtnCloseModal">ปิด</button>
@@ -244,175 +235,210 @@
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Tax_Invoice">Tax-Invoice :</label>
                             <span class="ml-2" id="ViewCustomer_Tax_Invoice"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Code">Code :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Code"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Contact_Number">Contact number :</label>
                             <span class="ml-2" id="ViewCustomer_Contact_Number"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Brand">ยี่ห้อ :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Brand"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Model">รุ่น :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Model"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Tank_Number">เลขตัวถัง :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Tank_Number"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Engine_Number">เลขตัวเครื่อง : </label>
                             <span class="ml-2" id="ViewCustomer_Car_Engine_Number"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Color">สี :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Color"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Year">ปี :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Year"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Mile">ไมล์ :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Mile"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_License">ทะเบียน :</label>
                             <span class="ml-2" id="ViewCustomer_Car_License"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Province">จังหวัด :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Province"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Grade">เกรด :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Grade"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Gear">เกียร์ :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Gear"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Auction_Sign">ป้ายประมูล :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Auction_Sign"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Engine_Good">เครื่องดี :</label>
                             <span class="ml-2" id="ViewCustomer_Engine_Good"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Date">วันที่:</label>
                             <span class="ml-2" id="ViewCustomer_Car_Date"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Estimate">ประมาณ :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Estimate"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Approve_Price">ราคาอนุมัติ :</label>
                             <span class="ml-2" id="ViewCustomer_Approve_Price"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Price_End">ราคาจบ :</label>
                             <span class="ml-2" id="ViewCustomer_Price_End"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Price_Run">ราคาวิ่ง :</label>
                             <span class="ml-2" id="ViewCustomer_Price_Run"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Price_Finish">ราคาสิ้นสุด :</label>
                             <span class="ml-2" id="ViewCustomer_Price_Finish"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Price_Diff">ส่วนต่าง (diff) :</label>
                             <span class="ml-2" id="ViewCustomer_Price_Diff"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Tax_Number">เลขผู้เสียภาษี :</label>
                             <span class="ml-2" id="ViewCustomer_Tax_Number"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Auction_Name">ชื่อผู้ประมูล :</label>
                             <span class="ml-2" id="ViewCustomer_Auction_Name"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Address">ที่อยู่ :</label>
-                            <span class="ml-2" id="ViewCustomer_Address"></span>        
-                        </div>             
-                        <div class="col-lg-12"><hr></div>
+                            <span class="ml-2" id="ViewCustomer_Address"></span>
+                        </div>
+                        <div class="col-lg-12">
+                            <hr>
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Member_Type">ประเภทสมาชิก :</label>
                             <span class="ml-2" id="ViewCustomer_Member_Type"></span>
-                        </div>                        
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="ViewCustomer_Telephone">เบอร์โทรศัพท์ :</label>
+                            <span class="ml-2" id="ViewCustomer_Telephone"></span>
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Entry_Time">ครั้งที่เข้าประมูล :</label>
                             <span class="ml-2" id="ViewCustomer_Entry_Time"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Place">สถานที่จอด :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Place"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Remark">หมายเหตุ :</label>
-                            <span class="ml-2" id="ViewCustomer_Remark"></span>                          
-                        </div>                        
+                            <span class="ml-2" id="ViewCustomer_Remark"></span>
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Member_Tax_Player_Number">หมายเลขประจำตัวผู้เสียภาษี : </label>
                             <span class="ml-2" id="ViewCustomer_Member_Tax_Player_Number"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Transfer">โอนย้าย :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Transfer"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Description">รายละเอียด :</label>
                             <span class="ml-2" id="ViewCustomer_Description"></span>
-                        </div>                        
-                        <div class="col-lg-12"><hr></div>
+                        </div>
+                        <div class="col-lg-12">
+                            <hr>
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Date_Receive">วันที่รับเล่ม : </label>
                             <span class="ml-2" id="ViewCustomer_Date_Receive"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Date_Sending"> วันที่ส่ง : </label>
                             <span class="ml-2" id="ViewCustomer_Date_Sending"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Date_Receive_Transfer">วันที่รับเล่มจากขนส่ง: </label>
                             <span class="ml-2" id="ViewCustomer_Date_Receive_Transfer"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
-                            <label for="ViewCustomer_Delivery_Type"><span style="color: red;"> * </span> ประเภทการส่งเล่ม :</label>
+                            <label for="ViewCustomer_Delivery_Type"><span style="color: red;"> * </span>
+                                ประเภทการส่งเล่ม :</label>
                             <span class="ml-2" id="ViewCustomer_Delivery_Type"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Document_Number">หมายเลขเอกสาร : </label>
                             <span class="ml-2" id="ViewCustomer_Document_Number"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Date">วันที่: </label>
                             <span class="ml-2" id="ViewCustomer_Date"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Ems_Code">หมายเลขพัสดุ (EMS) : </label>
                             <span class="ml-2" id="ViewCustomer_Ems_Code"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
                             <label for="ViewCustomer_Date_Sending_Book">วันที่ส่งเล่ม: </label>
                             <span class="ml-2" id="ViewCustomer_Date_Sending_Book"></span>
-                        </div>                        
+                        </div>
                         <div class="col-lg-4">
-                            <label for="ViewCustomer_Address_Sending_Book"><span style="color: red;"> * </span>ที่อยู่ในการส่งเล่ม (ใหม่): </label>
+                            <label for="ViewCustomer_Address_Sending_Book"><span style="color: red;"> *
+                                </span>ที่อยู่ในการส่งเล่ม (ใหม่): </label>
                             <span class="ml-2" id="ViewCustomer_Address_Sending_Book"></span>
-                        </div>                        
+                        </div>
                     </div>
                 </form>
+                <div class="col-md-12"><hr></div>
+                <div class="col-md-6">
+                    <h5>ประวัติการแก้ไข</h5>                    
+                </div>                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
+                            <table class="table table-bordered display nowrap" id="history_data">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>                                        
+                                        <th>ประเภทรายการ</th>
+                                        <th>ประเภทการดำเนินการ</th>                                    
+                                        <th>รหัสรายการ</th>
+                                        <th>การเปลี่ยนแปลงข้อมูล</th>
+                                        <th>วันที่</th>
+                                        <th>แก้ไขล่าสุด</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="closeBtn">ปิด</button>
@@ -421,5 +447,189 @@
     </div>
 </div>
 
+{{!-- MOdal view Detail --}}
+<div class="modal fade" id="modal-view-detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 style="color: wheat;" class="modal-title" id="exampleModalLabel">ประวัติการแก้ไข</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="">วันที่รับเล่ม (เดิม):</label>
+                            </div>
+                            <div class="col-lg-6 ">
+                                <span id="Date_Receive_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่รับเล่ม (ใหม่)<span style="color: red;"> * </span> :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Date_Receive_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่ส่งโอน (เก่า):</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Date_Send_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่ส่งโอน (ใหม่)<span style="color: red;"> * </span> :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Date_Send_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่รับโอนจากขนส่ง (เดิม) :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Date_Receive_Transfer_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่รับโอนจากขนส่ง (ใหม่)<span style="color: red;"> * </span>  :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Date_Receive_Transfer_New"></span>
+                            </div>
+                            <div class="col-md-12"><hr></div>
+                            <div class="col-lg-6">
+                                <label for="">วิธีจัดส่งเล่มทะเบียน (เดิม) :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Delivery_Type_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วิธีจัดส่งเล่มทะเบียน (ใหม่)<span style="color: red;"> * </span>  :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Delivery_Type_New"></span>
+                            </div>
+                            <div class="col-md-12"><hr></div>
+                            <div class="col-lg-6">
+                                <label for="">เลขพัสดุ (เดิม) :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Postal_Code_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">เลขพัสดุ (ใหม่)<span style="color: red;"> * </span>  :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Postal_Code_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">เลขที่เอกสาร (เดิม) :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Document_Number_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">เลขที่เอกสาร (ใหม่)<span style="color: red;"> * </span>  :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Document_Number_New"></span>
+                            </div>
+                            <div class="col-md-12"><hr></div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่ส่งเล่มทะเบียน (เดิม) :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Date_Send_Book_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่ส่งเล่มทะเบียน (ใหม่)<span style="color: red;"> * </span>  :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Date_Send_Book_New"></span>
+                            </div>
+                            <div class="col-md-12"><hr></div>
+                            <div class="col-lg-6">
+                                <label for="">ที่อยู่จัดส่งเล่มทะเบียน: (เดิม) :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Address_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ที่อยู่จัดส่งเล่มทะเบียน (ใหม่)<span style="color: red;"> * </span>  :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Address_New"></span>
+                            </div>
+                            <div class="col-md-12"><hr></div>
+                            <div class="col-lg-6">
+                                <label for="">หมายเหตุ: (เดิม) :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Remark_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">หมายเหตุ (ใหม่)<span style="color: red;"> * </span>  :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Remark_New"></span>
+                            </div>
+                            <div class="col-md-12"><hr></div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่สร้าง :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Date_Create"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่แก้ไขล่าสุด :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Date_Last_Update"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">แก้ไขโดย :</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <span id="Edit_By"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-btn-view-detail">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/assets/jquery/jquery.min.js"></script>
 <script src="/js/get_datatable.js"></script>
+<script>
+
+    filter_mode();
+
+    function toggleFields() {
+        var deliveryMethod = document.getElementById("delivery-method");
+        var postalCodeSection = document.getElementById("postal-code-section");
+        var datePostSection = document.getElementById("date-post-section");
+
+        var documentNumber = document.getElementById("document_number");
+        var dateOfReceiving = document.getElementById("date-of-receiving");
+
+        if (deliveryMethod.value == "รับเอง") {
+            documentNumber.style.display = "block";
+            datePostSection.style.display = "block";
+            postalCodeSection.style.display = "none";
+            dateOfReceiving.style.display = "none";
+        } else if (deliveryMethod.value == "ไปรษณีย์") {
+            postalCodeSection.style.display = "block";
+            dateOfReceiving.style.display = "block";
+            documentNumber.style.display = "none";
+            datePostSection.style.display = "none";
+        } else {
+            documentNumber.style.display = "none";
+            datePostSection.style.display = "none";
+            postalCodeSection.style.display = "none";
+            dateOfReceiving.style.display = "none";
+        }
+    }
+
+</script>

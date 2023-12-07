@@ -1,6 +1,8 @@
 import { Sequelize,DataTypes } from 'sequelize';
 import dotenv from 'dotenv'; 
 import MasterData from './masterdata.model.js';
+import Deposit from './deposit-transfer.model.js';
+
 dotenv.config({ path: './.env'})
 
 // config
@@ -30,6 +32,18 @@ const LogHistory = sequelize.define('system_log_history', {
         defaultValue: '',
         allowNull: true,
     },
+    user_old_name: {
+        type: DataTypes.STRING,
+        field: 'user_old_name',
+        defaultValue: '',
+        allowNull: true,
+    },
+    user_new_name: {
+        type: DataTypes.STRING,
+        field: 'user_new_name',
+        defaultValue: '',
+        allowNull: true,
+    },
     action_type: {
         type: DataTypes.STRING,
         field: 'action_type',
@@ -44,13 +58,24 @@ const LogHistory = sequelize.define('system_log_history', {
     },
     change_data: {
         type: DataTypes.JSON,
-        field: 'change_date',
+        field: 'change_data',
+        defaultValue: '',
+        allowNull: true,
+    },
+    deposit_id: {
+        type: DataTypes.STRING,
+        field: 'deposit_id',
         defaultValue: '',
         allowNull: true,
     }
+    
 }, {
     timestamps: true,
     tableName: 'system_log_history',
 });
+
 LogHistory.belongsTo(MasterData, { foreignKey: 'item_id', targetKey: 'id', as: 'masterdata' });
+// LogHistory.belongsTo(Deposit, { foreignKey: 'deposit_id', targetKey: 'id', as: 'deposit' });
+
+
 export default LogHistory;

@@ -4,36 +4,110 @@
         <button class="btn btn-success" id="addBtn">เพิ่มข้อมูล</button>
     </div>
     <div class="card-body">
+        <form id="filter_data">
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn  btn-rounded btn-link px-0 font-weight-bold" type="button" data-toggle="collapse"
+                        data-target="#filter_advanced" aria-expanded="false" aria-controls="filter_advanced">
+                        <i class="fas fa-filter"></i> ค้นหา
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-end">
+                        <div class="custom-control custom-radio mr-4">
+                            <input type="radio" class="custom-control-input" name="check_input_filter"
+                                id="chk_fillter_1" value="0" onchange="filter_mode()" checked>
+                            <label class="custom-control-label" for="chk_fillter_1">แสดงทั้งหมด</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" name="check_input_filter"
+                                id="chk_fillter_2" value="1" onchange="filter_mode()">
+                            <label class="custom-control-label" for="chk_fillter_2">เลือกช่วงวันที่</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="Date_Of_Year">วันที่</label>
+                        <input type="text" name="Date_Of_Year" id="Date_Of_Year" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="Date_Send_Agent">วันที่ส่งตัวแทน</label>
+                        <input type="text" name="Date_Send_Agent" id="Date_Send_Agent" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="Date_Agent_Return">วันที่ตัวแทนส่งคืน</label>
+                        <input type="text" name="Date_Agent_Return" id="Date_Agent_Return" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="Date_Customer_Receive">วันที่ลูกค้ารับเล่ม</label>
+                        <input type="text" name="Date_Customer_Receive" id="Date_Customer_Receive" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="Car_License">ทะเบียน</label>
+                        <input type="text" name="Car_License" id="Car_License" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="Customer_Name">ชื่อ</label>
+                        <input type="text" name="Customer_Name" id="Customer_Name" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="Engine_Number">เลขเครื่อง</label>
+                        <input type="text" name="Engine_Number" id="Engine_Number" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12 text-right">
+                    <button type="button" class="btn btn-outline-primary" id="btn-search">ค้นหา</button>
+                    <button type="button" class="btn btn-outline-danger" id="btn-clear">เคลียร์</button>
+                </div>
+            </div>
+        </form>
         <div class="table-responsive main_tbl_chk" style="max-height: 500px;">
-        <table id="depositTable" class="table table-bordered display nowrap">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>ประเภท</th>
-                    <th>วันที่</th>
-                    <th>ชื่อ</th>
-                    <th>โอนคัดเล่ม/เป็นชื่อ</th>
-                    <th>เลขเครื่อง</th>
-                    <th>สี</th>
-                    <th>ทะเบียน</th>
-                    <th>จังหวัด</th>
-                    <th>โอนเข้า</th>
-                    <th>ค่าโอน</th>
-                    <th>รับเล่ม sik</th>
-                    <th>ส่งตัวแทน</th>
-                    <th>ตัวแทนส่งคืน</th>
-                    <th>CU รับเล่ม</th>
-                    <th>วันที่ลูกค้ารับเล่ม</th>                    
-                    <th>แก้ไขโดย</th>                    
-                    <th>แก้ไข</th>
-                    <th>ดู</th>
-                </tr>
-            </thead>
-            <tbody>                
-            </tbody>
-        </table>
+            <table id="tbl_deposit" class="table table-bordered display nowrap mt-3">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>ประเภท</th>
+                        <th>วันที่</th>
+                        <th>ชื่อ</th>
+                        <th>โอนคัดเล่ม/เป็นชื่อ</th>
+                        <th>เลขเครื่อง</th>
+                        <th>สี</th>
+                        <th>ทะเบียน</th>
+                        <th>จังหวัด</th>
+                        <th>โอนเข้า</th>
+                        <th>ค่าโอน</th>
+                        <th>รับเล่ม sik</th>
+                        <th>ส่งตัวแทน</th>
+                        <th>ตัวแทนส่งคืน</th>
+                        <th>CU รับเล่ม</th>
+                        <th>วันที่ลูกค้ารับเล่ม</th>
+                        <th>วันที่ลูกค้ารับเล่ม</th>
+                        <th>แก้ไขโดย</th>
+                        <th>แก้ไข</th>
+                        <th>ดู</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </div>
 
 {{!-- modal add --}}
@@ -71,8 +145,8 @@
                             <input type="text" class="form-control" id="engine_number" name="engine_number">
                         </div>
                         <div class="col-md-6">
-                            <label for="engine_number" class="col-form-label">สี</label>
-                            <input type="text" class="form-control" id="engine_number" name="engine_number">
+                            <label for="car_colors" class="col-form-label">สี</label>
+                            <input type="text" class="form-control" id="car_colors" name="car_colors">
                         </div>
                         <div class="col-md-6">
                             <label for="car_license" class="col-form-label">ทะเบียน</label>
@@ -107,12 +181,14 @@
                             <input type="text" class="form-control" id="receive_book_cu" name="receive_book_cu">
                         </div>
                         <div class="col-md-6">
-                            <label for="date_customer_receive_book" class="col-form-label">วัน/เดือน/ปี ลูกค้ารับเล่ม</label>
-                            <input type="date" class="form-control" id="date_customer_receive_book" name="date_customer_receive_book">
+                            <label for="date_customer_receive_book" class="col-form-label">วัน/เดือน/ปี
+                                ลูกค้ารับเล่ม</label>
+                            <input type="date" class="form-control" id="date_customer_receive_book"
+                                name="date_customer_receive_book">
                         </div>
                         <div class="col-md-6">
                             <label for="address_ems" class="col-form-label">ที่อยู่ EMS</label>
-                            <textarea class="form-control" id="address_ems" name="address_ems" ></textarea>
+                            <textarea class="form-control" id="address_ems" name="address_ems"></textarea>
                         </div>
                         <div class="col-md-6">
                             <label for="date_send_ems" class="col-form-label">วันที่ส่ง EMS</label>
@@ -120,13 +196,13 @@
                         </div>
                         <div class="col-md-6">
                             <label for="address" class="col-form-label">ที่อยู่</label>
-                            <textarea class="form-control" id="address" name="address" ></textarea>
+                            <textarea class="form-control" id="address" name="address"></textarea>
                         </div>
                         <div class="col-md-12">
                             <label for="re_mark" class="col-form-label">หมายเหตุ</label>
-                            <textarea class="form-control"  name="re_mark"  id="re_mark" ></textarea>
+                            <textarea class="form-control" name="re_mark" id="re_mark"></textarea>
                         </div>
-                    </div>                    
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -208,12 +284,14 @@
                             <input type="text" class="form-control" id="e_receive_book_cu" name="e_receive_book_cu">
                         </div>
                         <div class="col-md-6">
-                            <label for="e_date_customer_receive_book" class="col-form-label">วัน/เดือน/ปี ลูกค้ารับเล่ม</label>
-                            <input type="date" class="form-control" id="e_date_customer_receive_book" name="e_date_customer_receive_book">
+                            <label for="e_date_customer_receive_book" class="col-form-label">วัน/เดือน/ปี
+                                ลูกค้ารับเล่ม</label>
+                            <input type="date" class="form-control" id="e_date_customer_receive_book"
+                                name="e_date_customer_receive_book">
                         </div>
                         <div class="col-md-6">
                             <label for="e_address_ems" class="col-form-label">ที่อยู่ EMS</label>
-                            <textarea class="form-control" id="e_address_ems" name="e_address_ems" ></textarea>
+                            <textarea class="form-control" id="e_address_ems" name="e_address_ems"></textarea>
                         </div>
                         <div class="col-md-6">
                             <label for="e_date_send_ems" class="col-form-label">วันที่ส่ง EMS</label>
@@ -221,13 +299,13 @@
                         </div>
                         <div class="col-md-6">
                             <label for="e_address" class="col-form-label">ที่อยู่</label>
-                            <textarea class="form-control" id="e_address" name="e_address" ></textarea>
+                            <textarea class="form-control" id="e_address" name="e_address"></textarea>
                         </div>
                         <div class="col-md-12">
                             <label for="e_re_mark" class="col-form-label">หมายเหตุ</label>
-                            <textarea class="form-control"  name="e_re_mark"  id="e_re_mark" ></textarea>
+                            <textarea class="form-control" name="e_re_mark" id="e_re_mark"></textarea>
                         </div>
-                    </div>                    
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -262,7 +340,7 @@
                         </div>
                         <div class="col-lg-6">
                             <label>โอน/คัดเล่มเป็นชื่อ-นามสกุล :</label>
-                            <span class="ml-2" id="ViewCustomer_Transfer_Name"></span>                            
+                            <span class="ml-2" id="ViewCustomer_Transfer_Name"></span>
                         </div>
                         <div class="col-lg-6">
                             <label>เลขเครื่อง :</label>
@@ -324,11 +402,211 @@
                             <label>หมายเหตุ :</label>
                             <span class="ml-2" id="ViewCustomer_Remark"></span>
                         </div>
-                    </div>                    
+                    </div>
                 </form>
+                <div class="col-md-12">
+                    <hr>
+                </div>
+                <div class="col-md-6">
+                    <h5>ประวัติการแก้ไข</h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
+                            <table class="table table-bordered display nowrap" id="tbl_history">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ประเภทรายการ</th>
+                                        <th>ประเภทการดำเนินการ</th>
+                                        <th>การเปลี่ยนแปลงข้อมูล</th>
+                                        <th>วันที่แก้ไขล่าสุด</th>
+                                        <th>แก้ไขโดย</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="Btn_Close_view_Modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Modal view detail history --}}
+<div class="modal fade" id="modalViewHistory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 style="color: wheat;" class="modal-title" id="exampleModalLabel">ประวัติการแก้ไข</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="">ประเภท (เดิม):</label>
+                                <span class="ml-2" id="Car_Type_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ประเภท (ใหม่)<span style="color: red;"> * </span> :</label>
+                                <span class="ml-2" id="Car_Type_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วัน/เดือน/ปี (เก่า):</label>
+                                <span class="ml-2" id="Date_Of_Year_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วัน/เดือน/ปี (ใหม่)<span style="color: red;"> * </span> :</label>
+                                <span class="ml-2" id="Date_Of_Year_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ชื่อ-นามสกุล (เดิม) :</label>
+                                <span class="ml-2" id="Customner_Name_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ชื่อ-นามสกุล (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Customner_Name_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">โอน/คัดเล่มเป็นชื่อ-นามสกุล (เดิม) :</label>
+                                <span class="ml-2" id="Customer_Name_Transfer_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                               <label for="">โอน/คัดเล่มเป็นชื่อ-นามสกุล (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Customer_Name_Transfer_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">เลขเครื่อง (เดิม) :</label>
+                                <span class="ml-2" id="Engine_Number_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">เลขเครื่อง (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Engine_Number_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">สี (เดิม) :</label>
+                                <span class="ml-2" id="Car_Color_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">สี (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Car_Color_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ทะเบียน (เดิม) :</label>
+                                <span class="ml-2" id="Car_License_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ทะเบียน (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Car_License_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">จังหวัด: (เดิม) :</label>
+                                <span class="ml-2" id="Car_Province_Old"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">จังหวัด (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Car_Province_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">โอนเข้า: (เดิม) :</label>
+                                <span class="ml-2" id="Car_Transfer_In_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">โอนเข้า (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Car_Transfer_In_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ราคาค่าโอน (เดิม):</label>
+                                <span class="ml-2" id="Price_Transfer_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">ราคาค่าโอน (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Car_Transfer_In_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">รับเล่ม SIK (เดิม):</label>
+                                <span class="ml-2" id="Receive_Book_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">รับเล่ม SIK (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Receive_Book_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ส่งตัวแทน (เดิม):</label>
+                                <span class="ml-2" id="Car_Send_Agent_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">ส่งตัวแทน (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Car_Send_Agent_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ตัวแทนส่งคืน (เดิม):</label>
+                                <span class="ml-2" id="Car_Agent_Return_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">ตัวแทนส่งคืน (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Car_Agent_Return_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">CU รับเล่ม (เดิม):</label>
+                                <span class="ml-2" id="Receive_Book_Cu_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">CU รับเล่ม (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Receive_Book_Cu_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วัน/เดือน/ปี ลูกค้ารับเล่ม (เดิม):</label>
+                                <span class="ml-2" id="Date_Customer_Receive_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">วัน/เดือน/ปี ลูกค้ารับเล่ม (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Date_Customer_Receive_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ที่อยู่ EMS (เดิม):</label>
+                                <span class="ml-2" id="Address_Ems_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">ที่อยู่ EMS (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Address_Ems_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">วันที่ส่ง EMS (เดิม):</label>
+                                <span class="ml-2" id="Date_Send_Ems_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">วันที่ส่ง EMS (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Date_Send_Ems_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ที่อยู่่ (เดิม):</label>
+                                <span class="ml-2" id="Address_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">ที่อยู่่ (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Address_New"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">หมายเหตุ (เดิม):</label>
+                                <span class="ml-2" id="Remark_Old"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">หมายเหตุ (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <span class="ml-2" id="Remark_New"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close-btn-view-detail">ปิด</button>
             </div>
         </div>
     </div>

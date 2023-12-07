@@ -1,32 +1,5 @@
-
 $(document).ready(function () {
     get_dataTable();
-
-    function toggleFields() {
-        var deliveryMethod = document.getElementById("delivery-method");
-        var postalCodeSection = document.getElementById("postal-code-section");
-        var datePostSection = document.getElementById("date-post-section");
-
-        var documentNumber = document.getElementById("document_number");
-        var dateOfReceiving = document.getElementById("date-of-receiving");
-
-        if (deliveryMethod.value == "รับเอง") {
-            documentNumber.style.display = "block";
-            datePostSection.style.display = "block";
-            postalCodeSection.style.display = "none";
-            dateOfReceiving.style.display = "none";
-        } else if(deliveryMethod.value == "ไปรษณีย์"){
-            postalCodeSection.style.display = "block";
-            dateOfReceiving.style.display = "block";
-            documentNumber.style.display = "none";
-            datePostSection.style.display = "none";
-        }else {
-            documentNumber.style.display = "none";
-            datePostSection.style.display = "none";
-            postalCodeSection.style.display = "none";
-            dateOfReceiving.style.display = "none";
-        }
-    }
 
     //Modals
     $('#addBtn').click(function (e) {
@@ -63,7 +36,7 @@ $(document).ready(function () {
             type: 'POST',
             success: function (res) {
                 if (res.status === 201) {
-                    Swal.fire('สำเร็จ!', `${res.message}`, 'success');    
+                    Swal.fire('สำเร็จ!', `${res.message}`, 'success');
                 }
                 //close modal file
                 $('#addFileModal').modal('hide');
@@ -84,7 +57,7 @@ $(document).ready(function () {
 
     // Get_DataTable
     function get_dataTable() {
-            DataTable = $('#myTable').DataTable({
+        DataTableResult = $('#myTable2').DataTable({
             serverSide: false,
             dom: 'Bfrtip',
             buttons: [
@@ -100,60 +73,64 @@ $(document).ready(function () {
                     title: 'Your PDF Export File Name',
                     filename: 'exported_data',
                     customize: function (doc) {
-                        // กำหนดฟอนต์ที่รองรับภาษาไทย
+
                         doc.defaultStyle.font = 'THSarabun, Arial, sans-serif';
-                        
-                        // กำหนดรูปแบบข้อความ (ตัวอักษร)
                         doc.styles.tableBodyEven.font = 'THSarabun';
                         doc.styles.tableBodyOdd.font = 'THSarabun';
-                        
-                        // กำหนดรูปแบบข้อความ (หัวเรื่อง)
                         doc.styles.tableHeader.font = 'THSarabun';
                     }
                 }, 'print'
             ],
-            "order": [[ 0, "desc" ]],
+            "order": [
+                [0, "desc"]
+            ],
             "ordering": true,
-            "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
             ajax: {
                 url: '/dashboard/get_management',
                 dataSrc: 'data'
             },
-            searching: true,
+            searching: false,
             destroy: true,
             ordering: false,
-            columns: [
-                {
-                    data: null, render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
-                { data: 'license' },
-                { data: 'tank_code' },
-                { data: 'brand' },
-                { data: 'model' },
-                { data: 'province' },
-                { data: 'auction_name' },
-                { data: 'html' },
-                { data: 'delivery_type' },
-                { data: 'history' },
-                {
-                    data: null, render: function (data, type, row) {
-                        return `<button class="btn btn-warning btn-edit" data-id="${data.id}"><i class="fas fa-edit"></i></button>`;
-                    }
-                },
-                {
-                    data: null, render: function (data, type, row) {
-                        return `<button class="btn btn-primary btn-view" data-id="${data.id}"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
-                    }
+            columns: [{
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 }
+            },
+            { data: 'license' },
+            { data: 'tank_code' },
+            { data: 'brand' },
+            { data: 'model' },
+            { data: 'province' },
+            { data: 'auction_name' },
+            { data: 'html' },
+            { data: 'delivery_type' },
+            { data: 'history' },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return `<button class="btn btn-warning " id="btn-edit" data-id="${data.id}"><i class="fas fa-edit"></i></button>`;
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return `<button class="btn btn-primary" id="btn-view" data-id="${data.id}"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+                }
+            }
             ]
         });
     }
+
     // close modal view
-    $('#closeBtn').click(function (e) { 
+    $('#closeBtn').click(function (e) {
         $('#viewModal').modal('hide')
-        
+
     });
 
     // close Modal
@@ -163,46 +140,87 @@ $(document).ready(function () {
     });
     let rowData;
     let carId;
+    let DataId;
+    let historyData;
 
-    $('#myTable tbody').on('click', 'tr', function () {
-        rowData = DataTable.row(this).data();
+    $('#myTable2 tbody').on('click', 'tr', function () {
+        rowData = DataTableResult.row(this).data();
         console.log(rowData);
     });
 
-    // edit
-    $('#myTable').on('click', '.btn-edit', function () {
+    $('#history_data tbody').on('click', 'tr', function () {
+        searchData = SearchDataTable.row(this).data();
+    });
+
+    // $('#tbl_history_detail tbody').on('click', 'tr', function () {
+    //     historyData = historyDataTable.row(this).data();
+    // });
+
+
+    // button edit
+    $('#myTable2').on('click', '#btn-edit', function () {
         $('#editModalNew').modal('show');
         carId = $(this).data('id');
+
+        // check date receiving
+        if (rowData.date_of_receiving) {
+            const Date_Split_Receiving = rowData.date_of_receiving.split('T')[0];
+            $('#date-receive').val(Date_Split_Receiving);
+        } else {
+            $('#date-receive').val('');
+        }
+
+        if (rowData.date_of_sending) {
+            const Date_Split_Sending_Time = rowData.date_of_sending.split('T')[0];
+            $('#date-sending-transport').val(Date_Split_Sending_Time);
+        } else {
+            $('#date-sending-transport').val('');
+        }
+
+        if (rowData.date_receiving_trans) {
+            const Date_Split_Receiving_Time = rowData.date_receiving_trans.split('T')[0];
+            $('#date-receive-transport').val(Date_Split_Receiving_Time);
+        } else {
+            $('#date-receive-transport').val('');
+        }
+        if (rowData.date_customer_receives) {
+            const DatePost = rowData.date_customer_receives.split('T')[0];
+            $('#date-post').val(DatePost);
+        } else {
+            $('#date-post').val('');
+        }
+        if (rowData.date_sending_ems) {
+            const Date_Send_Ems = rowData.date_sending_ems.split('T')[0];
+            $('#date-post').val(Date_Send_Ems);
+        } else {
+            $('#date-post').val('');
+        }
+
         $('#auction_name').val(rowData.auction_name);
         $('#address-sending').val(rowData.address);
         $('#address-new-text').val(rowData.new_address);
         $('#message-text').val(rowData.description);
-        $('#date-receive').val(rowData.date_of_receiving);
-        $('#date-receive-transport').val(rowData.date_receiving_trans);
-        $('#date-sending-transport').val(rowData.date_of_sending);
-        // $('#date-customer-receive').val(rowData.date_customer_receives);
         $('#documentNumber').val(rowData.receipt_number);
-        $('#date-post').val(rowData.date_customer_receives);   
-        
+
+
         if (rowData.delivery_type == "") {
             const defaultDeliveryType = "เลือก";
             $('#delivery-method').val(defaultDeliveryType);
-        }else{
+        } else {
             $('#delivery-method').val(rowData.delivery_type);
-        }   
+        }
         // Reload Select Option function
         toggleFields();
-        $('#delivery-method option[value="' + rowData.delivery_type + '"]').prop('selected', true);    
+        $('#delivery-method option[value="' + rowData.delivery_type + '"]').prop('selected', true);
         $('#postal-code').val(rowData.ems_code);
-        $('#date-receiving').val(rowData.date_sending_ems);
+
 
     });
 
-    // Button View
-    $('#myTable').on('click', '.btn-view', function () {
+    // button view
+    $('#myTable2').on('click', '#btn-view', function () {
         $('#viewModal').modal('show');
-        carId = $(this).data('id');
-
+        DataId = $(this).data('id');
         $('#ViewCustomer_Finance_Name').text(rowData.finance);
         $('#ViewCustomer_Tax_Invoice').text(rowData.tax_invoice);
         $('#ViewCustomer_Car_Code').text(rowData.code);
@@ -231,6 +249,7 @@ $(document).ready(function () {
         $('#ViewCustomer_Auction_Name').text(rowData.auction_name);
         $('#ViewCustomer_Address').text(rowData.address);
         $('#ViewCustomer_Member_Type').text(rowData.status);
+        $('#ViewCustomer_Telephone').text(rowData.telephone);
         $('#ViewCustomer_Entry_Time').text(rowData.entry_times);
         $('#ViewCustomer_Car_Place').text(rowData.place);
         $('#ViewCustomer_Remark').text(rowData.re_mark);
@@ -246,9 +265,109 @@ $(document).ready(function () {
         $('#ViewCustomer_Ems_Code').text(rowData.ems_code);
         $('#ViewCustomer_Date_Sending_Book').text(rowData.date_sending_ems);
         $('#ViewCustomer_Address_Sending_Book').text(rowData.new_address);
+        $.ajax({
+            type: "post",
+            url: "/dashboard/history",
+            data: { DataId },
+            dataType: "json",
+            success: function (res) {
+                if ($.fn.DataTable.isDataTable('#history_data')) {
+                    $('#history_data').DataTable().destroy();
+                }
+                SearchDataTable = $('#history_data').DataTable({
+                    data: res.data,
+                    searching: false,
+                    columns: [
+                        {
+                            data: null,
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        { data: 'action_type' },
+                        { data: 'item_type' },
+                        { data: 'item_id' },
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                return `<a href = "#" id="btn-view-detail" data-id="${data.id}">รายละเอียดเพิ่มเติม</a>`
+                            }
+                        },
+                        { data: 'createdAt' },
+                        { data: 'user_new_name' },
+                    ]
+                });
+            }
+        });
+    });
+
+    // Button view Detail New
+    $('#history_data').on('click', '#btn-view-detail', function () {
+        $("#modal-view-detail").modal('show');
+        DataId = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "/dashboard/get_log_history",
+            data: { DataId },
+            dataType: "JSON",
+            success: function (res) {
+                const changeDataArray = res.Data.map(item => item.change_data);
+                const jsonString = changeDataArray.join('');
+                const DataObject = JSON.parse(jsonString)
+                console.log(DataObject);
+                const Date_Of_Receive_Old = DataObject["วันที่รับเล่มทะเบียนเก่า"];
+                const Date_Of_Receive_New = DataObject["วันที่รับเล่มทะเบียนใหม่"];
+                const Date_Send_Transfer_Old = DataObject["วันที่ส่งโอนเก่า"];
+                const Date_Send_Transfer_New = DataObject["วันที่ส่งโอนใหม่"];
+                const Date_Receive_Transfer_Old = DataObject["วันที่รับโอนจากขนส่งเก่า"];
+                const Date_Receive_Transfer_New = DataObject["วันที่รับโอนจากขนส่งใหม่"];
+                const Delivery_Send_Old = DataObject["ประเภทการส่งเก่า"];
+                const Delivery_Send_New = DataObject["ประเภทการส่งใหม่"];
+                const Document_Number_Old = DataObject["เลขที่เอกสารเก่า"];
+                const Document_Number_New = DataObject["เลขที่เอกสารใหม่"];
+                const Postal_Code_Old = DataObject["หมายเลขพัสดุเก่า"];
+                const Postal_Code_New = DataObject["หมายเลขพัสดุใหม่"];
+                const Date_Send_Book_Old = DataObject["วันที่ส่งเล่มเอกสารเก่า"];
+                const Date_Send_Book_New = DataObject["วันที่ส่งเล่มเอกสารใหม่"];
+                const Address_Old = DataObject["ที่อยู่เก่า"];
+                const Address_New = DataObject["ที่อยู่ใหม่"];
+                const Re_Mark_Old = DataObject["หมายเหตุเก่า"];
+                const Re_Mark_New = DataObject["หมายเหตุใหม่"];
+                const Status_Old = DataObject["สถานะเก่า"];
+                const Status_New = DataObject["สถานะใหม่"];
+                const Edit_By = DataObject["แก้ไขโดย"];
+                const Date_Create = DataObject["วันที่สร้าง"];
+                $("#Date_Receive_Old").text(Date_Of_Receive_Old);
+                $("#Date_Receive_New").text(Date_Of_Receive_New);
+                $("#Date_Send_Old").text(Date_Send_Transfer_Old);
+                $("#Date_Send_New").text(Date_Send_Transfer_New);
+                $("#Date_Receive_Transfer_Old").text(Date_Receive_Transfer_Old);
+                $("#Date_Receive_Transfer_New").text(Date_Receive_Transfer_New);
+                $("#Delivery_Type_Old").text(Delivery_Send_Old);
+                $("#Delivery_Type_New").text(Delivery_Send_New);
+                $("#Postal_Code_Old").text(Postal_Code_Old);
+                $("#Postal_Code_New").text(Postal_Code_New);
+                $("#Document_Number_Old").text(Document_Number_Old);
+                $("#Document_Number_New").text(Document_Number_New);
+                $("#Date_Send_Book_Old").text(Date_Send_Book_Old);
+                $("#Date_Send_Book_New").text(Date_Send_Book_New);
+                $("#Address_Old").text(Address_Old);
+                $("#Address_New").text(Address_New);
+                $("#Remark_Old").text(Re_Mark_Old);
+                $("#Remark_New").text(Re_Mark_New);
+                $("#Date_Create").text(Date_Create);
+                $("#Date_Last_Update").text(Date_Create);
+                $("#Edit_By").text(Edit_By);
+
+            }
+        });
 
     });
-    
+
+    // close btn view detail
+    $('#close-btn-view-detail').click(function (e) {
+        $("#modal-view-detail").modal('hide');
+    });
     // Checkbox add Address
     $('#defaultCheck1').on('change', () => {
         $('#newAddressSection').toggle(this.checked);
@@ -258,13 +377,27 @@ $(document).ready(function () {
         document.getElementById('newAddressSection').style.display = this.checked ? 'block' : 'none';
     });
 
+    // $('.datetimepicker').datetimepicker({
+    //     format: 'YYYY-MM-DD HH:mm:ss', 
+    //     useCurrent: false
+    // });
 
-    // update
+    // $('#datetime_first_day').datetimepicker("destroy");
+    // $('#date-receive').datetimepicker("destroy");
+    // $('#date-receive').datetimepicker({
+    //     format:'YYYY-MM-DD',
+    //     date: new Date(),
+    //     minDate : $('.datetime_first_day').val()
+    // });
+
+    //Modal Button Update 
     $('#BtnSaveModal').click(function (e) {
+        const status = "update";
         const name = $('#auction_name').val();
         const address = $('#address-sending').val();
         const newAddress = $('#address-new-text').val();
-        const description = $('#message-text').val();
+        const descriptions = $('#message-text').val();
+        //Date formatted
         const dateReceive = $('#date-receive').val();
         const dateSending = $('#date-sending-transport').val();
         const dateReceiveTrans = $('#date-receive-transport').val();
@@ -281,8 +414,8 @@ $(document).ready(function () {
         if (postalCode) {
             deliveryType = "ไปรษณีย์";
         }
-        
-        // status
+
+        // status flag
         let flag = '';
         if (dateReceive) {
             flag = 'R';
@@ -302,20 +435,21 @@ $(document).ready(function () {
             name: name,
             address: address,
             newAddress: newAddress,
-            description: description,
+            descriptions: descriptions,
             dateReceive: dateReceive,
             dateSending: dateSending,
             dateReceiveTrans: dateReceiveTrans,
-            flag: flag,
+            flag_status: flag,
             documentNumber: documentNumber,
             datePost: datePost,
             postalCode: postalCode,
             dateOfReceiving: dateOfReceiving,
-            deliveryType: deliveryType
+            deliveryType: deliveryType,
+            status: status,
         }
         $.ajax({
             type: "PUT",
-            url: "/dashboard/edit",
+            url: "/dashboard/update",
             data: data,
             dataType: "Json",
             success: function (res) {
@@ -331,11 +465,190 @@ $(document).ready(function () {
     });
 
     //Date
-    const dateInput = document.getElementById('date-receive'); 
-    dateInput.addEventListener('change', (e)=>{
-        const selectedDate = e.target.value;
-        document.getElementById('display').innerHTML = `Selected date : ${selectedDate}`;
-    })
-    
+    // const dateInput = document.getElementById('date-receive');
+    // dateInput.addEventListener('change', (e) => {
+    //     const selectedDate = e.target.value;
+    //     document.getElementById('display').innerHTML = `Selected date : ${selectedDate}`;
+    // })
+
+    // Button Clear
+    $('#btn-clear').click(function (e) {
+        $('#Date_Receive').val('')
+        $('#Date_Send_Trans').val('')
+        $('#Date_Receive_Trans_Start').val('')
+        $('#Car_License').val('')
+        $('#Auction_Name').val('')
+        $('#Auction_Round').val('')
+        $('#Code_Finance').val('')
+        $('input[name=check_input_filter]:checked').val(0);
+        get_dataTable();
+
+    });
+
+    $(function () {
+        var startDateReceive, endDateReceive;
+        var startDateSendTrans, endDateSendTrans;
+        var startDateReceiveTrans, endDateReceiveTrans;
+
+        // Date_Receive
+        $('input[name="Date_Receive"]').daterangepicker({
+            autoUpdateInput: false,
+            autoApply: true,
+            opens: 'left',
+            autoApply: true,
+        }, function (start, end, label) {
+            startDateReceive = start.format('YYYY-MM-DD');
+            endDateReceive = end.format('YYYY-MM-DD');
+        });
+
+        $('input[name="Date_Receive"]').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        // Date_Send_Trans
+        $('input[name="Date_Send_Trans"]').daterangepicker({
+            autoUpdateInput: false,
+            opens: 'left',
+            startDate: moment(),
+        }, function (start, end, label) {
+            startDateSendTrans = start.format('YYYY-MM-DD');
+            endDateSendTrans = end.format('YYYY-MM-DD');
+        });
+
+        $('input[name="Date_Send_Trans"]').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        // Date_Receive_Trans_Start
+        $('input[name="Date_Receive_Trans_Start"]').daterangepicker({
+            autoUpdateInput: false,
+            opens: 'left',
+            startDate: moment(),
+        }, function (start, end, label) {
+            startDateReceiveTrans = start.format('YYYY-MM-DD');
+            endDateReceiveTrans = end.format('YYYY-MM-DD');
+        });
+
+        $('input[name="Date_Receive_Trans_Start"]').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('#btn-search').click(function (e) {
+            const car_license = $('#Car_License').val();
+            const auction_name = $('#Auction_Name').val();
+            const auction_round = $('#Auction_Round').val();
+            const code_finance = $('#Code_Finance').val();
+            const filter_mode = $('input[name="check_input_filter"]:checked').val();
+            // DataTableResult.ajax.reload();
+
+            if (startDateReceive && endDateReceive && startDateSendTrans && endDateSendTrans && startDateReceiveTrans && endDateReceiveTrans) {
+                sendDateRangeToServer(
+                    startDateReceive,
+                    endDateReceive,
+                    startDateSendTrans,
+                    endDateSendTrans,
+                    startDateReceiveTrans,
+                    endDateReceiveTrans,
+                    car_license,
+                    auction_name,
+                    auction_round,
+                    code_finance,
+                    filter_mode
+                );
+            } else {
+                console.log('กรุณาเลือกวันที่ก่อนที่จะค้นหา');
+            }
+        });
+
+        function sendDateRangeToServer
+        (startDateReceive,
+            endDateReceive,
+            startDateSendTrans,
+            endDateSendTrans,
+            startDateReceiveTrans,
+            endDateReceiveTrans, 
+            car_license,
+            auction_name,
+            auction_round, 
+            code_finance, 
+            filter_mode
+            ) {
+
+            const requestData = {
+                startDateReceive: startDateReceive,
+                endDateReceive: endDateReceive,
+                startDateSendTrans: startDateSendTrans,
+                endDateSendTrans: endDateSendTrans,
+                startDateReceiveTrans: startDateReceiveTrans,
+                endDateReceiveTrans: endDateReceiveTrans,
+                carLicense: car_license,
+                auctionName: auction_name,
+                auctionRound: auction_round,
+                codeFinance: code_finance,
+                filterMode: filter_mode
+            };
+            $.ajax({
+                "type": "POST",
+                "url": "/dashboard/search",
+                "data": JSON.stringify(requestData),
+                "dataType": "json",
+                success: function (res) {
+                    DataTableResult = $('#myTable2').DataTable({
+                        data: res.res.searchResults,
+                        processing: true,
+                        serverSide: false,
+                        destroy: true,
+                        searching: false,
+                        columns: [{
+                            data: null,
+                            render: function (data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        { data: 'license' },
+                        { data: 'tank_code' },
+                        { data: 'brand' },
+                        { data: 'model' },
+                        { data: 'province' },
+                        { data: 'auction_name' },
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                if (data.flag === "R") {
+                                    return '<span class="btn-sm" style="color: blue;">พร้อมส่งเล่มทะเบียน</span>';
+                                } else if (data.flag === "S") {
+                                    return '<span class="btn-sm" style="color: red;">รอโอนเล่มจากขนส่ง</span>';
+                                } else if (data.flag === "T") {
+                                    return '<span class="btn-sm" style="color: blue;">พร้อมส่งเล่มทะเบียน</span>';
+                                } else if (data.flag === "C") {
+                                    return '<span class="btn-sm" style="color: green;">ส่งเล่มทะเบียนเรียบร้อยแล้ว</span>';
+                                } else {
+                                    return '<span class="btn-sm" style="color: #FF6C22;">รอรับเล่มทะเบียน</span>';
+                                }
+                            }
+                        },
+                        { data: 'delivery_type' },
+                        { data: 'history' },
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                return `<button class="btn btn-warning" id="btn-edit" data-id="${data.id}"><i class="fas fa-edit"></i></button>`;
+                            }
+                        },
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                return `<button class="btn btn-primary" id="btn-view" data-id="${data.id}"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+                            }
+                        }
+                        ]
+                    });
+                },
+                error: function (error) {
+                    console.error('เกิดข้อผิดพลาดในการส่งข้อมูล', error);
+                }
+            });
+        }
+    });
 
 });
