@@ -86,7 +86,8 @@
                         <th>วันที่</th>
                         <th>ชื่อ</th>
                         <th>โอนคัดเล่ม/เป็นชื่อ</th>
-                        <th>เลขเครื่อง</th>
+                        <th>สถานะ</th>
+                        <th>เลขเครื่อง</th>                       
                         <th>สี</th>
                         <th>ทะเบียน</th>
                         <th>จังหวัด</th>
@@ -130,7 +131,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="date_mont_year" class="col-form-label">วัน/เดือน/ปี</label>
-                            <input type="date" class="form-control" id="date_mont_year" name="date_mont_year">
+                            <input type="text" class="form-control" id="date_mont_year" name="date_mont_year">
                         </div>
                         <div class="col-md-6">
                             <label for="fullname" class="col-form-label">ชื่อ-นามสกุล</label>
@@ -170,20 +171,19 @@
                         </div>
                         <div class="col-md-6">
                             <label for="send_agent" class="col-form-label">ส่งตัวแทน</label>
-                            <input type="date" class="form-control" id="send_agent" name="send_agent">
+                            <input type="text" class="form-control" id="send_agent" name="send_agent">
                         </div>
                         <div class="col-md-6">
                             <label for="return_agent" class="col-form-label">ตัวแทนส่งคืน</label>
-                            <input type="date" class="form-control" id="return_agent" name="return_agent">
+                            <input type="text" class="form-control" id="return_agent" name="return_agent">
                         </div>
                         <div class="col-md-6">
                             <label for="receive_book_cu" class="col-form-label">CU รับเล่ม</label>
                             <input type="text" class="form-control" id="receive_book_cu" name="receive_book_cu">
                         </div>
                         <div class="col-md-6">
-                            <label for="date_customer_receive_book" class="col-form-label">วัน/เดือน/ปี
-                                ลูกค้ารับเล่ม</label>
-                            <input type="date" class="form-control" id="date_customer_receive_book"
+                            <label for="date_customer_receive_book" class="col-form-label">วัน/เดือน/ปีลูกค้ารับเล่ม</label>
+                            <input type="text" class="form-control" id="date_customer_receive_book"
                                 name="date_customer_receive_book">
                         </div>
                         <div class="col-md-6">
@@ -192,7 +192,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="date_send_ems" class="col-form-label">วันที่ส่ง EMS</label>
-                            <input type="date" class="form-control" id="date_send_ems" name="date_send_ems">
+                            <input type="text" class="form-control" id="date_send_ems" name="date_send_ems">
                         </div>
                         <div class="col-md-6">
                             <label for="address" class="col-form-label">ที่อยู่</label>
@@ -217,8 +217,8 @@
 <div class="modal fade" id="depositEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูล</h5>
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title" style="color: white;">แก้ไขข้อมูล</h5>
             </div>
             <div class="modal-body">
                 <form>
@@ -233,7 +233,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="e_date_mont_year" class="col-form-label">วัน/เดือน/ปี</label>
-                            <input type="date" class="form-control" id="e_date_mont_year" name="e_date_mont_year">
+                            <input type="text" class="form-control" id="e_date_mont_year" name="e_date_mont_year">
                         </div>
                         <div class="col-md-6">
                             <label for="e_fullname" class="col-form-label">ชื่อ-นามสกุล</label>
@@ -272,12 +272,12 @@
                             <input type="text" class="form-control" id="e_receive_book" name="e_receive_book">
                         </div>
                         <div class="col-md-6">
-                            <label for="e_send_agent" class="col-form-label">ส่งตัวแทน</label>
-                            <input type="date" class="form-control" id="e_send_agent" name="e_send_agent">
+                            <label for="e_send_agent" class="col-form-label">วันที่ส่งตัวแทน</label>
+                            <input type="text" class="form-control" id="e_send_agent" name="e_send_agent">
                         </div>
                         <div class="col-md-6">
-                            <label for="e_return_agent" class="col-form-label">ตัวแทนส่งคืน</label>
-                            <input type="date" class="form-control" id="e_return_agent" name="e_return_agent">
+                            <label for="e_return_agent" class="col-form-label">วันที่ตัวแทนส่งคืน</label>
+                            <input type="text" class="form-control" id="e_return_agent" name="e_return_agent">
                         </div>
                         <div class="col-md-6">
                             <label for="e_receive_book_cu" class="col-form-label">CU รับเล่ม</label>
@@ -286,7 +286,7 @@
                         <div class="col-md-6">
                             <label for="e_date_customer_receive_book" class="col-form-label">วัน/เดือน/ปี
                                 ลูกค้ารับเล่ม</label>
-                            <input type="date" class="form-control" id="e_date_customer_receive_book"
+                            <input type="text" class="form-control" id="e_date_customer_receive_book"
                                 name="e_date_customer_receive_book">
                         </div>
                         <div class="col-md-6">
@@ -295,7 +295,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="e_date_send_ems" class="col-form-label">วันที่ส่ง EMS</label>
-                            <input type="date" class="form-control" id="e_date_send_ems" name="e_date_send_ems">
+                            <input type="text" class="form-control" id="e_date_send_ems" name="e_date_send_ems">
                         </div>
                         <div class="col-md-6">
                             <label for="e_address" class="col-form-label">ที่อยู่</label>
@@ -320,8 +320,8 @@
 <div class="modal fade" id="depositViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">รายละเอียด</h5>
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title" style="color: white;">รายละเอียด</h5>
             </div>
             <div class="modal-body">
                 <form>
@@ -371,7 +371,7 @@
                             <span class="ml-2" id="ViewCustomer_Receive_Book"></span>
                         </div>
                         <div class="col-lg-6">
-                            <label>ส่งตัวแทน :</label>
+                            <label>วันที่ส่งตัวแทน :</label>
                             <span class="ml-2" id="ViewCustomer_Send_Agent"></span>
                         </div>
                         <div class="col-lg-6">
@@ -467,11 +467,11 @@
                             </div>
                             <div class="col-lg-6">
                                 <label for="">ชื่อ-นามสกุล (เดิม) :</label>
-                                <span class="ml-2" id="Customner_Name_Old"></span>
+                                <span class="ml-2" id="Customer_Name_Old"></span>
                             </div>
                             <div class="col-lg-6">
                                 <label for="">ชื่อ-นามสกุล (ใหม่)<span style="color: red;"> * </span>  :</label>
-                                <span class="ml-2" id="Customner_Name_New"></span>
+                                <span class="ml-2" id="Customer_Name_New"></span>
                             </div>
                             <div class="col-lg-6">
                                 <label for="">โอน/คัดเล่มเป็นชื่อ-นามสกุล (เดิม) :</label>
@@ -586,11 +586,11 @@
                                 <span class="ml-2" id="Date_Send_Ems_New"></span>
                             </div>
                             <div class="col-lg-6">
-                                <label for="">ที่อยู่่ (เดิม):</label>
+                                <label for="">ที่อยู่ (เดิม):</label>
                                 <span class="ml-2" id="Address_Old"></span>
                             </div>
                             <div class="col-md-6">
-                                <label for="">ที่อยู่่ (ใหม่):<span style="color: red;"> * </span>  :</label>
+                                <label for="">ที่อยู่ (ใหม่):<span style="color: red;"> * </span>  :</label>
                                 <span class="ml-2" id="Address_New"></span>
                             </div>
                             <div class="col-lg-6">
@@ -611,5 +611,5 @@
         </div>
     </div>
 </div>
-<script src="/assets/jquery/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/js/deposit.js"></script>

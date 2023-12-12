@@ -11,6 +11,8 @@ import Deposit from "../models/deposit-transfer.model.js";
 import { Op } from "sequelize";
 import LogHistory from "../models/system_log_history.modal.js";
 import bodyParser from "body-parser";
+import moment from "moment";
+import sequelize from "sequelize";
 
 
 
@@ -278,7 +280,6 @@ export const renderDeposit = async (req, res) => {
     });
 }
 
-
 // Get DataTable
 export const getDataTable = async (req, res) => {
 
@@ -384,8 +385,6 @@ export const getCreate = async (req, res) => {
 //!------------------------------------------- Update Deposit-----------------------------------------//
 export const updateDeposit = async (req, res) => {
     // Session Login
-    // console.log(req.body);
-    // return
     const userFirstName = req.session.user.firstname;
     const userId = req.session.user.id;
     const {
@@ -409,12 +408,13 @@ export const updateDeposit = async (req, res) => {
         date_send_emss,
         addresss,
         re_marks,
+        flag_status
     } = req.body
 
     try {
         // Search Old Data
         const findOldData = await Deposit.findAll({
-            attributes:[
+            attributes: [
                 'id',
                 'type',
                 'date',
@@ -440,7 +440,7 @@ export const updateDeposit = async (req, res) => {
             where: { id: Ids }
         });
 
-        
+
         await Promise.all(findOldData.map(async (data) => {
             const {
                 id,
@@ -464,7 +464,7 @@ export const updateDeposit = async (req, res) => {
                 flag_status,
                 re_mark,
                 address,
-                } = data.toJSON();
+            } = data.toJSON();
             // Clear Log History
             const createLogHistory = await LogHistory.create({
                 user_id: userId,
@@ -536,6 +536,7 @@ export const updateDeposit = async (req, res) => {
             date_send_ems: date_send_emss,
             address: addresss,
             re_mark: re_marks,
+            flag_status:flag_status
         }, {
             where: {
                 id: Ids
@@ -557,105 +558,128 @@ export const updateDeposit = async (req, res) => {
 
 
 //------------------------------Search Car Book-------------------------------------------//
-export const dateReceive = async (req, res) => {
+export const ajax_search_managements = async (req, res) => {
+    //console.log(req.body);
     const {
-        startDateReceive,
-        endDateReceive,
-        startDateSendTrans,
-        endDateSendTrans,
-        startDateReceiveTrans,
-        endDateReceiveTrans,
-        car_license,
-        auction_name,
-        auction_round,
-        code_finance,
-        filter_mode
+        Date_Receive,
+        Date_Send_Trans,
+        Date_Receive_Trans_Start,
+        Car_License,
+        Auction_Name,
+        Auction_Round,
+        Code_Finance,
+        Auction_Location,
+        Filter_Mode,
     } = req.body;
 
+        const [startDateReceive, endDateReceive] = Date_Receive.split(' - ');
+        const [startDateSendTrans, endDateSendTrans] = Date_Send_Trans.split(' - ');
+        const [startDateReceiveTrans, endDateReceiveTrans] = Date_Receive_Trans_Start.split(' - ');
     try {
-        const searchResults = {};
-
-        // filter_mode = 0 all || filter_mode = 1 condition
-        if (filter_mode == 0) {
-            const Search_All = await MasterData.findAll();
-            searchResults.searchResults = Search_All;
+        
+        const searchResults = { searchResults: [] };
+        
+        // filter  == 0 All || ==1 condition
+        if (Filter_Mode == 0) {
+            const searchDepositAll = await MasterData.findAll({});
+            searchResults.searchResults = searchDepositAll;
         }
-
+        
         if (startDateReceive && endDateReceive) {
-            const Search_Date_Receive = await MasterData.findAll({
-                where: {
-                    date_of_receiving: {
-                        [Op.between]: [startDateReceive, endDateReceive]
-                    },
-                },
-            });
-            searchResults.searchResults = Search_Date_Receive;
-        }
+            const formattedStartDateReceive = moment(startDateReceive, 'MM/DD/YYYY').format('YYYY-MM-DD');
+            const formattedEndDateReceive = moment(endDateReceive, 'MM/DD/YYYY').format('YYYY-MM-DD');
 
-        if (startDateSendTrans && endDateSendTrans) {
-            const Search_Date_Send = await MasterData.findAll({
+            const searchDateReive = await MasterData.findAll({
                 where: {
-                    date_of_sending: {
-                        [Op.between]: [startDateSendTrans, endDateSendTrans]
-                    }
+                    [Op.and]: [
+                        sequelize.literal(`DATE(date_of_receiving) BETWEEN '${formattedStartDateReceive}' AND '${formattedEndDateReceive}'`),
+                    ],
                 },
             });
-            searchResults.searchResults = Search_Date_Send;
+            searchResults.searchResults = searchDateReive;
+        }
+        if (startDateSendTrans && endDateSendTrans) {
+            const formattedStartDateSendTrans = moment(startDateSendTrans, 'MM/DD/YYYY').format('YYYY-MM-DD');
+            const formattedEndDateSendTrans = moment(endDateSendTrans, 'MM/DD/YYYY').format('YYYY-MM-DD');
+
+            const searchDateReceiveSendTrans = await MasterData.findAll({
+                where: {
+                    [Op.and]: [
+                        sequelize.literal(`DATE(date_of_sending) BETWEEN '${formattedStartDateSendTrans}' AND '${formattedEndDateSendTrans}'`),
+                    ]
+                }
+            });
+            searchResults.searchResults = searchDateReceiveSendTrans;
         }
 
         if (startDateReceiveTrans && endDateReceiveTrans) {
-            const Search_Date_Receive_Trans = await MasterData.findAll({
+            // แปลงวันที่จาก MM/DD/YYYY เป็น YYYY-MM-DD HH:mm:ss
+            const formattedStartDateSendTrans = moment(startDateReceiveTrans, 'MM/DD/YYYY').format('YYYY-MM-DD HH:mm:ss');
+            const formattedEndDateSendTrans = moment(endDateReceiveTrans, 'MM/DD/YYYY').format('YYYY-MM-DD HH:mm:ss');
+        
+            const searchDateReceiveSendTrans = await MasterData.findAll({
                 where: {
-                    date_receiving_trans: {
-                        [Op.between]: [startDateReceiveTrans, endDateReceiveTrans]
-                    }
+                    [Op.and]: [
+                        sequelize.literal(`DATE(date_receiving_trans) BETWEEN '${formattedStartDateSendTrans}' AND '${formattedEndDateSendTrans}'`),
+                    ]
                 }
             });
-            searchResults.searchResults = Search_Date_Receive_Trans;
+            searchResults.searchResults = searchDateReceiveSendTrans;            
         }
+        
 
-        if (car_license) {
-            const Search_carLicense = await MasterData.findAll({
+        if (Car_License) {
+            const searchCarLicense = await MasterData.findAll({
                 where: {
                     license: {
-                        [Op.like]: `%${car_license}%`
+                        [Op.like]: `%${Car_License}%`
                     }
                 }
             });
-            searchResults.searchResults = Search_carLicense;
+            searchResults.searchResults = searchCarLicense;
         }
 
-        if (auction_name) {
-            const Search_Auction_Name = await MasterData.findAll({
+        if (Auction_Name) {
+            const searchAuctionName = await MasterData.findAll({
                 where: {
                     auction_name: {
-                        [Op.like]: `%${auction_name}%`
+                        [Op.like]: `%${Auction_Name}%`
                     }
                 }
             });
-            searchResults.searchResults = Search_Auction_Name;
+            searchResults.searchResults = searchAuctionName;
         }
 
-        if (auction_round) {
-            const Search_Auction_Round = await MasterData.findAll({
+        if (Auction_Round) {
+            const searchAuctionRound = await MasterData.findAll({
                 where: {
                     entry_times: {
-                        [Op.like]: `%${auction_round}%`
+                        [Op.like]: `%${Auction_Round}%`
                     }
                 },
             });
-            searchResults.searchResults = Search_Auction_Round;
+            searchResults.searchResults = searchAuctionRound;
         }
 
-        if (code_finance) {
-            const Search_Code_Finance = await MasterData.findAll({
+        if (Code_Finance) {
+            const searchFinanceCode = await MasterData.findAll({
                 where: {
                     finance: {
-                        [Op.like]: `%${code_finance}%`
+                        [Op.like]: `%${Code_Finance}%`
                     }
                 },
             });
-            searchResults.searchResults = Search_Code_Finance;
+            searchResults.searchResults = searchFinanceCode;
+        }
+        if (Auction_Location) {
+            const searchAuctionLocation = await MasterData.findAll({
+                where: {
+                    auction_location: {
+                        [Op.like]: `%${Auction_Location}%`
+                    }
+                },
+            });
+            searchResults.searchResults = searchAuctionLocation;
         }
         res.status(201).json({ res: searchResults, message: "ค้นหาสำเร็จ", status: 201 });
     } catch (error) {
@@ -664,14 +688,14 @@ export const dateReceive = async (req, res) => {
     }
 }
 
-//* ------------------------------Get History Log-----------------------------------//
+// ------------------------------Get History Log-----------------------------------//
 export const Get_History_Log = async (req, res) => {
     const DataId = req.body.DataId;
     const Data = await LogHistory.findAll({ where: { item_id: DataId } });
     res.status(201).json({ data: Data, message: "Success", status: 201 });
 }
 
-//* ------------------------------Ajax Deposit Search-----------------------------------//
+// ------------------------------Ajax Deposit Search-----------------------------------//
 export const getLogHistory = async (req, res) => {
     const DataId = req.body.DataId
     const Data = await LogHistory.findAll({ where: { id: DataId } });
@@ -680,7 +704,7 @@ export const getLogHistory = async (req, res) => {
 }
 
 
-//* ------------------------------Ajax Deposit Search----------------------------------- *//
+// ------------------------------Ajax Deposit Search----------------------------------- *//
 export const ajax_deposit_search = async (req, res) => {
     const
         {
@@ -702,52 +726,60 @@ export const ajax_deposit_search = async (req, res) => {
 
     try {
         // filter_mode = 0 ALl|| filter_mode = 1 Condition
-        const searchResults = {};
-
+        //const searchResults = {};
+        const searchResults = { searchResults: [] };
         if (Filter_Mode == 0) {
             const search_all = await Deposit.findAll({})
             searchResults.searchResults = search_all;
         }
 
         if (startDateOfYear && endDateOfYear) {
+            const formattedStartDateOfYear = moment(startDateOfYear, 'MM/DD/YYYY').format('YYYY-MM-DD');
+            const formattedEndDateOfYear = moment(endDateOfYear, 'MM/DD/YYYY').format('YYYY-MM-DD');
+
             const searchDateOfYear = await Deposit.findAll({
                 where: {
-                    date: {
-                        [Op.between]: [startDateOfYear, endDateOfYear]
-                    },
+                    [Op.and]: [
+                        sequelize.literal(`DATE(date) BETWEEN '${formattedStartDateOfYear}' AND '${formattedEndDateOfYear}'`),
+                    ],
                 },
             });
             searchResults.searchResults = searchDateOfYear;
         }
-
         if (startDateSendAgent && endDateSendAgent) {
+            const formattedStartDateSendAgent = moment(startDateSendAgent, 'MM/DD/YYYY').format('YYYY-MM-DD');
+            const formattedEndDateSendAgent = moment(endDateSendAgent, 'MM/DD/YYYY').format('YYYY-MM-DD');
             const searchDateSendAgent = await Deposit.findAll({
                 where: {
-                    send_agent: {
-                        [Op.between]: [startDateSendAgent, endDateSendAgent]
-                    },
+                    [Op.and]: [
+                        sequelize.literal(`DATE(send_agent) BETWEEN '${formattedStartDateSendAgent}' AND '${formattedEndDateSendAgent}'`),
+                    ],
                 },
             });
             searchResults.searchResults = searchDateSendAgent;
         }
 
         if (startDateAgentReturn && endDateAgentReturn) {
+            const formattedStartDateAgentReturn = moment(startDateAgentReturn, 'MM/DD/YYYY').format('YYYY-MM-DD');
+            const formattedEndDateAgentReturn = moment(endDateAgentReturn, 'MM/DD/YYYY').format('YYYY-MM-DD');
             const searchAgentReturn = await Deposit.findAll({
                 where: {
-                    return_agent: {
-                        [Op.between]: [startDateAgentReturn, endDateAgentReturn]
-                    },
+                    [Op.and]: [
+                        sequelize.literal(`DATE(return_agent) BETWEEN '${formattedStartDateAgentReturn}' AND '${formattedEndDateAgentReturn}'`),
+                    ],
                 },
             });
             searchResults.searchResults = searchAgentReturn;
         }
 
         if (startDateCustomerReceive && endDateCustomerReceive) {
+            const formattedStartDateCustomerReceive = moment(startDateCustomerReceive, 'MM/DD/YYYY').format('YYYY-MM-DD');
+            const formattedEndDateCustomerReceive = moment(endDateCustomerReceive, 'MM/DD/YYYY').format('YYYY-MM-DD');
             const searchDateCustomerReceive = await Deposit.findAll({
                 where: {
-                    date_customer_receive: {
-                        [Op.between]: [startDateCustomerReceive, endDateCustomerReceive]
-                    },
+                    [Op.and]: [
+                        sequelize.literal(`DATE(date_customer_receive) BETWEEN '${formattedStartDateCustomerReceive}' AND '${formattedEndDateCustomerReceive}'`),
+                    ],
                 },
             });
             searchResults.searchResults = searchDateCustomerReceive;
@@ -763,6 +795,7 @@ export const ajax_deposit_search = async (req, res) => {
             });
             searchResults.searchResults = searchCarLicense;
         }
+
         //customer name
         if (Customer_Name) {
             const searchCustomerName = await Deposit.findAll({
@@ -801,7 +834,6 @@ export const ajax_deposit_history = async (req, res) => {
     } catch (error) {
         res.status(400).json({ message: error });
     }
-
 }
 
 //---------------------------Get Log history Deposit -----------------------------------//

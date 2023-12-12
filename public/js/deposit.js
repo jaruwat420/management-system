@@ -9,6 +9,116 @@ $(document).ready(function () {
 
     filter_mode();
 
+    //----------------------------format dateTime--------------------------------///
+    $('#date_mont_year').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+       // defaultDate: moment().startOf('day')
+    });
+    $('#date_mont_year').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#date_mont_year').val(selectedDateTime);
+    });
+    // Sending Agent
+    $('#send_agent').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+        //defaultDate: moment().startOf('day')
+    });
+    $('#send_agent').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#send_agent').val(selectedDateTime);
+    });
+    // Agent Sending Return
+    $('#return_agent').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+        //defaultDate: moment().startOf('day')
+    });
+    $('#return_agent').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#return_agent').val(selectedDateTime);
+    });
+    // date_customer_receive_book
+    $('#date_customer_receive_book').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+        //defaultDate: moment().startOf('day')
+    });
+    $('#date_customer_receive_book').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#date_customer_receive_book').val(selectedDateTime);
+    });
+    // date_send_ems
+    $('#date_send_ems').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+       //defaultDate: moment().startOf('day')
+    });
+    $('#date_send_ems').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#date_send_ems').val(selectedDateTime);
+    });
+    //edit format date
+    $('#e_date_mont_year').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+       //defaultDate: moment().startOf('day')
+    });
+    $('#e_date_mont_year').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#e_date_mont_year').val(selectedDateTime);
+    });
+    //edit send Agent
+    $('#e_send_agent').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+       //defaultDate: moment().startOf('day')
+    });
+    $('#e_send_agent').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#e_send_agent').val(selectedDateTime);
+    });
+    //edit Agent Return
+    $('#e_return_agent').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+       //defaultDate: moment().startOf('day')
+    });
+    $('#e_return_agent').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#e_return_agent').val(selectedDateTime);
+    });
+    //edit e_date_customer_receive_book
+    $('#e_date_customer_receive_book').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+       //defaultDate: moment().startOf('day')
+    });
+    $('#e_date_customer_receive_book').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#e_date_customer_receive_book').val(selectedDateTime);
+    });
+    //edit e_date_customer_receive_book
+    $('#e_date_send_ems').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+       //defaultDate: moment().startOf('day')
+    });
+    $('#e_date_send_ems').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#e_date_send_ems').val(selectedDateTime);
+    });
     //----------------------------Date Range--------------------------------///
 
     $(function () {
@@ -112,6 +222,22 @@ function get_datatable() {
                     { data: 'date' },
                     { data: 'fullname' },
                     { data: 'transfer_name' },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            if (data.flag_status === "R") {
+                                return '<span class="btn-sm" style="color: blue;">รอรับเล่มทะเบียนจากตัวแทน</span>';
+                            } else if (data.flag_status === "S") {
+                                return '<span class="btn-sm" style="color: red;">พร้อมส่งเล่มทะเบียน</span>';
+                            } else if (data.flag_status === "T") {
+                                return '<span class="btn-sm" style="color: blue;">รับเล่มทะเบียนเรียบร้อย</span>';
+                            } else if (data.flag_status === "C") {
+                                return '<span class="btn-sm" style="color: green;">ส่งเล่มทะเบียนเรียบร้อยแล้ว</span>';
+                            } else {
+                                return '<span class="btn-sm" style="color: #FF6C22;">รอรับเล่มทะเบียน</span>';
+                            }
+                        }
+                    },
                     { data: 'engine_number' },
                     { data: 'color' },
                     { data: 'license' },
@@ -199,15 +325,18 @@ $('#saveModalBtn').click(function (e) {
     const re_mark = $('#re_mark').val();
     
     let flag_status = "";
-    
+
     if (sendAgent) {
-        flag_status = "F";
+        flag_status = "R";
     }
     if (returnAgent) {
-        flag_status = "T";
+        flag_status = "S";
     }
     if (date_customer_receive_book){
-        flag_status = "S"
+        flag_status = "T"
+    }
+    if (date_send_ems){
+        flag_status = "C"
     }
 
     const Data = {
@@ -285,7 +414,20 @@ $('#tbl_deposit').on('click', '#btn-edit', function () {
 
 //----------------------------Button Save Modal Update--------------------------------///
 $('#saveEditModalBtn').click(function (e) {
-
+    let flag_status = "";
+    
+    if ($('#e_send_agent').val()) {
+        flag_status = "R";
+    }
+    if ($('#e_return_agent').val()) {
+        flag_status = "S";
+    }
+    if ($('#e_date_customer_receive_book').val()) {
+        flag_status = "T";
+    }
+    if ($('#e_date_send_ems').val()) {
+        flag_status = "C";
+    }
     const data = {
         Ids: Id,
         types: $('#type-method').val(),
@@ -306,7 +448,8 @@ $('#saveEditModalBtn').click(function (e) {
         address_emss: $('#e_address_ems').val(),
         date_send_emss: $('#e_date_send_ems').val(),
         addresss: $('#e_address').val(),
-        re_marks: $('#e_re_mark').val()
+        re_marks: $('#e_re_mark').val(),
+        flag_status: flag_status       
     }
     $.ajax({
         type: "PUT",
@@ -401,11 +544,54 @@ $("#tbl_history").on('click', '#btn-view-detail', function(){
         success: function (res) {
             const changeDataArray = res.Data.map(item => item.change_data);
             const jsonString = changeDataArray.join('');
-            const DataObject = JSON.parse(jsonString)
-            console.log(DataObject);
+            const DataObject = JSON.parse(jsonString)            
+            $("#Car_Type_Old").text(DataObject["ประเภทเก่า"]);
+            $("#Car_Type_New").text(DataObject["ประเภทใหม่"]);
+            $("#Date_Of_Year_Old").text(DataObject["วันที่เก่า"]);
+            $("#Date_Of_Year_New").text(DataObject["วันที่ใหม่"]);
+            $("#Customer_Name_Old").text(DataObject["ชื่อเก่า"]);
+            $("#Customer_Name_New").text(DataObject["ชื่อใหม่"]);
+            $("#Customer_Name_Transfer_Old").text(DataObject["ชื่อคัดโอนเล่มเก่า"]);
+            $("#Customer_Name_Transfer_New").text(DataObject["ชื่อคัดโอนเล่มใหม่"]);
+            $("#Engine_Number_Old").text(DataObject["เลขเครื่องเก่า"]);
+            $("#Engine_Number_New").text(DataObject["เลขเครื่องใหม่"]);
+            $("#Car_Color_Old").text(DataObject["สีเก่า"]);
+            $("#Car_Color_New").text(DataObject["สีใหม่"]);
+            $("#Car_License_Old").text(DataObject["ทะเบียนเก่า"]);
+            $("#Car_License_New").text(DataObject["ทะเบียนใหม่"]);
+            $("#Car_Province_Old").text(DataObject["จังหวัดเก่า"]);
+            $("#Car_Province_New").text(DataObject["จังหวัดใหม่"]);
+            $("#Car_Transfer_In_Old").text(DataObject["โอนเข่้าเก่า"]);
+            $("#Car_Transfer_In_New").text(DataObject["โอนเข่้าใหม่"]);
+            $("#Price_Transfer_Old").text(DataObject["ราคาค่าโอนเก่า"]);
+            $("#Price_Transfer_New").text(DataObject["ราคาค่าโอนใหม่"]);
+            $("#Receive_Book_Old").text(DataObject["รับเล่มSIKเก่า"]);
+            $("#Receive_Book_New").text(DataObject["รับเล่มSIKใหม่"]);
+            $("#Car_Send_Agent_Old").text(DataObject["ส่งตัวแทนเก่า"]);
+            $("#Car_Send_Agent_New").text(DataObject["ส่งตัวแทนใหม่"]);
+            $("#Car_Agent_Return_Old").text(DataObject["ตัวแทนส่งคืนเก่า"]);
+            $("#Car_Agent_Return_New").text(DataObject["ตัวแทนส่งคืนใหม่"]);
+            $("#Receive_Book_Cu_Old").text(DataObject["CUรับเล่มเก่า"]);
+            $("#Receive_Book_Cu_New").text(DataObject["CUรับเล่มใหม่"]);
+            $("#Date_Customer_Receive_Old").text(DataObject["ลูกค้ารับเล่มเก่า"]);
+            $("#Date_Customer_Receive_New").text(DataObject["ลูกค้ารับเล่มใหม่"]);
+            $("#Address_Ems_Old").text(DataObject["ที่อยู่EMSเก่า"]);
+            $("#Address_Ems_New").text(DataObject["ที่อยู่EMSใหม่"]);
+            $("#Date_Send_Ems_Old").text(DataObject["วันที่ส่งEMSเก่า"]);
+            $("#Date_Send_Ems_New").text(DataObject["วันที่ส่งEMSใหม่"]);
+            $("#Address_Old").text(DataObject["ที่อยู่เก่า"]);
+            $("#Address_New").text(DataObject["ที่อยู่ใหม่"]);
+            $("#Remark_Old").text(DataObject["หมายเหตุเก่า"]);
+            $("#Remark_New").text(DataObject["หมายเหตุใหม่"]);
+
         }
     });
 })
+
+$("#close-btn-view-detail").click(function (e) { 
+    $("#modalViewHistory").modal('hide');
+    
+});
 // Close modal View
 $('#Btn_Close_view_Modal').click(function (e) {
     $('#depositViewModal').modal('hide');

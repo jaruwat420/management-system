@@ -31,24 +31,25 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label for="Date_Receive">วันที่รับเล่ม</label>
-                        <input type="text" name="Date_Receive" id="Date_Receive" class="form-control">
+                        <label for="Date_Receive_Search">วันที่รับเล่ม</label>
+                        <input type="text" name="Date_Receive_Search" id="Date_Receive_Search" class="form-control">
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label for="Date_Send_Trans">วันที่ส่งเล่มให้ขนส่ง</label>
-                        <input type="text" name="Date_Send_Trans" id="Date_Send_Trans" class="form-control">
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label for="Date_Receive_Trans_Start">วันที่รับเล่มจากขนส่ง</label>
-                        <input type="text" name="Date_Receive_Trans_Start" id="Date_Receive_Trans_Start"
+                        <label for="Date_Send_Trans_Search">วันที่ส่งเล่มให้ขนส่ง</label>
+                        <input type="text" name="Date_Send_Trans_Search" id="Date_Send_Trans_Search"
                             class="form-control">
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="Date_Receive_Trans_Search">วันที่รับเล่มจากขนส่ง</label>
+                        <input type="text" name="Date_Receive_Trans_Search" id="Date_Receive_Trans_Search"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-2">
                     <div class="form-group">
                         <label for="Car_License">ทะเบียน</label>
                         <input type="text" name="Car_License" id="Car_License" class="form-control">
@@ -60,16 +61,22 @@
                         <input type="text" name="Auction_Name" id="Auction_Name" class="form-control">
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="form-group">
                         <label for="Auction_Round">รอบที่ประมูล</label>
                         <input type="text" name="Auction_Round" id="Auction_Round" class="form-control">
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="form-group">
                         <label for="Code_Finance">โค้ดไฟแนนซ์</label>
                         <input type="text" name="Code_Finance" id="Code_Finance" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label for="Auction_Location">สถานที่ประมูล</label>
+                        <input type="text" name="Auction_Location" id="Auction_Location" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-12 text-right">
@@ -77,9 +84,9 @@
                     <button type="button" class="btn btn-outline-danger" id="btn-clear">เคลียร์</button>
                 </div>
             </div>
-        </form>
+        </form>        
         <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
-            <table id="myTable2" class="table table-bordered display nowrap">
+            <table id="tbl_management" class="table table-bordered display nowrap">
                 <thead>
                     <tr>
                         <th class="nowrap">No</th>
@@ -89,6 +96,7 @@
                         <th class="nowrap">ยี่ห้อ</th>
                         <th class="nowrap">จังหวัด</th>
                         <th class="nowrap">ชื่อผู้ประมูล</th>
+                        <th class="nowrap">สถานที่ประมูล</th>
                         <th class="nowrap">สถานะ</th>
                         <th class="nowrap">ช่องทางรับเล่ม</th>
                         <th class="nowrap">แก้ไขล่าสุด</th>
@@ -107,8 +115,8 @@
 <div class="modal fade" id="addFileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addFileModal">นำเข้าข้อมูล</h5>
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title" style="color: white;">นำเข้าข้อมูล</h5>
             </div>
             <div class="modal-body">
                 <form id="form_import_data_excel" enctype="multipart/form-data">
@@ -121,24 +129,25 @@
                             <button class="btn btn-outline-primary btn-rounded btn-second choose_file_excel"
                                 type="button" id="choose_file_excel">เลือกไฟล์</button>
                             <button class="btn btn-outline-danger btn-rounded btn-second" type="button"
-                                id="">ล้างหน้าจอ</button>
+                                id="btn_clear">ล้างหน้าจอ</button>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="btn-save">ตกลง</button>
                         <button type="button" class="btn btn-secondary" id="close_modal">ปิด</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+</div>   
 
 {{!-- Modal New --}}
 <div class="modal fade" id="editModalNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูล</h5>
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title" style="color: white;">แก้ไขข้อมูล</h5>
             </div>
             <div class="modal-body">
                 <div class="form-group row">
@@ -146,19 +155,19 @@
                         <label for="auction_name" class="col-form-label">ชื่อ</label>
                         <input type="text" class="form-control" id="auction_name" name="auction_name" disabled>
                     </div>
-                    {{!-- <div id="display" style="color: white">Selected date:</div> --}}
                     <div class="col-lg-6">
                         <label for="date-receive" class="col-form-label">วันที่รับเล่ม</label>
-                        <input type="date" class="form-control " id="date-receive" name="date-receive">
+                        <input type="text" class="form-control " id="date-receive" name="date-receive">
+
                     </div>
                     <div class="col-lg-6">
                         <label for="date-sending-transport" class="col-form-label">วันที่ส่งเล่มให้ขนส่ง</label>
-                        <input type="date" class="form-control" id="date-sending-transport"
+                        <input type="text" class="form-control" id="date-sending-transport"
                             name="date-sending-transport">
                     </div>
                     <div class="col-lg-6">
                         <label for="date-receive-transport" class="col-form-label">วันที่รับเล่มจากขนส่ง</label>
-                        <input type="date" class="form-control" id="date-receive-transport"
+                        <input type="text" class="form-control" id="date-receive-transport"
                             name="date-receive-transport">
                     </div>
                     <div class="col-lg-6">
@@ -222,8 +231,8 @@
 <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">รายละเอียด</h5>
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title" style="color: white;">รายละเอียด</h5>
             </div>
             <div class="modal-body">
                 <form>
@@ -352,11 +361,16 @@
                             <span class="ml-2" id="ViewCustomer_Entry_Time"></span>
                         </div>
                         <div class="col-lg-4">
+                            <label for="ViewCustomer_Auction_location"><span style="color: red;"> * </span>สถานที่ประมูล
+                                :</label>
+                            <span class="ml-2" id="ViewCustomer_Auction_location"></span>
+                        </div>
+                        <div class="col-lg-4">
                             <label for="ViewCustomer_Car_Place">สถานที่จอด :</label>
                             <span class="ml-2" id="ViewCustomer_Car_Place"></span>
                         </div>
                         <div class="col-lg-4">
-                            <label for="ViewCustomer_Remark">หมายเหตุ :</label>
+                            <label for="ViewCustomer_Remark"><span style="color: red;"> * </span>หมายเหตุ :</label>
                             <span class="ml-2" id="ViewCustomer_Remark"></span>
                         </div>
                         <div class="col-lg-4">
@@ -414,19 +428,21 @@
                         </div>
                     </div>
                 </form>
-                <div class="col-md-12"><hr></div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
                 <div class="col-md-6">
-                    <h5>ประวัติการแก้ไข</h5>                    
-                </div>                
+                    <h5>ประวัติการแก้ไข</h5>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
                             <table class="table table-bordered display nowrap" id="history_data">
                                 <thead>
                                     <tr>
-                                        <th>#</th>                                        
+                                        <th>#</th>
                                         <th>ประเภทรายการ</th>
-                                        <th>ประเภทการดำเนินการ</th>                                    
+                                        <th>ประเภทการดำเนินการ</th>
                                         <th>รหัสรายการ</th>
                                         <th>การเปลี่ยนแปลงข้อมูล</th>
                                         <th>วันที่</th>
@@ -489,12 +505,14 @@
                                 <span id="Date_Receive_Transfer_Old"></span>
                             </div>
                             <div class="col-lg-6">
-                                <label for="">วันที่รับโอนจากขนส่ง (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <label for="">วันที่รับโอนจากขนส่ง (ใหม่)<span style="color: red;"> * </span> :</label>
                             </div>
                             <div class="col-lg-6">
                                 <span id="Date_Receive_Transfer_New"></span>
                             </div>
-                            <div class="col-md-12"><hr></div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
                             <div class="col-lg-6">
                                 <label for="">วิธีจัดส่งเล่มทะเบียน (เดิม) :</label>
                             </div>
@@ -502,12 +520,14 @@
                                 <span id="Delivery_Type_Old"></span>
                             </div>
                             <div class="col-lg-6">
-                                <label for="">วิธีจัดส่งเล่มทะเบียน (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <label for="">วิธีจัดส่งเล่มทะเบียน (ใหม่)<span style="color: red;"> * </span> :</label>
                             </div>
                             <div class="col-lg-6">
                                 <span id="Delivery_Type_New"></span>
                             </div>
-                            <div class="col-md-12"><hr></div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
                             <div class="col-lg-6">
                                 <label for="">เลขพัสดุ (เดิม) :</label>
                             </div>
@@ -515,7 +535,7 @@
                                 <span id="Postal_Code_Old"></span>
                             </div>
                             <div class="col-lg-6">
-                                <label for="">เลขพัสดุ (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <label for="">เลขพัสดุ (ใหม่)<span style="color: red;"> * </span> :</label>
                             </div>
                             <div class="col-lg-6">
                                 <span id="Postal_Code_New"></span>
@@ -527,12 +547,14 @@
                                 <span id="Document_Number_Old"></span>
                             </div>
                             <div class="col-lg-6">
-                                <label for="">เลขที่เอกสาร (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <label for="">เลขที่เอกสาร (ใหม่)<span style="color: red;"> * </span> :</label>
                             </div>
                             <div class="col-lg-6">
                                 <span id="Document_Number_New"></span>
                             </div>
-                            <div class="col-md-12"><hr></div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
                             <div class="col-lg-6">
                                 <label for="">วันที่ส่งเล่มทะเบียน (เดิม) :</label>
                             </div>
@@ -540,12 +562,14 @@
                                 <span id="Date_Send_Book_Old"></span>
                             </div>
                             <div class="col-lg-6">
-                                <label for="">วันที่ส่งเล่มทะเบียน (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <label for="">วันที่ส่งเล่มทะเบียน (ใหม่)<span style="color: red;"> * </span> :</label>
                             </div>
                             <div class="col-lg-6">
                                 <span id="Date_Send_Book_New"></span>
                             </div>
-                            <div class="col-md-12"><hr></div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
                             <div class="col-lg-6">
                                 <label for="">ที่อยู่จัดส่งเล่มทะเบียน: (เดิม) :</label>
                             </div>
@@ -553,12 +577,15 @@
                                 <span id="Address_Old"></span>
                             </div>
                             <div class="col-lg-6">
-                                <label for="">ที่อยู่จัดส่งเล่มทะเบียน (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <label for="">ที่อยู่จัดส่งเล่มทะเบียน (ใหม่)<span style="color: red;"> * </span>
+                                    :</label>
                             </div>
                             <div class="col-lg-6">
                                 <span id="Address_New"></span>
                             </div>
-                            <div class="col-md-12"><hr></div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
                             <div class="col-lg-6">
                                 <label for="">หมายเหตุ: (เดิม) :</label>
                             </div>
@@ -566,12 +593,14 @@
                                 <span id="Remark_Old"></span>
                             </div>
                             <div class="col-lg-6">
-                                <label for="">หมายเหตุ (ใหม่)<span style="color: red;"> * </span>  :</label>
+                                <label for="">หมายเหตุ (ใหม่)<span style="color: red;"> * </span> :</label>
                             </div>
                             <div class="col-lg-6">
                                 <span id="Remark_New"></span>
                             </div>
-                            <div class="col-md-12"><hr></div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
                             <div class="col-lg-6">
                                 <label for="">วันที่สร้าง :</label>
                             </div>
@@ -600,11 +629,30 @@
         </div>
     </div>
 </div>
-<script src="/assets/jquery/jquery.min.js"></script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/js/get_datatable.js"></script>
 <script>
 
     filter_mode();
+
+    // filter_mode
+    function filter_mode() {
+        var load = $('input[name=check_input_filter]:checked').val();
+        //console.log(load);
+        if (load == 1) {
+            $('#Date_Receive_Search').prop('disabled', false);
+            $('#Date_Send_Trans_Search').prop('disabled', false);
+            $('#Date_Receive_Trans_Search').prop('disabled', false);
+
+        } else {
+            $('#Date_Receive_Search').prop('disabled', true);
+            $('#Date_Send_Trans_Search').prop('disabled', true);
+            $('#Date_Receive_Trans_Search').prop('disabled', true);
+        }
+    }
 
     function toggleFields() {
         var deliveryMethod = document.getElementById("delivery-method");

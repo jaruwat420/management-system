@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    get_dataTable();
+    get_datatable();
 
     //Modals
     $('#addBtn').click(function (e) {
@@ -19,9 +19,17 @@ $(document).ready(function () {
 
     $('#fileExcel').change(function () {
         let file_name = $('#fileExcel').val();
-        $('#fileExcel_text').val(file_name);
-        f_customer_data_general_preview();
+        $('#fileExcel_text').val(file_name);       
     })
+    $("#btn-save").click(function (e) { 
+        f_customer_data_general_preview();        
+    });
+
+    // Clear form uploads
+    $("#btn_clear").click(() => {
+        $('#fileExcel').val('');
+        $('#fileExcel_text').val('');
+    });
 
     // Uploads files
     function f_customer_data_general_preview() {
@@ -34,14 +42,26 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             type: 'POST',
+            beforeSend:function(){
+                $('#btn-save').empty();
+                $('#btn-save').append('<i class="fas fa-circle-notch fa-spin"></i> กำลังโหลด');
+                $('#btn-save').prop('disabled', true);
+            },
             success: function (res) {
                 if (res.status === 201) {
                     Swal.fire('สำเร็จ!', `${res.message}`, 'success');
                 }
+                // Clear from uploads
+                    $('#fileExcel').val('');
+                    $('#fileExcel_text').val('');
+
                 //close modal file
                 $('#addFileModal').modal('hide');
                 //Reload
-                get_dataTable();
+                get_datatable();
+            },
+            error: function (){
+
             }
         });
     }
@@ -54,78 +74,6 @@ $(document).ready(function () {
             $('#fileExcel_text').val('');
         });
     });
-
-    // Get_DataTable
-    function get_dataTable() {
-        DataTableResult = $('#myTable2').DataTable({
-            serverSide: false,
-            dom: 'Bfrtip',
-            buttons: [
-                'csv', {
-                    extend: 'excel',
-                    text: 'Export to Excel',
-                    title: 'Your Excel Export File Name',
-                    filename: 'exported_data',
-                    sheetName: 'Sheet 1'
-                }, {
-                    extend: 'pdf',
-                    text: 'Export to PDF',
-                    title: 'Your PDF Export File Name',
-                    filename: 'exported_data',
-                    customize: function (doc) {
-
-                        doc.defaultStyle.font = 'THSarabun, Arial, sans-serif';
-                        doc.styles.tableBodyEven.font = 'THSarabun';
-                        doc.styles.tableBodyOdd.font = 'THSarabun';
-                        doc.styles.tableHeader.font = 'THSarabun';
-                    }
-                }, 'print'
-            ],
-            "order": [
-                [0, "desc"]
-            ],
-            "ordering": true,
-            "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
-            ],
-            ajax: {
-                url: '/dashboard/get_management',
-                dataSrc: 'data'
-            },
-            searching: false,
-            destroy: true,
-            ordering: false,
-            columns: [{
-                data: null,
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }
-            },
-            { data: 'license' },
-            { data: 'tank_code' },
-            { data: 'brand' },
-            { data: 'model' },
-            { data: 'province' },
-            { data: 'auction_name' },
-            { data: 'html' },
-            { data: 'delivery_type' },
-            { data: 'history' },
-            {
-                data: null,
-                render: function (data, type, row) {
-                    return `<button class="btn btn-warning " id="btn-edit" data-id="${data.id}"><i class="fas fa-edit"></i></button>`;
-                }
-            },
-            {
-                data: null,
-                render: function (data, type, row) {
-                    return `<button class="btn btn-primary" id="btn-view" data-id="${data.id}"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
-                }
-            }
-            ]
-        });
-    }
 
     // close modal view
     $('#closeBtn').click(function (e) {
@@ -143,7 +91,7 @@ $(document).ready(function () {
     let DataId;
     let historyData;
 
-    $('#myTable2 tbody').on('click', 'tr', function () {
+    $('#tbl_management tbody').on('click', 'tr', function () {
         rowData = DataTableResult.row(this).data();
         console.log(rowData);
     });
@@ -152,13 +100,8 @@ $(document).ready(function () {
         searchData = SearchDataTable.row(this).data();
     });
 
-    // $('#tbl_history_detail tbody').on('click', 'tr', function () {
-    //     historyData = historyDataTable.row(this).data();
-    // });
-
-
     // button edit
-    $('#myTable2').on('click', '#btn-edit', function () {
+    $('#tbl_management').on('click', '#btn-edit', function () {
         $('#editModalNew').modal('show');
         carId = $(this).data('id');
 
@@ -214,11 +157,10 @@ $(document).ready(function () {
         $('#delivery-method option[value="' + rowData.delivery_type + '"]').prop('selected', true);
         $('#postal-code').val(rowData.ems_code);
 
-
     });
 
     // button view
-    $('#myTable2').on('click', '#btn-view', function () {
+    $('#tbl_management').on('click', '#btn-view', function () {
         $('#viewModal').modal('show');
         DataId = $(this).data('id');
         $('#ViewCustomer_Finance_Name').text(rowData.finance);
@@ -251,6 +193,7 @@ $(document).ready(function () {
         $('#ViewCustomer_Member_Type').text(rowData.status);
         $('#ViewCustomer_Telephone').text(rowData.telephone);
         $('#ViewCustomer_Entry_Time').text(rowData.entry_times);
+        $('#ViewCustomer_Auction_location').text(rowData.auction_location);
         $('#ViewCustomer_Car_Place').text(rowData.place);
         $('#ViewCustomer_Remark').text(rowData.re_mark);
         $('#ViewCustomer_Member_Tax_Player_Number').text(rowData.taxpayer_number);
@@ -377,19 +320,6 @@ $(document).ready(function () {
         document.getElementById('newAddressSection').style.display = this.checked ? 'block' : 'none';
     });
 
-    // $('.datetimepicker').datetimepicker({
-    //     format: 'YYYY-MM-DD HH:mm:ss', 
-    //     useCurrent: false
-    // });
-
-    // $('#datetime_first_day').datetimepicker("destroy");
-    // $('#date-receive').datetimepicker("destroy");
-    // $('#date-receive').datetimepicker({
-    //     format:'YYYY-MM-DD',
-    //     date: new Date(),
-    //     minDate : $('.datetime_first_day').val()
-    // });
-
     //Modal Button Update 
     $('#BtnSaveModal').click(function (e) {
         const status = "update";
@@ -457,31 +387,24 @@ $(document).ready(function () {
                     Swal.fire('สำเร็จ!', `${res.message}`, 'success');
                 }
                 $('#editModalNew').modal('hide');
-
-                // Reload dataTable
-                get_dataTable();
+                get_datatable();
             }
         });
     });
 
-    //Date
-    // const dateInput = document.getElementById('date-receive');
-    // dateInput.addEventListener('change', (e) => {
-    //     const selectedDate = e.target.value;
-    //     document.getElementById('display').innerHTML = `Selected date : ${selectedDate}`;
-    // })
 
     // Button Clear
     $('#btn-clear').click(function (e) {
-        $('#Date_Receive').val('')
-        $('#Date_Send_Trans').val('')
-        $('#Date_Receive_Trans_Start').val('')
-        $('#Car_License').val('')
-        $('#Auction_Name').val('')
-        $('#Auction_Round').val('')
-        $('#Code_Finance').val('')
+        $('#Date_Receive_Search').val('').trigger('change');
+        $('#Date_Send_Trans_Search').val('').trigger('change');
+        $('#Date_Receive_Trans_Search').val('').trigger('change');
+        $('#Car_License').val('').trigger('change');
+        $('#Auction_Name').val('').trigger('change');
+        $('#Auction_Round').val('').trigger('change');
+        $('#Code_Finance').val('').trigger('change');
+        $('#Auction_Location').val('').trigger('change');
         $('input[name=check_input_filter]:checked').val(0);
-        get_dataTable();
+        get_datatable();
 
     });
 
@@ -491,7 +414,7 @@ $(document).ready(function () {
         var startDateReceiveTrans, endDateReceiveTrans;
 
         // Date_Receive
-        $('input[name="Date_Receive"]').daterangepicker({
+        $('input[name="Date_Receive_Search"]').daterangepicker({
             autoUpdateInput: false,
             autoApply: true,
             opens: 'left',
@@ -501,12 +424,12 @@ $(document).ready(function () {
             endDateReceive = end.format('YYYY-MM-DD');
         });
 
-        $('input[name="Date_Receive"]').on('apply.daterangepicker', function (ev, picker) {
+        $('input[name="Date_Receive_Search"]').on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
         });
 
         // Date_Send_Trans
-        $('input[name="Date_Send_Trans"]').daterangepicker({
+        $('input[name="Date_Send_Trans_Search"]').daterangepicker({
             autoUpdateInput: false,
             opens: 'left',
             startDate: moment(),
@@ -515,12 +438,12 @@ $(document).ready(function () {
             endDateSendTrans = end.format('YYYY-MM-DD');
         });
 
-        $('input[name="Date_Send_Trans"]').on('apply.daterangepicker', function (ev, picker) {
+        $('input[name="Date_Send_Trans_Search"]').on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
         });
 
         // Date_Receive_Trans_Start
-        $('input[name="Date_Receive_Trans_Start"]').daterangepicker({
+        $('input[name="Date_Receive_Trans_Search"]').daterangepicker({
             autoUpdateInput: false,
             opens: 'left',
             startDate: moment(),
@@ -529,77 +452,80 @@ $(document).ready(function () {
             endDateReceiveTrans = end.format('YYYY-MM-DD');
         });
 
-        $('input[name="Date_Receive_Trans_Start"]').on('apply.daterangepicker', function (ev, picker) {
+        $('input[name="Date_Receive_Trans_Search"]').on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
         });
+    });
 
-        $('#btn-search').click(function (e) {
-            const car_license = $('#Car_License').val();
-            const auction_name = $('#Auction_Name').val();
-            const auction_round = $('#Auction_Round').val();
-            const code_finance = $('#Code_Finance').val();
-            const filter_mode = $('input[name="check_input_filter"]:checked').val();
-            // DataTableResult.ajax.reload();
+    $("#btn-search").click(function (e) {
+        get_datatable();
+    });
 
-            if (startDateReceive && endDateReceive && startDateSendTrans && endDateSendTrans && startDateReceiveTrans && endDateReceiveTrans) {
-                sendDateRangeToServer(
-                    startDateReceive,
-                    endDateReceive,
-                    startDateSendTrans,
-                    endDateSendTrans,
-                    startDateReceiveTrans,
-                    endDateReceiveTrans,
-                    car_license,
-                    auction_name,
-                    auction_round,
-                    code_finance,
-                    filter_mode
-                );
-            } else {
-                console.log('กรุณาเลือกวันที่ก่อนที่จะค้นหา');
-            }
-        });
+    // date receive
+    $('#date-receive').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+        defaultDate: moment().startOf('day')
+    });
+    $('#date-receive').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#date-receive').val(selectedDateTime);
+    });
+    ///date sending book transfer
+    $('#date-sending-transport').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+        defaultDate: moment().startOf('day')
+    });
+    $('#date-sending-transport').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#date-sending-transport').val(selectedDateTime);
+    });
+    ///date receive book transfer
+    $('#date-receive-transport').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+        defaultDate: moment().startOf('day')
+    });
+    $('#date-receive-transport').on('dp.change', function (e) {
+        var currentTime = moment().format('HH:mm:ss');
+        var selectedDate = e.date.format('YYYY-MM-DD');
+        var selectedDateTime = selectedDate + ' ' + currentTime;
+        $('#date-receive-transport').val(selectedDateTime);
+    });
 
-        function sendDateRangeToServer
-        (startDateReceive,
-            endDateReceive,
-            startDateSendTrans,
-            endDateSendTrans,
-            startDateReceiveTrans,
-            endDateReceiveTrans, 
-            car_license,
-            auction_name,
-            auction_round, 
-            code_finance, 
-            filter_mode
-            ) {
 
-            const requestData = {
-                startDateReceive: startDateReceive,
-                endDateReceive: endDateReceive,
-                startDateSendTrans: startDateSendTrans,
-                endDateSendTrans: endDateSendTrans,
-                startDateReceiveTrans: startDateReceiveTrans,
-                endDateReceiveTrans: endDateReceiveTrans,
-                carLicense: car_license,
-                auctionName: auction_name,
-                auctionRound: auction_round,
-                codeFinance: code_finance,
-                filterMode: filter_mode
-            };
-            $.ajax({
-                "type": "POST",
-                "url": "/dashboard/search",
-                "data": JSON.stringify(requestData),
-                "dataType": "json",
-                success: function (res) {
-                    DataTableResult = $('#myTable2').DataTable({
-                        data: res.res.searchResults,
-                        processing: true,
-                        serverSide: false,
-                        destroy: true,
-                        searching: false,
-                        columns: [{
+
+
+    // dataTable
+    function get_datatable() {
+        var searchData = {
+            Date_Receive: $("#Date_Receive_Search").val(),
+            Date_Send_Trans: $("#Date_Send_Trans_Search").val(),
+            Date_Receive_Trans_Start: $("#Date_Receive_Trans_Search").val(),
+            Car_License: $("#Car_License").val(),
+            Auction_Name: $("#Auction_Name").val(),
+            Auction_Round: $("#Auction_Round").val(),
+            Code_Finance: $("#Code_Finance").val(),
+            Auction_Location: $("#Auction_Location").val(),
+            Filter_Mode: $('input[name="check_input_filter"]:checked').val(),
+        }
+        $.ajax({
+            type: "POST",
+            url: "/dashboard/ajax_search_management",
+            data: searchData,
+            dataType: "Json",
+            success: function (res) {
+                console.log(res.res.searchResults);
+                DataTableResult = $("#tbl_management").DataTable({
+                    data: res.res.searchResults,
+                    processing: true,
+                    serverSide: false,
+                    destroy: true,
+                    searching: false,
+                    columns: [
+                        {
                             data: null,
                             render: function (data, type, row, meta) {
                                 return meta.row + meta.settings._iDisplayStart + 1;
@@ -611,6 +537,7 @@ $(document).ready(function () {
                         { data: 'model' },
                         { data: 'province' },
                         { data: 'auction_name' },
+                        { data: 'auction_location' },
                         {
                             data: null,
                             render: function (data, type, row) {
@@ -641,14 +568,11 @@ $(document).ready(function () {
                                 return `<button class="btn btn-primary" id="btn-view" data-id="${data.id}"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
                             }
                         }
-                        ]
-                    });
-                },
-                error: function (error) {
-                    console.error('เกิดข้อผิดพลาดในการส่งข้อมูล', error);
-                }
-            });
-        }
-    });
+                    ]
+                })
+            }
+        });
+    }
 
-});
+
+})

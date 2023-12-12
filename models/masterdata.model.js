@@ -125,7 +125,7 @@ const MasterData = sequelize.define('masterdata', {
         allowNull: true,
     },   
     date: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         field: 'date',
         defaultValue: null,
         allowNull: true,
@@ -191,7 +191,7 @@ const MasterData = sequelize.define('masterdata', {
         allowNull: true,
     },   
     telephone: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         field: 'telephone',
         defaultValue: '',
         allowNull: true,
@@ -237,6 +237,12 @@ const MasterData = sequelize.define('masterdata', {
         defaultValue: '',
         allowNull: true,
     },   
+    auction_location: {
+        type: DataTypes.TEXT,
+        field: 'auction_location',
+        defaultValue: '',
+        allowNull: true,
+    },
     description: {
         type: DataTypes.STRING,
         field: 'description',
@@ -244,19 +250,19 @@ const MasterData = sequelize.define('masterdata', {
         defaultValue: null,
     },
     date_of_receiving: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         field: 'date_of_receiving',
         allowNull: true,
         defaultValue: null,
     },
     date_of_sending: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         field: 'date_of_sending',
         allowNull: true,
         defaultValue: null,
     },
     date_receiving_trans: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         field: 'date_receiving_trans',
         allowNull: true,
         defaultValue: null,
@@ -268,13 +274,13 @@ const MasterData = sequelize.define('masterdata', {
         defaultValue: null, 
     },
     date_customer_receives:{
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         field: 'date_customer_receives',
         allowNull: true,
         defaultValue: null, 
     },
     date_sending_ems:{
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         field: 'date_sending_ems',
         allowNull: true,
         defaultValue: null, 
