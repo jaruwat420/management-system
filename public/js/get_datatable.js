@@ -98,6 +98,7 @@ $(document).ready(function () {
 
     $('#history_data tbody').on('click', 'tr', function () {
         searchData = SearchDataTable.row(this).data();
+        console.log(searchData);
     });
 
     // button edit
@@ -229,14 +230,17 @@ $(document).ready(function () {
                         },
                         { data: 'action_type' },
                         { data: 'item_type' },
-                        { data: 'item_id' },
                         {
                             data: null,
                             render: function (data, type, row) {
                                 return `<a href = "#" id="btn-view-detail" data-id="${data.id}">รายละเอียดเพิ่มเติม</a>`
                             }
                         },
-                        { data: 'createdAt' },
+                        { data: null, 
+                            render: function (data){
+                                return moment(data).format('YYYY-MM-DD HH:mm:ss');
+                            }
+                        },
                         { data: 'user_new_name' },
                     ]
                 });
@@ -298,7 +302,6 @@ $(document).ready(function () {
                 $("#Address_New").text(Address_New);
                 $("#Remark_Old").text(Re_Mark_Old);
                 $("#Remark_New").text(Re_Mark_New);
-                $("#Date_Create").text(Date_Create);
                 $("#Date_Last_Update").text(Date_Create);
                 $("#Edit_By").text(Edit_By);
 
@@ -392,6 +395,7 @@ $(document).ready(function () {
         });
     });
 
+    
 
     // Button Clear
     $('#btn-clear').click(function (e) {
@@ -406,7 +410,14 @@ $(document).ready(function () {
         $('input[name=check_input_filter]:checked').val(0);
         get_datatable();
 
+        // setTimeout(() => {
+        //     $('#datatable_display').css("display", "");
+        //     $('#show_datatable').css("display", "none");
+        // }, 1000);
+
+        
     });
+
 
     $(function () {
         var startDateReceive, endDateReceive;
@@ -458,6 +469,12 @@ $(document).ready(function () {
     });
 
     $("#btn-search").click(function (e) {
+
+        // setTimeout(() => {
+        //     $('#datatable_display').css("display", "none");
+        //     $('#show_datatable').css("display", "");
+        // }, 1000);
+
         get_datatable();
     });
 
@@ -494,9 +511,6 @@ $(document).ready(function () {
         var selectedDateTime = selectedDate + ' ' + currentTime;
         $('#date-receive-transport').val(selectedDateTime);
     });
-
-
-
 
     // dataTable
     function get_datatable() {
@@ -573,6 +587,8 @@ $(document).ready(function () {
             }
         });
     }
+
+    
 
 
 })

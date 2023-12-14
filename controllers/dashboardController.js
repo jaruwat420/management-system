@@ -13,6 +13,7 @@ import LogHistory from "../models/system_log_history.modal.js";
 import bodyParser from "body-parser";
 import moment from "moment";
 import sequelize from "sequelize";
+import ExcelJS from "exceljs";
 
 
 
@@ -21,15 +22,16 @@ const upload = multer({ storage: storage });
 
 //----------------------------------Render Register------------------------------------//
 export const renderHome = async (req, res) => {
+    const userFirstName = req.session.user.firstname;
     res.render('dashboard', {
         layout: "admin",
-        title: "หน้าแรก"
+        title: "หน้าแรก",
+        userFirstName:userFirstName
     });
 }
 
 //----------------------------------render Management------------------------------------//
 export const renderManagement = async (req, res) => {
-
     res.render('management', {
         layout: "admin",
         title: "จัดการเล่มทะเบียน"
@@ -536,7 +538,7 @@ export const updateDeposit = async (req, res) => {
             date_send_ems: date_send_emss,
             address: addresss,
             re_mark: re_marks,
-            flag_status:flag_status
+            flag_status: flag_status
         }, {
             where: {
                 id: Ids
@@ -572,19 +574,19 @@ export const ajax_search_managements = async (req, res) => {
         Filter_Mode,
     } = req.body;
 
-        const [startDateReceive, endDateReceive] = Date_Receive.split(' - ');
-        const [startDateSendTrans, endDateSendTrans] = Date_Send_Trans.split(' - ');
-        const [startDateReceiveTrans, endDateReceiveTrans] = Date_Receive_Trans_Start.split(' - ');
+    const [startDateReceive, endDateReceive] = Date_Receive.split(' - ');
+    const [startDateSendTrans, endDateSendTrans] = Date_Send_Trans.split(' - ');
+    const [startDateReceiveTrans, endDateReceiveTrans] = Date_Receive_Trans_Start.split(' - ');
     try {
-        
+
         const searchResults = { searchResults: [] };
-        
+
         // filter  == 0 All || ==1 condition
         if (Filter_Mode == 0) {
             const searchDepositAll = await MasterData.findAll({});
             searchResults.searchResults = searchDepositAll;
         }
-        
+
         if (startDateReceive && endDateReceive) {
             const formattedStartDateReceive = moment(startDateReceive, 'MM/DD/YYYY').format('YYYY-MM-DD');
             const formattedEndDateReceive = moment(endDateReceive, 'MM/DD/YYYY').format('YYYY-MM-DD');
@@ -616,7 +618,7 @@ export const ajax_search_managements = async (req, res) => {
             // แปลงวันที่จาก MM/DD/YYYY เป็น YYYY-MM-DD HH:mm:ss
             const formattedStartDateSendTrans = moment(startDateReceiveTrans, 'MM/DD/YYYY').format('YYYY-MM-DD HH:mm:ss');
             const formattedEndDateSendTrans = moment(endDateReceiveTrans, 'MM/DD/YYYY').format('YYYY-MM-DD HH:mm:ss');
-        
+
             const searchDateReceiveSendTrans = await MasterData.findAll({
                 where: {
                     [Op.and]: [
@@ -624,9 +626,9 @@ export const ajax_search_managements = async (req, res) => {
                     ]
                 }
             });
-            searchResults.searchResults = searchDateReceiveSendTrans;            
+            searchResults.searchResults = searchDateReceiveSendTrans;
         }
-        
+
 
         if (Car_License) {
             const searchCarLicense = await MasterData.findAll({
@@ -697,12 +699,31 @@ export const Get_History_Log = async (req, res) => {
 
 // ------------------------------Ajax Deposit Search-----------------------------------//
 export const getLogHistory = async (req, res) => {
-    const DataId = req.body.DataId
-    const Data = await LogHistory.findAll({ where: { id: DataId } });
-    res.status(201).json({ Data: Data, message: "success", status: 201 });
+    try {
+        const DataId = req.body.DataId
+        const Data = await LogHistory.findAll({ where: { id: DataId } });
+
+        // แปลงรูปแบบวันที่ทุกคอลัมน์
+        const formattedData = Data.map(item => {
+            const formattedItem = {};
+            Object.keys(item.dataValues).forEach(key => {
+                if (item[key] instanceof Date) {
+                    formattedItem[key] = moment(item[key]).format('YYYY-MM-DD HH:mm:ss');
+                } else {
+                    formattedItem[key] = item[key];
+                }
+            });
+            return formattedItem;
+        });
+
+        res.status(201).json({ Data: formattedData, message: "success", status: 201 });
+    } catch (error) {
+        // ถ้ามีข้อผิดพลาด
+        console.error("Error fetching log history:", error);
+        res.status(500).json({ message: "Internal Server Error", status: 500 });
+    }
 
 }
-
 
 // ------------------------------Ajax Deposit Search----------------------------------- *//
 export const ajax_deposit_search = async (req, res) => {
@@ -841,4 +862,193 @@ export const get_deposit_history = async (req, res) => {
     const DataId = req.body.DataId
     const Data = await LogHistory.findAll({ where: { id: DataId } });
     res.status(201).json({ Data: Data, message: "success", status: 201 });
+}
+
+//---------------------------Report-----------------------------------//
+export const get_report = async (req, res) => {
+    res.render('report', {
+        layout: "admin",
+        title: "รายงานเล่มทะเบียน"
+    });
+}
+
+
+//---------------------------Get DataTable Report-----------------------------------//
+export const get_datatable_report = async (req, res) => {
+
+    try {
+        const records = await MasterData.findAll({});
+
+        for (const record of records) {
+            const recordDate = moment(record.date, 'DD/MM/YYYY', true).toDate();
+
+            if (isNaN(recordDate.getTime())) {
+                continue;
+            }
+
+            const recordDates = moment(new Date(recordDate));
+            const newDateFormat = moment(new Date()).add(543, 'years');
+            const diffTime = Math.abs(newDateFormat - recordDates);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            console.log('วันที่จบ (recordDates):', recordDates.format('DD/MM/YY'));
+            console.log('ปัจจุบัน (newDateFormat):', newDateFormat.format('DD/MM/YY'));
+            console.log('ห่างกัน (daysDiff):', diffDays);
+            if (diffDays) {
+                record.over_thirty_days = diffDays - 1;
+            }
+            await record.save();
+        }
+
+
+        const resultDate = await MasterData.findAll({
+            where: {
+                over_thirty_days: {
+                    [sequelize.Op.gte]: 30
+                },
+                flag: {
+                    [sequelize.Op.eq]: ''
+                }
+            }
+        });
+
+
+        res.status(201).json({ res: resultDate, message: 'Flag updated successfully.', status: 201 });
+    } catch (error) {
+        console.error('Error updating flag:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+//---------------------------Export Excel-----------------------------------//
+export const exportExcel = async (req, res) => {
+    try {
+        const workbook = new ExcelJS.Workbook();
+        const sheetCar = workbook.addWorksheet('รถยนต์');
+        const sheetBike = workbook.addWorksheet('มอเตอร์ไซค์');
+
+        const dataTable = await getSampleDataTable();
+
+        fillSheet(sheetCar, dataTable, 'C');
+        fillSheet(sheetBike, dataTable, 'M');
+
+        const buffer = await workbook.xlsx.writeBuffer();
+        //console.log(buffer);
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename=exported_data.xlsx');
+        res.send(buffer);
+
+    } catch (error) {
+        console.error('Error exporting Excel:', error);
+        res.status(500).send('Internal Server Error');
+    }
+
+    async function getSampleDataTable() {
+        const queryData = await MasterData.findAll({
+            attributes: [
+                'finance',
+                'brand',
+                'model',
+                'engine_code',
+                'color',
+                'license',
+                'province',
+                'auction_name',
+                'date',
+                'description',
+                'no_cut',
+            ],
+            where: {
+                [sequelize.Op.and]: [
+                    {
+                        over_thirty_days: {
+                            [sequelize.Op.gte]: 30
+                        }
+                    },
+                    {
+                        flag: {
+                            [sequelize.Op.eq]: ''
+                        }
+                    }
+                ]
+            }
+        });
+
+        let order = 1;
+        const dataTable = queryData.map(item => {
+            const itemDate = (item.date);
+            if ((itemDate)) {
+                const currentDate = moment(new Date()).add(543, 'years');
+                const momentItemDate = moment(itemDate, 'DD/MM/YYYY');
+                const diffTime = Math.abs(currentDate - momentItemDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const dateReduce = diffDays - 1;
+                // console.log('วันที่จบ (recordDates):', momentItemDate.format('DD/MM/YYYY'));
+                // console.log('ปัจจุบัน (newDateFormat):', currentDate.format('DD/MM/YYYY'));
+                // console.log('ห่างกัน (diffTime):', diffTime);
+                // console.log('ห่างกัน (daysDiff):', diffDays);
+
+                return {
+                    order: order++,
+                    no_cut: item.no_cut,
+                    finance: item.finance,
+                    brand: item.brand,
+                    model: item.model,
+                    engine_code: item.engine_code,
+                    color: item.color,
+                    license: item.license,
+                    province: item.province,
+                    auction_name: item.auction_name,
+                    date: item.date,
+                    diffDays: dateReduce,
+                    description: item.description,
+                };
+            } else {
+                return null;
+            }
+        }).filter(item => item !== null);
+        return dataTable;
+    }
+
+    function fillSheet(sheet, dataTable, prefix) {
+        // กรอก header
+        sheet.addRow([
+            'ลำดับ',
+            'CG',
+            'ยี่ห้อ',
+            'รุ่น',
+            'เลขครื่อง',
+            'สี',
+            'ทะเบียน',
+            'จังหวัด',
+            'ผู้ประมูล',
+            'วันแจ้งจบ',
+            'จำนวนวัน',
+            'หมายเหตุ',
+            'หมายเหตุ'
+        ]);
+
+        if (dataTable && Array.isArray(dataTable)) {
+            let order = 1;
+            dataTable.forEach(row => {
+                if (row.no_cut[0] === prefix) {
+                    sheet.addRow([
+                        order++,
+                        row.finance,
+                        row.brand,
+                        row.model,
+                        row.engine_code,
+                        row.color,
+                        row.license,
+                        row.province,
+                        row.auction_name,
+                        row.date,
+                        row.diffDays,
+                        row.description,
+                    ]);
+                }
+            });
+        } else {
+            console.error('Invalid dataTable:', dataTable);
+        }
+    }
 }

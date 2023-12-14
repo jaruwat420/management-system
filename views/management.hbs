@@ -85,6 +85,8 @@
                 </div>
             </div>
         </form>        
+        {{!-- <h3 class="text-center text-secondary" id="datatable_display">กรุณากรอกรายละเอียดเงื่อนไขเพื่อค้นหา . . .</h3>
+        <div class="table-responsive"  id="show_datatable" style="display: none;"> --}}
         <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
             <table id="tbl_management" class="table table-bordered display nowrap">
                 <thead>
@@ -109,6 +111,7 @@
             </table>
         </div>
     </div>
+    {{!-- </div> --}}
 </div>
 
 <!-- Modal Add-->
@@ -436,14 +439,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
-                            <table class="table table-bordered display nowrap" id="history_data">
+                        {{!-- <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;"> --}}
+                            <table class="table table-bordered display nowrap" id="history_data" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>ประเภทรายการ</th>
                                         <th>ประเภทการดำเนินการ</th>
-                                        <th>รหัสรายการ</th>
                                         <th>การเปลี่ยนแปลงข้อมูล</th>
                                         <th>วันที่</th>
                                         <th>แก้ไขล่าสุด</th>
@@ -452,7 +454,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
-                        </div>
+                        {{!-- </div> --}}
                     </div>
                 </div>
             </div>
@@ -601,12 +603,12 @@
                             <div class="col-md-12">
                                 <hr>
                             </div>
-                            <div class="col-lg-6">
+                            {{!-- <div class="col-lg-6">
                                 <label for="">วันที่สร้าง :</label>
                             </div>
                             <div class="col-lg-6">
                                 <span id="Date_Create"></span>
-                            </div>
+                            </div> --}}
                             <div class="col-lg-6">
                                 <label for="">วันที่แก้ไขล่าสุด :</label>
                             </div>
@@ -634,6 +636,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/js/get_datatable.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone.min.js"></script>
 <script>
 
     filter_mode();

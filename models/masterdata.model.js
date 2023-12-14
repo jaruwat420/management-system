@@ -309,6 +309,12 @@ const MasterData = sequelize.define('masterdata', {
         defaultValue: '',
         allowNull: true,
     },
+    over_thirty_days: {
+        type: DataTypes.STRING,
+        field: 'over_thirty_days',
+        defaultValue: '',
+        allowNull: true,
+    },
     delivery_type: {
         type: DataTypes.STRING,
         field: 'delivery_type',

@@ -22,6 +22,9 @@ import {
     ajax_deposit_search,
     ajax_deposit_history,
     get_deposit_history,
+    get_report,
+    get_datatable_report,
+    exportExcel
 
 } from "../controllers/dashboardController.js";
 
@@ -31,7 +34,7 @@ import LogHistory from "../models/system_log_history.modal.js";
 const router = Router();
 
 const uploadXLSX = async (req, res, next) => {
-    try {
+try {
     //session login
     const userFirstName = req.session.user.firstname;
     const userId = req.session.user.id;
@@ -44,8 +47,9 @@ const uploadXLSX = async (req, res, next) => {
         const workbook = XLSX.readFile(fileName, {
             type: 'binary',
             cellDates: true,
+            dateNF: 'DD/MM/YYYY',
             cellNF: false,
-            cellText: false
+            cellText: true,
         });
 
         const sheetName = workbook.SheetNames[sheetIndex];
@@ -53,10 +57,10 @@ const uploadXLSX = async (req, res, next) => {
 
         const options = {
             raw: false,
-            dateNF: 'D/M/YYYY'
+            dateNF: 'DD/MM/YYYY'
         };
 
-        const sheetData = XLSX.utils.sheet_to_json(sheet, { header: 1, ...options });
+        const sheetData = XLSX.utils.sheet_to_json(sheet, { header: 1, ...options});
         return sheetData;
     }
 
@@ -83,7 +87,7 @@ const uploadXLSX = async (req, res, next) => {
         const rowData = sheet.body.map((row) =>
             sheet.header.reduce((acc, header, index) => {
                 if (header === 'DATE') {
-                    acc[header] = moment(row[index], 'D/M/YYYY').startOf('day').toDate();
+                    acc[header] = moment(row[index], 'DD/MM/YYYY');
                 } else {
                     acc[header] = row[index];
                 }
@@ -95,8 +99,8 @@ const uploadXLSX = async (req, res, next) => {
             //console.log('Processing data:', data);
             try {
                 //format Date
-                const formattedDate = moment(data.DATE).format('YYYY-MM-DD');
-
+                const formattedDate = moment(data.DATE, 'MM/DD/YYYY').format('DD/MM/YYYY');
+                console.log(formattedDate);
                 let savedData = await MasterData.create({
                     finance: data.FN,
                     tax_invoice: data['Tax Invoice'],
@@ -175,7 +179,6 @@ var storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
 router.get("/", auth, renderHome);
 router.get("/management", auth, renderManagement);
 router.get("/get_management", auth, getManagement);
@@ -193,5 +196,8 @@ router.post("/get_log_history", auth, getLogHistory)
 router.put("/ajax_deposit_search", auth, ajax_deposit_search)
 router.post("/ajax_deposit_history", auth, ajax_deposit_history)
 router.post("/get_deposit_history", auth, get_deposit_history)
+router.get("/report", auth, get_report)
+router.get("/get_datatable_report", auth, get_datatable_report)
+router.get("/exportExcel" , auth, exportExcel)
 
 export default router;
