@@ -15,6 +15,10 @@ $(document).ready(function () {
                 if (res.status === 201) {
                     window.location.href = "/dashboard/"
                 }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                let errorMessage = textStatus ;
+                Swal.fire('เกิดข้อผิดพลาด!', errorMessage, 'error');
             }
         });
         

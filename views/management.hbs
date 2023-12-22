@@ -84,34 +84,36 @@
                     <button type="button" class="btn btn-outline-danger" id="btn-clear">เคลียร์</button>
                 </div>
             </div>
-        </form>        
-        {{!-- <h3 class="text-center text-secondary" id="datatable_display">กรุณากรอกรายละเอียดเงื่อนไขเพื่อค้นหา . . .</h3>
-        <div class="table-responsive"  id="show_datatable" style="display: none;"> --}}
-        <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
-            <table id="tbl_management" class="table table-bordered display nowrap">
-                <thead>
-                    <tr>
-                        <th class="nowrap">No</th>
-                        <th class="nowrap">ทะเบียน</th>
-                        <th class="nowrap">เลขตัวถัง</th>
-                        <th class="nowrap">รุ่น</th>
-                        <th class="nowrap">ยี่ห้อ</th>
-                        <th class="nowrap">จังหวัด</th>
-                        <th class="nowrap">ชื่อผู้ประมูล</th>
-                        <th class="nowrap">สถานที่ประมูล</th>
-                        <th class="nowrap">สถานะ</th>
-                        <th class="nowrap">ช่องทางรับเล่ม</th>
-                        <th class="nowrap">แก้ไขล่าสุด</th>
-                        <th class="nowrap">แก้ไข</th>
-                        <th class="nowrap">ดู</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+        </form>
+        {{!-- <h3 class="text-center text-secondary" id="datatable_display">กรุณากรอกรายละเอียดเงื่อนไขเพื่อค้นหา . . .
+        </h3>
+        <div class="table-responsive" id="show_datatable" style="display: none;"> --}}
+            <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
+                <table id="tbl_management" class="table table-bordered display nowrap">
+                    <thead>
+                        <tr>
+                            <th class="nowrap">No</th>
+                            <th class="nowrap">ทะเบียน</th>
+                            <th class="nowrap">เลขตัวถัง</th>
+                            <th class="nowrap">รุ่น</th>
+                            <th class="nowrap">ยี่ห้อ</th>
+                            <th class="nowrap">จังหวัด</th>
+                            <th class="nowrap">ชื่อผู้ประมูล</th>
+                            <th class="nowrap">สถานที่ประมูล</th>
+                            <th class="nowrap">สถานะ</th>
+                            <th class="nowrap">ช่องทางรับเล่ม</th>
+                            <th class="nowrap">แก้ไขล่าสุด</th>
+                            <th class="nowrap">แก้ไข</th>
+                            <th class="nowrap">ดู</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    {{!-- </div> --}}
+        {{!--
+    </div> --}}
 </div>
 
 <!-- Modal Add-->
@@ -143,7 +145,7 @@
             </div>
         </div>
     </div>
-</div>   
+</div>
 
 {{!-- Modal New --}}
 <div class="modal fade" id="editModalNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -377,7 +379,8 @@
                             <span class="ml-2" id="ViewCustomer_Remark"></span>
                         </div>
                         <div class="col-lg-4">
-                            <label for="ViewCustomer_Member_Tax_Player_Number">หมายเลขประจำตัวผู้เสียภาษี : </label>
+                            <label for="ViewCustomer_Member_Tax_Player_Number"><span style="color: red;"> *
+                                </span>หมายเลขประจำตัวผู้เสียภาษี : </label>
                             <span class="ml-2" id="ViewCustomer_Member_Tax_Player_Number"></span>
                         </div>
                         <div class="col-lg-4">
@@ -439,7 +442,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        {{!-- <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;"> --}}
+                        {{!-- <div class="table-responsive main_tbl_chk" style="max-height: 500px; margin-top:20px;">
+                            --}}
                             <table class="table table-bordered display nowrap" id="history_data" style="width: 100%;">
                                 <thead>
                                     <tr>
@@ -454,7 +458,8 @@
                                 <tbody>
                                 </tbody>
                             </table>
-                        {{!-- </div> --}}
+                            {{!--
+                        </div> --}}
                     </div>
                 </div>
             </div>

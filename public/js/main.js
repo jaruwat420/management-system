@@ -41,29 +41,29 @@ $(document).ready(function () {
             passwordConfirm: passwordValueConfirm,
         }
         $.ajax({
-            type: "put",
-            url: "auth/register",
+            type: "post", // หรือ "put" ตามที่คุณกำหนด
+            url: "auth/login", // แก้ไข URL ตามที่เรียก API ของคุณ
             data: {
-                firstname: userData.username,
-                lastname: userData.lastname,
-                email: userData.email,
-                password: userData.password,
-                passwordConfirm: userData.passwordConfirm
+                username: userData.username,
+                password: userData.password
             },
             dataType: "JSON",
             success: function (res) {
-                if (res.status == 200) {
+                if (res.status === 201) {
                     Swal.fire({
-                        title: 'ลงทะเบียนสำเร็จ!',
+                        title: 'เข้าสู่ระบบสำเร็จ!',
                         text: 'กรุณากดยืนยันเพื่อทำการเข้าสู่ระบบ',
                         icon: 'success',
                     }).then(() => {
                         window.location.href = "/";
                     });
+                } else {
+                    Swal.fire('เกิดข้อผิดพลาด!', res.message, 'error');
                 }
             },
-            error: function (error) {
-                Swal.fire('เกิดข้อผิดพลาด', 'พบอีเมลนี้ในระบบแล้ว โปรดใช้อีเมลอื่น!', 'error');
+            error: function (jqXHR, textStatus, errorThrown) {
+                let errorMessage = textStatus || 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
+                Swal.fire('เกิดข้อผิดพลาด!', errorMessage, 'error');
             }
         });
     });
@@ -86,17 +86,22 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (res) {
-                
-                setTimeout(() => {
-                    window.location.href = "/dashboard/";
-                }, 1000);
-            },
-            error: function (res) {
-                if (res.status === 400) {
-                    $('.message-error').css('display', 'block');
-                    $('.message-error').html('<p>' + res.message + '</p>');
-                    
+                if (res.status === 201) {
+                    Swal.fire({
+                        title: 'เข้าสู่ระบบสำเร็จ!',
+                        text: 'กรุณากดยืนยันเพื่อทำการเข้าสู่ระบบ',
+                        icon: 'success',
+                    }).then(() => {
+                        window.location.href = "/";
+                    });
+                } else {
+                    Swal.fire('เกิดข้อผิดพลาด!', res.message, 'error');
                 }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                let errorMessage = textStatus || 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
+                console.log(errorMessage);
+                Swal.fire('เกิดข้อผิดพลาด!', errorMessage, 'error');
             }
         });
     });

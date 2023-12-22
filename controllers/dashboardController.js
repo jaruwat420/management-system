@@ -22,11 +22,11 @@ const upload = multer({ storage: storage });
 
 //----------------------------------Render Register------------------------------------//
 export const renderHome = async (req, res) => {
-    const userFirstName = req.session.user.firstname;
+    //const userFirstName = req.session.user.firstname;
     res.render('dashboard', {
         layout: "admin",
         title: "หน้าแรก",
-        userFirstName:userFirstName
+       // userFirstName:userFirstName
     });
 }
 
@@ -932,9 +932,12 @@ export const exportExcel = async (req, res) => {
         fillSheet(sheetBike, dataTable, 'M');
 
         const buffer = await workbook.xlsx.writeBuffer();
-        //console.log(buffer);
+
+        const newDateWithTime = moment(new Date()).format('DD/MM/YYYY HH:mm:ss');
+        const encodedFileName = encodeURIComponent(`รายงานรถรอเล่มทะเบียน_${newDateWithTime}.xlsx`);
+
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', 'attachment; filename=exported_data.xlsx');
+        res.setHeader('Content-Disposition', 'attachment; filename='+ encodedFileName);
         res.send(buffer);
 
     } catch (error) {

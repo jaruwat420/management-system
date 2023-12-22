@@ -44,9 +44,9 @@ export const getRegister = async (req, res) => {
         }
         )
         newUser.token = token;
-        res.status(201).json({message: "create user success fully."})
+        res.status(201).json({message: "สมัครสมาชิกเรียบร้อยแล้ว", status: 201})
     } catch (error) {
-        res.status(400).json(`error : ${error}`);
+        res.status(401).json({message: error, status: 401});
     }
 }
 
@@ -62,10 +62,7 @@ export const getLogin = async (req, res) => {
 
         // validate
         if (!(username && password)) {
-            res.status(400).json({
-                message: 'โปรดกรอกข้อมูลให้ครบทุกช่อง',
-                status: 400
-            });
+            res.status(400).json({message: 'โปรดกรอกข้อมูลให้ครบทุกช่อง',status: 400});
             return;
         }
         const user = await Users.findOne({ where: { user_email: username } });
