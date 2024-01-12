@@ -16,9 +16,9 @@ $(document).ready(function () {
                     window.location.href = "/dashboard/"
                 }
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function (res, jqXHR, textStatus, errorThrown) {
                 let errorMessage = textStatus ;
-                Swal.fire('เกิดข้อผิดพลาด!', errorMessage, 'error');
+                Swal.fire('เกิดข้อผิดพลาด!', 'กรุณาตรวจสอบรหัสผ่าน!', 'error');
             }
         });
         

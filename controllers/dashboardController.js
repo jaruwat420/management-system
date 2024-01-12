@@ -14,6 +14,7 @@ import bodyParser from "body-parser";
 import moment from "moment";
 import sequelize from "sequelize";
 import ExcelJS from "exceljs";
+import axios from "axios";
 
 
 
@@ -22,19 +23,21 @@ const upload = multer({ storage: storage });
 
 //----------------------------------Render Register------------------------------------//
 export const renderHome = async (req, res) => {
-    //const userFirstName = req.session.user.firstname;
+    const userFirstName = req.session.user.firstname;
     res.render('dashboard', {
         layout: "admin",
         title: "หน้าแรก",
-       // userFirstName:userFirstName
+        userFirstName: userFirstName
     });
 }
 
 //----------------------------------render Management------------------------------------//
 export const renderManagement = async (req, res) => {
+    const userFirstName = req.session.user.firstname;
     res.render('management', {
         layout: "admin",
-        title: "จัดการเล่มทะเบียน"
+        title: "จัดการเล่มทะเบียน",
+        userFirstName: userFirstName
     });
 }
 //----------------------------------render Management------------------------------------//
@@ -152,11 +155,14 @@ export const UpdateManagement = async (req, res) => {
                 const sanitizedDateReceiveTrans = dateReceiveTrans || null;
                 const sanitizedDatePost = datePost || null;
                 const sanitizedDateOfReceiving = dateOfReceiving || null;
-                console.log(sanitizedDateOfReceiving);
 
                 // find old Data
                 const find_old_data = await MasterData.findAll({
                     attributes: [
+                        'tax_invoice',
+                        'tank_code',
+                        'code',
+                        'province',
                         'date_of_receiving',
                         'date_of_sending',
                         'date_receiving_trans',
@@ -170,13 +176,16 @@ export const UpdateManagement = async (req, res) => {
                         'flag',
                         'description',
                         'id'
-
                     ],
                     where: { id: carId }
                 });
 
                 await Promise.all(find_old_data.map(async (data) => {
                     const {
+                        tax_invoice,
+                        tank_code,
+                        code,
+                        province,
                         date_of_receiving,
                         date_of_sending,
                         date_receiving_trans,
@@ -191,7 +200,6 @@ export const UpdateManagement = async (req, res) => {
                         id,
                         description
                     } = data.toJSON();
-
                     // Create Log History
                     const update_history = await LogHistory.create({
                         user_id: userId,
@@ -225,6 +233,78 @@ export const UpdateManagement = async (req, res) => {
                             วันที่สร้าง: Date(),
                         })
                     });
+
+                    // Check get API
+                    if (update_history) {
+                        const apiUrl = 'https://regbook.sia.co.th/updateRegDate';
+
+                        const dateReceiveDate = new Date(dateReceive);
+                        const dateReceiveTransDate = new Date(dateReceiveTrans);
+
+                        let date_send;
+                        if (flag_status === 'R') {
+                            date_send = dateReceiveDate;
+                        } else if (flag_status === 'S') {
+                            date_send = '';
+                        } else {
+                            date_send = dateReceiveTransDate;
+                        }
+
+                        if (!tax_invoice || !tank_code || !code || !province ) {
+                            console.error('ข้อมูลไม่ครบถ้วน');
+                            return;
+                        }
+                        //console.log("date_send =", date_send);
+                        let dateFormat = null;
+                        if (date_send !== '') {
+                            dateFormat = moment(date_send).format('YYYY-MM-DD');
+                        }
+                        
+                        const headers = {
+                            'secret': 'SIA-Ap8*H%o9k+Fdr@dxfpKF#Po.dD0/@9fRf@kS',
+                            'Content-Type': 'application/json',
+                            'Accept-Language': 'th-TH',
+                        };
+
+                        try {
+                            const response = await axios.post(apiUrl, {
+                                number: tax_invoice,
+                                chassis_number: tank_code,
+                                regist: code,
+                                province_name: province,
+                                date_books: dateFormat,
+                            }, {
+                                headers,
+                            });
+                            if (response.data.success === true) {
+                                console.log(response.data.message);
+                            }
+                            console.log('บันทึกข้อมูลสำเร็จ');
+                        } catch (error) {
+                            console.error('เกิดข้อผิดพลาด:', error.message);
+                            if (error.response.status === 500) {
+                                // retry 3 ครั้ง
+                                for (let i = 0; i < 3; i++) {
+                                    try {
+                                        const response = await axios.post(apiUrl, {
+                                            number: tax_invoice,
+                                            chassis_number: tank_code,
+                                            regist: code,
+                                            province_name: province,
+                                            date_books: dateFormat,
+                                        }, {
+                                            headers,
+                                        });
+                                        console.log('บันทึกข้อมูลสำเร็จ');
+                                        break;
+                                    } catch (error) {
+                                        console.error('เกิดข้อผิดพลาด:', error.message);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 }));
 
                 // Update
@@ -273,12 +353,13 @@ export const UpdateManagement = async (req, res) => {
     }
 }
 
-
 // Render Deposit
 export const renderDeposit = async (req, res) => {
+    const userFirstName = req.session.user.firstname;
     res.render('deposit', {
         layout: "admin",
-        title: "ฝาก-โอน"
+        title: "ฝาก-โอน",
+        userFirstName: userFirstName
     });
 }
 
@@ -866,9 +947,11 @@ export const get_deposit_history = async (req, res) => {
 
 //---------------------------Report-----------------------------------//
 export const get_report = async (req, res) => {
+    const userFirstName = req.session.user.firstname;
     res.render('report', {
         layout: "admin",
-        title: "รายงานเล่มทะเบียน"
+        title: "รายงานเล่มทะเบียน",
+        userFirstName: userFirstName
     });
 }
 
@@ -937,7 +1020,7 @@ export const exportExcel = async (req, res) => {
         const encodedFileName = encodeURIComponent(`รายงานรถรอเล่มทะเบียน_${newDateWithTime}.xlsx`);
 
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', 'attachment; filename='+ encodedFileName);
+        res.setHeader('Content-Disposition', 'attachment; filename=' + encodedFileName);
         res.send(buffer);
 
     } catch (error) {

@@ -6,16 +6,18 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon --experimental-modules index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
+    "esm": "^3.2.25",
     "exceljs": "^4.4.0",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
@@ -23,15 +25,18 @@
     "file-uri-to-path": "^2.0.0",
     "handlebars": "^4.7.8",
     "hbs": "^4.2.0",
+    "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
+    "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.6.3",
     "nodemon": "^3.0.1",
     "path": "^0.12.7",
     "sequelize": "^6.35.0",
     "sweetalert2": "^11.10.1",
+    "url": "^0.11.3",
     "xlsx": "^0.18.5"
   }
 }

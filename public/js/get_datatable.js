@@ -35,7 +35,7 @@ $(document).ready(function () {
     function f_customer_data_general_preview() {
         let formElem = $('#form_import_data_excel');
         let formData = new FormData(formElem[0]);
-        console.log(formData);
+        //console.log(formData);
         $.ajax({
             url: "/dashboard/api-file-upload",
             data: formData,
@@ -531,7 +531,7 @@ $(document).ready(function () {
             data: searchData,
             dataType: "Json",
             success: function (res) {
-                console.log(res.res.searchResults);
+                //console.log(res.res.searchResults);
                 DataTableResult = $("#tbl_management").DataTable({
                     data: res.res.searchResults,
                     processing: true,
