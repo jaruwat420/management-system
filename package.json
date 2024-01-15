@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/node": "^7.22.19",
     "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
@@ -31,7 +32,7 @@
     "moment-timezone": "^0.5.43",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.6.3",
+    "mysql2": "^3.0.0",
     "nodemon": "^3.0.1",
     "path": "^0.12.7",
     "sequelize": "^6.35.0",

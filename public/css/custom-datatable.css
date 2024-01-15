@@ -1,0 +1,170 @@
+/* Prevent scroll on narrow devices */
+/*  DataTable Css */
+.main_tbl_chk {
+    width: 20%;
+}
+
+.main_tbl_chk th,
+.main_tbl_chk td {
+    white-space: nowrap;
+}
+
+.main_tbl_chk th:nth-child(1),
+.main_tbl_chk td:nth-child(1) {
+    width: 50px;
+}
+
+.main_tbl_chk th:nth-child(2),
+.main_tbl_chk td:nth-child(2) {
+    width: 100px;
+}
+
+.main_tbl_chk {
+    width: 100%;
+}
+
+.main_tbl_chk th,
+.main_tbl_chk td {
+    text-align: center;
+}
+
+.main_tbl_chk thead th {
+    background-color: #00247c;
+}
+
+.main_tbl_chk tbody tr:hover {
+    background-color: #e0e0e0;
+}
+
+.main_tbl_chk tbody td {
+    padding: 8px;
+}
+
+.main_tbl_chk_paginate {
+    font-size: 14px;
+}
+
+#tbl_show {
+    width: 20%;
+}
+
+
+#tbl_show th,
+td {
+    white-space: nowrap;
+}
+
+#tbl_show td:nth-child(1) {
+    width: 50px;
+}
+
+
+#tbl_show td:nth-child(2) {
+    width: 100px;
+}
+
+#tbl_show {
+    width: 100%;
+}
+
+
+#tbl_show th,
+td {
+    text-align: center;
+}
+
+#tbl_show,
+tbody td {
+    padding: 8px;
+}
+
+
+#tbl_show,
+tbody td {
+    padding: 8px;
+}
+
+
+html,
+body {
+    overflow-x: hidden;
+    font-family: sans-serif;
+}
+
+body {
+    padding-top: 109px;
+    margin: 0;
+}
+
+.logo {
+    width: 300px;
+    height: 90px;
+}
+
+.bg-custom {
+    background-color: #00247c;
+}
+
+.thead-custom {
+    padding: 30px;
+    border-radius: 20px 20px 20px 20px;
+    background-color: #00247c;
+}
+
+@media (max-width: 767px) {
+    .btn-responsive {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn-responsive {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 991px) {
+    .flex-box {
+        flex-direction: column;
+        color: black !important;
+        background-color: white !important;
+        border-radius: 10px 10px 10px 10px;
+        -webkit-box-shadow: 0 30px 50px rgba(0,0,0,.2);
+        box-shadow: 0 30px 50px rgba(0,0,0,.2);
+    }
+    .item{
+        margin: 5px 5px 5px 30px;
+    }
+}
+
+@media (min-width: 992px) {
+    .flex-box {
+        flex-direction: row; 
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    .item {
+        margin: 0 10px; 
+    }
+
+    .col {
+        width: 50%; 
+    }
+}
+
+div>img {
+    width: 50%;
+    height: 100%;
+}
+.d-block{
+    display: flex;
+}
+
+.header {
+    padding: 20px;
+    background-color: #00247c;
+    color: white;
+    border-radius: 10px 10px 10px 10px;
+}
