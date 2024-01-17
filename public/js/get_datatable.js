@@ -258,10 +258,10 @@ $(document).ready(function () {
             data: { DataId },
             dataType: "JSON",
             success: function (res) {
-                const changeDataArray = res.Data.map(item => item.change_data);
-                const jsonString = changeDataArray.join('');
-                const DataObject = JSON.parse(jsonString)
-                console.log(DataObject);
+                let changeDataArray = res.Data.map(item => item.change_data);                
+                let jsonString = changeDataArray.join('');
+                let DataObject = JSON.parse(jsonString)  
+                    DataObject = JSON.parse(DataObject)  
                 const Date_Of_Receive_Old = DataObject["วันที่รับเล่มทะเบียนเก่า"];
                 const Date_Of_Receive_New = DataObject["วันที่รับเล่มทะเบียนใหม่"];
                 const Date_Send_Transfer_Old = DataObject["วันที่ส่งโอนเก่า"];
@@ -284,6 +284,7 @@ $(document).ready(function () {
                 const Status_New = DataObject["สถานะใหม่"];
                 const Edit_By = DataObject["แก้ไขโดย"];
                 const Date_Create = DataObject["วันที่สร้าง"];
+
                 $("#Date_Receive_Old").text(Date_Of_Receive_Old);
                 $("#Date_Receive_New").text(Date_Of_Receive_New);
                 $("#Date_Send_Old").text(Date_Send_Transfer_Old);

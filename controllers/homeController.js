@@ -1,5 +1,8 @@
 import { response } from "express";
 
 export const renderHome = async(req, res) => {
-    res.render('dashboard' ,{layout: 'regbook', title: 'หน้าแรก'});
+    res.render('regbook', {
+        layout: "regbook_layouts",
+        title: "ค้นหาเล่มทะเบียนรถ",
+    });
 }

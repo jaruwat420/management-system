@@ -543,6 +543,7 @@ $("#tbl_history").on('click', '#btn-view-detail', function(){
         dataType: "Json",
         success: function (res) {
             const changeDataArray = res.Data.map(item => item.change_data);
+            console.log("changeDataArray", changeDataArray);
             const jsonString = changeDataArray.join('');
             const DataObject = JSON.parse(jsonString)            
             $("#Car_Type_Old").text(DataObject["ประเภทเก่า"]);

@@ -1,0 +1,62 @@
+<section class="navbar">
+    <nav class="navbar navbar-expand-lg fixed-top bg-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img class="logo"
+                src="https://regbook.sia.co.th/assets/img/product/SIALogo.jpg" alt="">
+            </a>
+            <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+            </div>
+        </div>
+    </nav>
+</section>
+<section class="banner">
+    <div class="img banner-top ">
+        <img class="images-banner w-100" src="../assets/images/banner_new.png" alt="car">
+    </div>
+    <div class="container">
+        <form>
+            <div class="row mt-5">
+                <div class="col col-sm-12 col-md-8 col-lg-8 col-xl-8 mx-auto">
+                    <div class="input-group">
+                        <input class="form-control border-end-0 border rounded-pill"  type="search" value=""
+                            placeholder="กรุณาพิมพ์ เลขทะเบียนรถ หรือ เลขตัวถังของรถ ที่ต้องการค้นหา"
+                            id="search_registration">
+                        <button type="button" class="btn btn-success border-end-0 border rounded-pill ml-3 btn-lg" id="btn-submit">
+                            ค้นหา
+                        </button>
+                    </div>
+                    <div class="text mt-2 text-left">
+                        <span style="color:red; font-weight: 100"> * หมายเหตุ กรุณาระบุ ทะเบียนรถ หรือ
+                            เลขตัวถังของรถ ให้ครบถ้วน ตัวอย่าง 1กก 1111</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="search">
+    <div class="container-xxl my-5">
+        <div class="registration-result mt-5">
+            <div class="registration-title registration-container hide-mobile">
+                <p class="small-col">No.</p>
+                <p class="small-col">ทะเบียน</p>
+                <p>จังหวัด</p>
+                <p>เลขตัวถัง</p>
+                <p>วันที่ประมูล</p>
+                <p class="small-col">ลำดับ</p>
+                <p>ยี่ห้อรถ</p>
+                <p class="big-col">รุ่น</p>
+                <p>สถานที่ประมูล</p>
+                <p>สถานะเล่มทะเบียน</p>
+            </div>
+            <div id="s_results">
+
+            </div>
+        </div>
+    </div>
+</section>
+<script src="/assets/jquery/jquery.min.js"></script>
+<script src="/js/search_registration.js"></script>

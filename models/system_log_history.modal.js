@@ -57,7 +57,7 @@ const LogHistory = sequelize.define('system_log_history', {
         allowNull: true,
     },
     change_data: {
-        type: DataTypes.JSON,
+        type: DataTypes.TEXT,
         field: 'change_data',
         defaultValue: '',
         allowNull: true,

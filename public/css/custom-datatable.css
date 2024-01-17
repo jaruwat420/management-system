@@ -14,7 +14,7 @@ a:hover {
 }
 
 body {
-    padding-top: 100px;
+    padding-top: 50px;
     width: 100%;
     background: #fff;
     position: relative;
@@ -28,6 +28,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+/* Banner Logo */
 .logo {
     width: 300px;
     height: 90px;
@@ -37,33 +39,33 @@ body {
     background-color: #00247c;
 }
 
-.registration-col{
+.registration-container{
     border-radius: 5px;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.13);
     margin: 10px 0px;
 }
-.registration-col.registration-title{
+.registration-container.registration-title{
     background: #0B205E;
     font-weight: 700;
     color: #fff;
 }
-.registration-col p{
+.registration-container p{
     display: inline-block;
     width: calc(10.11% - 15px);
     margin: 0px 5px
 }
-.registration-col .title, .registration-col .desc{
+.registration-container .title, .registration-container .desc{
     display: inline-block;
     width: calc(50% - 25px);
     margin: 10px 10px 10px;
 }
-.registration-col .title{
+.registration-container .title{
     font-size: 16px;
     line-height: 19px;
     font-weight: 700;
 }
-.registration-col .desc{
+.registration-container .desc{
     font-size: 16px;
     line-height: 19px;
     font-weight: 400;
@@ -90,7 +92,7 @@ body {
     }
     .hide-mobile {
         display: none; 
-    }
+    }    
 }
 
 @media (min-width: 992px) { 
@@ -100,5 +102,9 @@ body {
     .hide-mobile {
         display: block; 
     }
-}
+    .small-col{
+        width: 10%;
+    }
 
+}
+    
